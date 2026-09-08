@@ -62,6 +62,17 @@ I like building things on the web, breaking things in CTFs, and reading about cr
 
 ---
 
+### 🔬 Featured Projects
+
+| Project | Description |
+|---|---|
+| [**BVCRSA**](https://github.com/Jaoguya/BVCRSA) | Blockchain-verified conjunctive range search & aggregation over encrypted IIoT data with attribute-based access control. |
+| [**PLOSHA-RMFR**](https://github.com/Jaoguya/PLOSHA-RMFR) | Fault-tolerant secure aggregation for Industrial IoT — predictive load-sharing with multi-layer fault recovery. |
+| [**ZKRedact**](https://github.com/Jaoguya/ZKRedact) | Privacy-preserving blockchain redaction using zero-knowledge proofs with sharded batch verification & Merkle-authenticated provenance auditing. |
+| [**ABCD**](https://github.com/Jaoguya/ABCD) | Adaptive context-bound secure range-cover aggregate tree — a self-optimizing encrypted search index for IIoT data. |
+
+---
+
 ### 📊 GitHub Stats
 
 <p align="center">
