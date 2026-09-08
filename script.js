@@ -541,6 +541,14 @@
         const target = btn.getAttribute('data-open-cert');
         openCertModal(target);
       });
+
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const target = btn.getAttribute('data-open-cert');
+          openCertModal(target);
+        }
+      });
     });
 
     tabButtons.forEach((tab) => {
