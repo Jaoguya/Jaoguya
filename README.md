@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 10736c8fa30bf49f4d4bee02c55c7d92cbf92567
 <h1 align="center">Hey there 👋 I'm Jaoguya</h1>
 
 <p align="center">
@@ -8,7 +13,12 @@
 
 ### 🙋‍♂️ About Me
 
+<<<<<<< HEAD
 I'm **Tagrid** — a Computer Engineering student from **Pathum Thani, Thailand**, currently studying at [SIIT, Thammasat University](https://www.siit.tu.ac.th/) on the Cloud Computing & Cyber Security track.
+=======
+I'm **Tagrid Chongkolrattanpond** — a Computer Engineering student, currently studying at [SIIT, Thammasat University](https://www.siit.tu.ac.th/) on the Cloud Computing & Cyber Security track.
+
+>>>>>>> 10736c8fa30bf49f4d4bee02c55c7d92cbf92567
 ---
 
 ### 🧰 Tools & Technologies
@@ -64,18 +74,12 @@ I'm **Tagrid** — a Computer Engineering student from **Pathum Thani, Thailand*
 
 ---
 
-### 📊 GitHub Stats
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Jaoguya&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="GitHub Stats" height="165" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Jaoguya&layout=compact&theme=tokyonight&hide_border=true" alt="Top Languages" height="165" />
-</p>
-
 ---
 
 <p align="center">
   <a href="mailto:chongkolratt@gmail.com"><img src="https://img.shields.io/badge/Email-chongkolratt%40gmail.com-EA4335?style=flat-square&logo=gmail&logoColor=white" alt="Email" /></a>
   <a href="https://github.com/Jaoguya"><img src="https://img.shields.io/badge/GitHub-Jaoguya-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub" /></a>
+<<<<<<< HEAD
 </p>" />
 </p>
 
@@ -85,3 +89,6 @@ I'm **Tagrid** — a Computer Engineering student from **Pathum Thani, Thailand*
   <a href="mailto:guyhd9119@gmail.com"><img src="https://img.shields.io/badge/Email-guyhd9119%40gmail.com-EA4335?style=flat-square&logo=gmail&logoColor=white" alt="Email" /></a>
   <a href="https://github.com/Jaoguya"><img src="https://img.shields.io/badge/GitHub-Jaoguya-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub" /></a>
 </p>
+=======
+</p>
+>>>>>>> 10736c8fa30bf49f4d4bee02c55c7d92cbf92567
