@@ -4,96 +4,65 @@
   </a>
 </p>
 
-<h1 align="center">👋 Hi, I'm Tagrid (Jaoguya)</h1>
+<h1 align="center">Hey there 👋 I'm Jaoguya</h1>
 
 <p align="center">
-  <strong>Computer Engineering Senior · Cybersecurity Enthusiast · Cryptographic Researcher</strong>
-</p>
-
-<p align="center">
-  <a href="https://jaoguya.github.io/Jaoguya/"><img src="https://img.shields.io/badge/🌐%20Portfolio-Live%20Site-8B5CF6?style=flat-square" alt="Portfolio" /></a>
-  <a href="mailto:chongkolratt@gmail.com"><img src="https://img.shields.io/badge/Email-chongkolratt%40gmail.com-EA4335?style=flat-square&logo=gmail&logoColor=white" alt="Email" /></a>
-  <a href="https://github.com/Jaoguya"><img src="https://img.shields.io/badge/GitHub-Jaoguya-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub" /></a>
-  <img src="https://img.shields.io/badge/Status-Open%20to%20Internships-brightgreen?style=flat-square" alt="Status" />
+  <em>Computer Engineering · SIIT, Thammasat University 🇹🇭</em>
 </p>
 
 ---
 
-## 🧑‍💻 About Me
+### 🙋‍♂️ About Me
 
-I'm **Tagrid Chongkolrattanapond**, a Computer Engineering senior at [Sirindhorn International Institute of Technology (SIIT)](https://www.siit.tu.ac.th/), Thammasat University, on the **Cloud Computing & Cyber Security** track (expected graduation 2027).
+I'm **Tagrid** — a Computer Engineering student from **Pathum Thani, Thailand**, currently studying at [SIIT, Thammasat University](https://www.siit.tu.ac.th/) on the Cloud Computing & Cyber Security track.
 
-My journey in tech started with a curiosity about how websites work — which quickly evolved into a deep passion for **full-stack development**, **cybersecurity**, and **academic research**. I'm a co-author on **five research projects** focused on secure and privacy-preserving systems for Industrial IoT, with **three papers currently under IEEE review**.
-
-Beyond development, I actively compete in **Capture The Flag (CTF)** cybersecurity competitions, sharpening my skills in reverse engineering, cryptography, web exploitation, and forensics. This hands-on experience has given me a security-first mindset that I bring to every project I build.
-
-> 💡 My current research interest lies in **Attribute-Based Searchable Encryption (ABSE)** — exploring how fine-grained access control can be combined with efficient search capabilities over encrypted data, a crucial challenge for privacy-preserving cloud computing.
+I like building things on the web, breaking things in CTFs, and reading about cryptography when I probably should be sleeping. When I'm not coding, you'll find me exploring new tools or tinkering with side projects.
 
 ---
 
-## 🛠️ Tech Stack
+### 🧰 Tools & Technologies
 
-| Category | Technologies |
-|---|---|
-| **Languages** | Python · C# · C++ · PHP · JavaScript · TypeScript · SQL |
-| **Frontend** | HTML5 · CSS3 · React · Next.js · Responsive Design |
-| **Backend** | Node.js · Express.js · Flask · REST APIs |
-| **Databases** | PostgreSQL · MySQL · MongoDB · SQLite |
-| **Security & CTF** | Web Exploitation · Cryptography · Forensics · Burp Suite · Wireshark · OWASP · ProDiscover |
-| **Tools & Platforms** | Git/GitHub · Docker · AWS EC2 · Linux · VirtualBox · Arduino IDE · LaTeX/Overleaf · Figma · CI/CD |
-| **Languages (Spoken)** | Thai (native) · English (intermediate) |
+<p>
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" alt="C++" />
+  <img src="https://img.shields.io/badge/C%23-512BD4?style=for-the-badge&logo=csharp&logoColor=white" alt="C#" />
+  <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP" />
+  <img src="https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="SQL" />
+</p>
 
----
+<p>
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3" />
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express" />
+  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
+</p>
 
-## 📚 Research & Academic Work
+<p>
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
+</p>
 
-### 📝 Papers Under Review / Published
-
-| # | Title | Venue | Status |
-|---|-------|-------|--------|
-| 1 | **Blockchain-Based Verifiable Conjunctive Range Search and Aggregation over Encrypted IIoT Data** | IEEE IoT-J (Q1) | 2nd Revision |
-| 2 | **Predictive Load-Sharing Hierarchical Aggregation with Risk-Aware Multi-Layer Fault Recovery** | IEEE IoT-J (Q1) | Under Review |
-| 3 | **Adaptive Context-bound Secure Range-Cover Aggregate Tree over Encrypted IIoT Data** | IEEE Conference | Under Review |
-| 4 | **Achieving Post-Quantum and Dynamic Load-Balanced Verifiable Searchable Encryption for Multi-Authority IoMT Data Sharing** | — | Working Paper |
-| 5 | **Efficient Zero-Knowledge Authorized Redaction and Provenance Auditing for Permissioned Blockchains** | — | Working Paper |
-
-> My contributions span **scheme design, prototype implementation, and experimental evaluation** across all five projects.
-
----
-
-## 🚀 Projects
-
-### 🧥 DressUp — AI Fashion App
-*System Architecture & Prototyping · Apr 2026*
-- Full SRS/SDS documentation, PDPA-compliant AWS backend design (Node.js, PostgreSQL, OpenAI)
-- Normalized ERD and interactive Figma prototypes
-
-### 🔍 Lost & Found Web Application
-*Database System Team Project · Dec 2025*
-- Built a site for posting and searching lost items
-- Developed frontend in HTML/CSS with MySQL backend (queries, triggers, procedures, password hashing)
-
-### ☕ Online Shop Database
-*Database Design Project · Sep 2025*
-- Designed and built a MySQL database for coffee shop operations
-- Data modeling, table implementation, and business reporting queries for sales & inventory insights
-
-### 🌐 This Portfolio Website
-- WCAG AAA-compliant, PDPA-ready portfolio built with vanilla HTML, CSS, and JavaScript
-- Dark/light theme, scroll animations, cookie consent, and fully responsive design — no frameworks needed
+<p>
+  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white" alt="AWS" />
+  <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux" />
+  <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma" />
+  <img src="https://img.shields.io/badge/LaTeX-008080?style=for-the-badge&logo=latex&logoColor=white" alt="LaTeX" />
+  <img src="https://img.shields.io/badge/Wireshark-1679A7?style=for-the-badge&logo=wireshark&logoColor=white" alt="Wireshark" />
+  <img src="https://img.shields.io/badge/Burp%20Suite-FF6633?style=for-the-badge&logo=burpsuite&logoColor=white" alt="Burp Suite" />
+</p>
 
 ---
 
-## 🏆 Awards & Competitions
-
-| Award | Organization | Date |
-|-------|-------------|------|
-| 🥇 **Top 5 Best Term-Project Paper Award** — Cloud Computing and Computer & Communication Security | SIIT, Thammasat University | Apr 2026 |
-| 🛡️ **Thailand Cyber Top Talent 2026** — National CTF Competition (Open Track, 3-person team) | National Cyber Security Agency | Aug 2026 |
-
----
-
-## 📊 GitHub Stats
+### 📊 GitHub Stats
 
 <p align="center">
   <img src="https://github-readme-stats.vercel.app/api?username=Jaoguya&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="GitHub Stats" height="165" />
@@ -102,19 +71,7 @@ Beyond development, I actively compete in **Capture The Flag (CTF)** cybersecuri
 
 ---
 
-## 📬 Get In Touch
-
-I'm always open to discussing **research collaborations**, **internship opportunities**, or interesting **project ideas**.
-
 <p align="center">
-  <a href="mailto:chongkolratt@gmail.com">📧 chongkolratt@gmail.com</a> · 
-  📍 Pathum Thani, Thailand · 
-  🕐 GMT+7 (ICT)
-</p>
-
----
-
-<p align="center">
-  <em>Built with ❤️ and vanilla code</em><br/>
-  <sub>© 2026 Jaoguya. All rights reserved.</sub>
+  <a href="mailto:chongkolratt@gmail.com"><img src="https://img.shields.io/badge/Email-chongkolratt%40gmail.com-EA4335?style=flat-square&logo=gmail&logoColor=white" alt="Email" /></a>
+  <a href="https://github.com/Jaoguya"><img src="https://img.shields.io/badge/GitHub-Jaoguya-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub" /></a>
 </p>
