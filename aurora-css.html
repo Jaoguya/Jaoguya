@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aurora CSS — Liquid Mesh Gradient</title>
+  <style>
+    /* ─── Reset ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── Design Tokens ─── */
+    :root {
+      --bg:           #04010f;           /* deep space black */
+      --purple-deep:  #1a0533;           /* midnight purple */
+      --purple-mid:   #5b0fa8;           /* vivid purple */
+      --purple-glow:  #8b2fcf;           /* soft purple glow */
+      --aqua:         #00c9a7;           /* aquamarine */
+      --aqua-light:   #3dffd9;           /* bright aqua */
+      --aqua-dim:     #00857a;           /* deep aqua */
+      --black-overlay: rgba(4,1,15,.45); /* tint overlay */
+    }
+
+    /* ─── Body ─── */
+    body {
+      min-height: 100svh;
+      background: var(--bg);
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      color: #e8e0ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ════════════════════════════════════════
+       AURORA WRAPPER
+       All blobs live here; position:relative
+       so z-index stacking is self-contained.
+    ════════════════════════════════════════ */
+    .aurora-bg {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      /* Noise texture for organic feel */
+      background-color: var(--bg);
+    }
+
+    /* ─── Shared blob base ─── */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      mix-blend-mode: screen;   /* additive light blending */
+      will-change: transform, opacity;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+
+    /* ─── Blob 1 — Large purple core ─── */
+    .blob-1 {
+      width: 75vw; height: 75vw;
+      max-width: 900px; max-height: 900px;
+      top: -20%;  left: -15%;
+      background: radial-gradient(ellipse at 40% 60%,
+        var(--purple-mid) 0%,
+        var(--purple-deep) 55%,
+        transparent 75%);
+      opacity: .85;
+      animation: drift-1 18s infinite alternate ease-in-out;
+    }
+
+    /* ─── Blob 2 — Aquamarine streak ─── */
+    .blob-2 {
+      width: 60vw; height: 60vw;
+      max-width: 750px; max-height: 750px;
+      top: 30%;  right: -10%;
+      background: radial-gradient(ellipse at 55% 45%,
+        var(--aqua-light) 0%,
+        var(--aqua) 35%,
+        var(--aqua-dim) 60%,
+        transparent 75%);
+      opacity: .75;
+      filter: blur(100px);
+      animation: drift-2 22s infinite alternate ease-in-out;
+    }
+
+    /* ─── Blob 3 — Purple glow bottom-left ─── */
+    .blob-3 {
+      width: 55vw; height: 55vw;
+      max-width: 700px; max-height: 700px;
+      bottom: -15%;  left: 10%;
+      background: radial-gradient(ellipse at 60% 40%,
+        var(--purple-glow) 0%,
+        var(--purple-mid) 40%,
+        transparent 70%);
+      opacity: .7;
+      filter: blur(90px);
+      animation: drift-3 26s infinite alternate ease-in-out;
+    }
+
+    /* ─── Blob 4 — Small aqua accent top-right ─── */
+    .blob-4 {
+      width: 35vw; height: 35vw;
+      max-width: 500px; max-height: 500px;
+      top: -5%;  right: 20%;
+      background: radial-gradient(ellipse at 50% 50%,
+        var(--aqua) 0%,
+        transparent 65%);
+      opacity: .55;
+      filter: blur(70px);
+      animation: drift-4 15s infinite alternate ease-in-out;
+    }
+
+    /* ─── Blob 5 — Centre mesh bridge ─── */
+    .blob-5 {
+      width: 50vw; height: 35vw;
+      max-width: 650px; max-height: 450px;
+      top: 35%;  left: 25%;
+      background: radial-gradient(ellipse at 50% 50%,
+        rgba(91,15,168,.6) 0%,
+        rgba(0,201,167,.4) 45%,
+        transparent 70%);
+      opacity: .65;
+      filter: blur(110px);
+      animation: drift-5 30s infinite alternate ease-in-out;
+    }
+
+    /* ─── Blob 6 — Deep purple anchor ─── */
+    .blob-6 {
+      width: 40vw; height: 60vw;
+      max-width: 500px; max-height: 750px;
+      bottom: -10%;  right: -5%;
+      background: radial-gradient(ellipse at 40% 55%,
+        var(--purple-deep) 0%,
+        var(--purple-mid) 45%,
+        transparent 70%);
+      opacity: .8;
+      filter: blur(95px);
+      animation: drift-6 20s infinite alternate ease-in-out;
+    }
+
+    /* ════════════════════════════════════════
+       KEYFRAMES — varied paths for mesh feel
+    ════════════════════════════════════════ */
+    @keyframes drift-1 {
+      0%   { transform: translate(0,   0)   scale(1);    }
+      33%  { transform: translate(8vw, 5vh) scale(1.08); }
+      66%  { transform: translate(3vw, 12vh) scale(.95); }
+      100% { transform: translate(12vw, 8vh) scale(1.05); }
+    }
+    @keyframes drift-2 {
+      0%   { transform: translate(0,   0)    scale(1);    }
+      40%  { transform: translate(-6vw, 8vh) scale(1.1);  }
+      80%  { transform: translate(-10vw,-5vh) scale(.92); }
+      100% { transform: translate(-4vw, 12vh) scale(1.06);}
+    }
+    @keyframes drift-3 {
+      0%   { transform: translate(0,   0)   scale(1);    }
+      25%  { transform: translate(7vw,-6vh) scale(1.12); }
+      75%  { transform: translate(2vw,-10vh) scale(.97); }
+      100% { transform: translate(10vw,-4vh) scale(1.04); }
+    }
+    @keyframes drift-4 {
+      0%   { transform: translate(0,  0)   scale(1);   }
+      50%  { transform: translate(-8vw,10vh) scale(1.15); }
+      100% { transform: translate(-3vw,5vh)  scale(.9); }
+    }
+    @keyframes drift-5 {
+      0%   { transform: translate(0,   0)    rotate(0deg)   scale(1);    }
+      35%  { transform: translate(5vw, -7vh) rotate(12deg)  scale(1.1);  }
+      70%  { transform: translate(-4vw,6vh)  rotate(-8deg)  scale(.94);  }
+      100% { transform: translate(8vw, 3vh)  rotate(20deg)  scale(1.07); }
+    }
+    @keyframes drift-6 {
+      0%   { transform: translate(0,   0)    scale(1);    }
+      45%  { transform: translate(-5vw,-8vh) scale(1.08); }
+      100% { transform: translate(-9vw, 4vh) scale(.95);  }
+    }
+
+    /* ─── Grain overlay (SVG data-URI noise) ─── */
+    .aurora-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: .04;
+      pointer-events: none;
+    }
+
+    /* ─── Dark vignette ─── */
+    .aurora-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%,
+        transparent 40%,
+        rgba(4,1,15,.7) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ════════════════════════════════════════
+       DEMO CONTENT — replace with your HTML
+    ════════════════════════════════════════ */
+    .content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 3rem;
+      max-width: 680px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      background: rgba(0,201,167,.12);
+      border: 1px solid rgba(0,201,167,.3);
+      color: var(--aqua-light);
+      padding: .35em 1em;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+    }
+
+    .content h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      background: linear-gradient(135deg, #e8e0ff 0%, var(--aqua-light) 55%, var(--purple-glow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.25rem;
+    }
+
+    .content p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(232,224,255,.65);
+      margin-bottom: 2rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .pill {
+      font-size: .72rem;
+      padding: .3em .85em;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      color: rgba(232,224,255,.75);
+      letter-spacing: .04em;
+    }
+
+    /* Glassmorphic card */
+    .glass-card {
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 1.25rem;
+      padding: 1.5rem 2rem;
+      text-align: left;
+    }
+
+    .glass-card code {
+      font-family: 'Courier New', monospace;
+      font-size: .8rem;
+      color: var(--aqua-light);
+      line-height: 1.6;
+      white-space: pre;
+      display: block;
+    }
+
+    .label {
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: rgba(232,224,255,.4);
+      margin-bottom: .6rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       AURORA BACKGROUND — copy this section
+  ══════════════════════════════════════ -->
+  <div class="aurora-bg" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <div class="blob blob-5"></div>
+    <div class="blob blob-6"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       YOUR CONTENT GOES HERE
+  ══════════════════════════════════════ -->
+  <div class="content">
+    <div class="badge">✦ Pure CSS Aurora</div>
+    <h1>Liquid Mesh<br>Gradient Background</h1>
+    <p>
+      Zero JavaScript. Six animated blobs using <code>filter: blur</code>,
+      <code>mix-blend-mode: screen</code>, and CSS keyframe drifts.
+      GPU-composited, &lt;3 KB, 60 fps.
+    </p>
+
+    <div class="pill-row">
+      <span class="pill">No JS</span>
+      <span class="pill">GPU Composited</span>
+      <span class="pill">CSS Keyframes</span>
+      <span class="pill">mix-blend-mode</span>
+      <span class="pill">backdrop-filter</span>
+      <span class="pill">Grain Overlay</span>
+    </div>
+
+    <div class="glass-card">
+      <div class="label">Integration Snippet</div>
+      <code>&lt;div class="aurora-bg" aria-hidden="true"&gt;
+  &lt;div class="blob blob-1"&gt;&lt;/div&gt;
+  &lt;div class="blob blob-2"&gt;&lt;/div&gt;
+  &lt;div class="blob blob-3"&gt;&lt;/div&gt;
+  &lt;div class="blob blob-4"&gt;&lt;/div&gt;
+  &lt;div class="blob blob-5"&gt;&lt;/div&gt;
+  &lt;div class="blob blob-6"&gt;&lt;/div&gt;
+&lt;/div&gt;</code>
+    </div>
+  </div>
+
+</body>
+</html>

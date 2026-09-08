@@ -187,58 +187,60 @@
   }
 
   // ————————————————————————————————————
-  // 7. TYPING ANIMATION
+  // 7. ROLE TYPEWRITER EFFECT
   // ————————————————————————————————————
   function initTypingAnimation() {
     if (!typingText) return;
 
     const titles = [
-      'Full-Stack Developer',
-      'Cybersecurity Enthusiast',
-      'CTF Competitor',
-      'ABSE Researcher',
-      'Computer Engineering Student',
+      'Computer Engineering @ SIIT',
+      'Cryptographic Systems Researcher',
+      'CTF Player & Security Enthusiast',
+      'Cloud & Distributed Systems Developer',
+      'ABSE & Verifiable Aggregation Researcher',
     ];
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      typingText.textContent = titles[0];
+      return;
+    }
 
     let titleIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    let typeSpeed = 80;
+    const typingSpeed = 80;
+    const deletingSpeed = 40;
+    const pauseEnd = 2000;
+    const pauseStart = 400;
 
-    function type() {
-      const currentTitle = titles[titleIndex];
+    function typeLoop() {
+      const current = titles[titleIndex];
 
-      if (isDeleting) {
-        typingText.textContent = currentTitle.substring(0, charIndex - 1);
-        charIndex--;
-        typeSpeed = 40;
-      } else {
-        typingText.textContent = currentTitle.substring(0, charIndex + 1);
+      if (!isDeleting) {
+        typingText.textContent = current.substring(0, charIndex + 1);
         charIndex++;
-        typeSpeed = 80;
-      }
 
-      if (!isDeleting && charIndex === currentTitle.length) {
-        // Pause at end of word
-        typeSpeed = 2000;
-        isDeleting = true;
-      } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        titleIndex = (titleIndex + 1) % titles.length;
-        typeSpeed = 500;
-      }
+        if (charIndex === current.length) {
+          isDeleting = true;
+          setTimeout(typeLoop, pauseEnd);
+          return;
+        }
+        setTimeout(typeLoop, typingSpeed);
+      } else {
+        typingText.textContent = current.substring(0, charIndex - 1);
+        charIndex--;
 
-      setTimeout(type, typeSpeed);
+        if (charIndex === 0) {
+          isDeleting = false;
+          titleIndex = (titleIndex + 1) % titles.length;
+          setTimeout(typeLoop, pauseStart);
+          return;
+        }
+        setTimeout(typeLoop, deletingSpeed);
+      }
     }
 
-    // Respect reduced motion
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      typingText.textContent = titles[0];
-      typingText.style.borderRight = 'none';
-      return;
-    }
-
-    type();
+    typeLoop();
   }
 
   initTypingAnimation();
@@ -391,49 +393,227 @@
   initCookieBanner();
 
   // ————————————————————————————————————
-  // 9.5. TYPEWRITER EFFECT
+  // 9.5. PROJECT CATEGORY FILTERING
   // ————————————————————————————————————
-  if (typingText) {
-    const phrases = [
-      'Computer Engineering @ SIIT',
-      'Cryptographic Researcher',
-      'CTF Player & Security Enthusiast',
-      'Full-Stack Developer'
-    ];
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    const typingSpeed = 90;
-    const deletingSpeed = 45;
-    const pauseTime = 1800;
+  function initProjectFilters() {
+    const filterTabs = $$('.project-tab');
+    const projectCards = $$('.project-card');
 
-    function typeLoop() {
-      const currentPhrase = phrases[phraseIndex];
+    if (!filterTabs.length || !projectCards.length) return;
 
-      if (!isDeleting) {
-        typingText.textContent = currentPhrase.substring(0, charIndex + 1);
-        charIndex++;
-        if (charIndex === currentPhrase.length) {
-          isDeleting = true;
-          setTimeout(typeLoop, pauseTime);
-          return;
-        }
-        setTimeout(typeLoop, typingSpeed);
-      } else {
-        typingText.textContent = currentPhrase.substring(0, charIndex - 1);
-        charIndex--;
-        if (charIndex === 0) {
-          isDeleting = false;
-          phraseIndex = (phraseIndex + 1) % phrases.length;
-          setTimeout(typeLoop, 400);
-          return;
-        }
-        setTimeout(typeLoop, deletingSpeed);
-      }
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const filter = tab.getAttribute('data-filter');
+
+        filterTabs.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+
+        projectCards.forEach((card) => {
+          const category = card.getAttribute('data-category');
+          if (filter === 'all' || category === filter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  }
+
+  initProjectFilters();
+
+  // ————————————————————————————————————
+  // 9.6. INTERACTIVE CV MODAL
+  // ————————————————————————————————————
+  function initCvModal() {
+    const cvModal = $('#cv-modal');
+    const heroCvBtn = $('#hero-cta-cv');
+    const cvCloseBtn = $('#cv-modal-close');
+    const cvPrintBtn = $('#cv-print-btn');
+    const openCvTriggers = $$('.open-cv-trigger');
+
+    if (!cvModal) return;
+
+    function openModal() {
+      cvModal.classList.add('open');
+      cvModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      if (cvCloseBtn) cvCloseBtn.focus();
     }
 
-    typeLoop();
+    function closeModal() {
+      cvModal.classList.remove('open');
+      cvModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (heroCvBtn) heroCvBtn.focus();
+    }
+
+    if (heroCvBtn) {
+      heroCvBtn.addEventListener('click', openModal);
+    }
+
+    openCvTriggers.forEach((btn) => {
+      btn.addEventListener('click', openModal);
+    });
+
+    if (cvCloseBtn) {
+      cvCloseBtn.addEventListener('click', closeModal);
+    }
+
+    // Close on backdrop click
+    cvModal.addEventListener('click', (e) => {
+      if (e.target === cvModal) {
+        closeModal();
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && cvModal.classList.contains('open')) {
+        closeModal();
+      }
+    });
+
+    // Print CV
+    if (cvPrintBtn) {
+      cvPrintBtn.addEventListener('click', () => {
+        window.print();
+      });
+    }
   }
+
+  initCvModal();
+
+  // ————————————————————————————————————
+  // 9.6b. VERIFIED CERTIFICATES VIEWER MODAL
+  // ————————————————————————————————————
+  function initCertModal() {
+    const certModal = $('#cert-modal');
+    const certCloseBtn = $('#cert-modal-close');
+    const certTriggers = $$('[data-open-cert]');
+    const tabButtons = $$('.cert-tab-btn');
+    const certPanels = $$('.cert-panel');
+
+    if (!certModal) return;
+
+    function switchCertTab(target) {
+      tabButtons.forEach((tab) => {
+        const isActive = tab.getAttribute('data-cert-target') === target;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      certPanels.forEach((panel) => {
+        const isTarget = panel.id === `cert-panel-${target}`;
+        if (isTarget) {
+          panel.classList.add('active');
+          panel.removeAttribute('hidden');
+        } else {
+          panel.classList.remove('active');
+          panel.setAttribute('hidden', 'true');
+        }
+      });
+    }
+
+    function openCertModal(certTarget) {
+      if (certTarget) {
+        switchCertTab(certTarget);
+      }
+      certModal.classList.add('open');
+      certModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      if (certCloseBtn) certCloseBtn.focus();
+    }
+
+    function closeCertModal() {
+      certModal.classList.remove('open');
+      certModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    certTriggers.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = btn.getAttribute('data-open-cert');
+        openCertModal(target);
+      });
+    });
+
+    tabButtons.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-cert-target');
+        switchCertTab(target);
+      });
+    });
+
+    if (certCloseBtn) {
+      certCloseBtn.addEventListener('click', closeCertModal);
+    }
+
+    // Close on backdrop click
+    certModal.addEventListener('click', (e) => {
+      if (e.target === certModal) {
+        closeCertModal();
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && certModal.classList.contains('open')) {
+        closeCertModal();
+      }
+    });
+  }
+
+  initCertModal();
+
+  // ————————————————————————————————————
+  // 9.7. 1-CLICK COPY EMAIL TO CLIPBOARD
+  // ————————————————————————————————————
+  function initCopyEmail() {
+    const copyBtn = $('#copy-email-btn');
+    const emailToast = $('#email-toast');
+    let toastTimeout = null;
+
+    if (!copyBtn) return;
+
+    copyBtn.addEventListener('click', async () => {
+      const email = 'guyhd9119@gmail.com';
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(email);
+        } else {
+          const textarea = document.createElement('textarea');
+          textarea.value = email;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+
+        if (emailToast) {
+          emailToast.classList.add('show');
+          if (toastTimeout) clearTimeout(toastTimeout);
+          toastTimeout = setTimeout(() => {
+            emailToast.classList.remove('show');
+          }, 3200);
+        }
+
+        announceToSR('Email address copied to clipboard');
+      } catch (err) {
+        console.error('Failed to copy email:', err);
+      }
+    });
+  }
+
+  initCopyEmail();
 
   // ————————————————————————————————————
   // 10. FOOTER YEAR

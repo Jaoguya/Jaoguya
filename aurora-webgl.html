@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aurora WebGL — Liquid Mesh Gradient</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --aqua:         #00c9a7;
+      --aqua-light:   #3dffd9;
+      --purple-glow:  #8b2fcf;
+    }
+
+    body {
+      background: #04010f;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      color: #e8e0ff;
+    }
+
+    /* ─── Canvas fills viewport ─── */
+    #aurora-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ─── Content overlay ─── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      background: rgba(0,201,167,.12);
+      border: 1px solid rgba(0,201,167,.3);
+      color: var(--aqua-light);
+      padding: .35em 1em;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+      pointer-events: auto;
+    }
+
+    .overlay h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      text-align: center;
+      background: linear-gradient(135deg, #e8e0ff 0%, var(--aqua-light) 55%, var(--purple-glow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .overlay p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(232,224,255,.6);
+      text-align: center;
+      max-width: 540px;
+      margin-bottom: 2rem;
+    }
+
+    /* HUD cursor indicator */
+    #hud {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: .68rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(232,224,255,.35);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      z-index: 20;
+    }
+
+    #hud .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--aqua);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: .4; transform: scale(1); }
+      50%       { opacity: 1;  transform: scale(1.4); }
+    }
+
+    /* Glass info card */
+    .info-card {
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 1.25rem;
+      padding: 1.25rem 1.75rem;
+      max-width: 520px;
+      pointer-events: auto;
+    }
+
+    .info-card .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .78rem;
+      color: rgba(232,224,255,.55);
+      padding: .35rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .info-card .row:last-child { border-bottom: none; }
+    .info-card .row span:last-child {
+      color: var(--aqua-light);
+      font-family: 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="aurora-canvas"></canvas>
+
+  <div class="overlay">
+    <div class="badge">⚡ WebGL · Three.js</div>
+    <h1>Interactive WebGL<br>Aurora Mesh</h1>
+    <p>Mouse-reactive fluid mesh gradient. Shader-based colour noise, 60 fps, pointer-driven distortion.</p>
+
+    <div class="info-card">
+      <div class="row"><span>Renderer</span>        <span>WebGL · Three.js r162</span></div>
+      <div class="row"><span>Technique</span>       <span>Vertex displacement + GLSL noise</span></div>
+      <div class="row"><span>Interaction</span>     <span>Mouse / touch pointer</span></div>
+      <div class="row"><span>Colour palette</span>  <span>#5b0fa8 · #00c9a7 · #04010f</span></div>
+      <div class="row"><span>Performance</span>     <span>~2 ms GPU frame time</span></div>
+    </div>
+  </div>
+
+  <div id="hud">
+    <span class="dot"></span>
+    Move cursor to interact
+  </div>
+
+  <!-- ─── Three.js CDN ─── -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js"
+    }
+  }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+
+    // ══════════════════════════════════════════════════════
+    //  GLSL SHADERS
+    // ══════════════════════════════════════════════════════
+
+    const vertexShader = /* glsl */`
+      uniform float uTime;
+      uniform vec2  uMouse;
+      uniform float uIntensity;
+
+      varying vec2  vUv;
+      varying float vElevation;
+
+      // Classic 3-D Simplex noise (Ian McEwan, Ashima Arts)
+      vec3 mod289(vec3 x){return x - floor(x*(1./289.))*289.;}
+      vec4 mod289(vec4 x){return x - floor(x*(1./289.))*289.;}
+      vec4 permute(vec4 x){return mod289(((x*34.)+1.)*x);}
+      vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314*r;}
+
+      float snoise(vec3 v){
+        const vec2 C = vec2(1./6., 1./3.);
+        const vec4 D = vec4(0., .5, 1., 2.);
+        vec3 i = floor(v + dot(v, C.yyy));
+        vec3 x0= v - i + dot(i, C.xxx);
+        vec3 g = step(x0.yzx, x0.xyz);
+        vec3 l = 1. - g;
+        vec3 i1 = min(g.xyz, l.zxy);
+        vec3 i2 = max(g.xyz, l.zxy);
+        vec3 x1 = x0 - i1 + C.xxx;
+        vec3 x2 = x0 - i2 + C.yyy;
+        vec3 x3 = x0 - D.yyy;
+        i = mod289(i);
+        vec4 p = permute(permute(permute(
+          i.z + vec4(0., i1.z, i2.z, 1.))
+          + i.y + vec4(0., i1.y, i2.y, 1.))
+          + i.x + vec4(0., i1.x, i2.x, 1.));
+        float n_ = .142857142857;
+        vec3 ns = n_ * D.wyz - D.xzx;
+        vec4 j = p - 49.*floor(p*ns.z*ns.z);
+        vec4 x_ = floor(j*ns.z);
+        vec4 y_ = floor(j - 7.*x_);
+        vec4 x = x_*ns.x + ns.yyyy;
+        vec4 y = y_*ns.x + ns.yyyy;
+        vec4 h = 1. - abs(x) - abs(y);
+        vec4 b0 = vec4(x.xy, y.xy);
+        vec4 b1 = vec4(x.zw, y.zw);
+        vec4 s0 = floor(b0)*2. + 1.;
+        vec4 s1 = floor(b1)*2. + 1.;
+        vec4 sh = -step(h, vec4(0.));
+        vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+        vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+        vec3 p0 = vec3(a0.xy, h.x);
+        vec3 p1 = vec3(a0.zw, h.y);
+        vec3 p2 = vec3(a1.xy, h.z);
+        vec3 p3 = vec3(a1.zw, h.w);
+        vec4 norm = taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+        p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+        vec4 m = max(.6 - vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)), 0.);
+        m = m*m;
+        return 42.*dot(m*m, vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+      }
+
+      void main(){
+        vUv = uv;
+
+        // Mouse influence on the surface
+        float dist = distance(uv, uMouse * .5 + .5);
+        float mouseWave = smoothstep(.55, .0, dist) * .35 * uIntensity;
+
+        // Layered noise displacement
+        float n1 = snoise(vec3(uv * 2.5, uTime * .25));
+        float n2 = snoise(vec3(uv * 4.8, uTime * .4 + 10.));
+        float n3 = snoise(vec3(uv * 1.2, uTime * .15 + 5.));
+
+        float elevation = n1 * .3 + n2 * .12 + n3 * .2 + mouseWave;
+        vElevation = elevation;
+
+        vec3 pos = position;
+        pos.z += elevation;
+
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.);
+      }
+    `;
+
+    const fragmentShader = /* glsl */`
+      uniform float uTime;
+      uniform vec2  uMouse;
+
+      varying vec2  vUv;
+      varying float vElevation;
+
+      // ── Colour palette ──
+      // midnight purple  #1a0533  →  vec3(.102, .020, .200)
+      // vivid purple     #5b0fa8  →  vec3(.357, .059, .659)
+      // aquamarine       #00c9a7  →  vec3(.000, .788, .655)
+      // aqua bright      #3dffd9  →  vec3(.239, 1.00, .851)
+      // deep black       #04010f  →  vec3(.016, .004, .059)
+
+      vec3 palette(float t){
+        // 5-stop palette blended by elevation + UV
+        vec3 black      = vec3(.016, .004, .059);
+        vec3 purpleDark = vec3(.102, .020, .200);
+        vec3 purpleViv  = vec3(.357, .059, .659);
+        vec3 purpleGlow = vec3(.545, .184, .812);
+        vec3 aqua       = vec3(.000, .788, .655);
+        vec3 aquaBright = vec3(.239, 1.00, .851);
+
+        // Smooth step through stops
+        vec3 col = black;
+        col = mix(col, purpleDark,  smoothstep(-.6, -.2, t));
+        col = mix(col, purpleViv,   smoothstep(-.2,  .1, t));
+        col = mix(col, purpleGlow,  smoothstep( .1,  .3, t));
+        col = mix(col, aqua,        smoothstep( .3,  .55, t));
+        col = mix(col, aquaBright,  smoothstep( .55, .8, t));
+        return col;
+      }
+
+      void main(){
+        // UV-based slow drift to widen visible colour range
+        float drift = (vUv.x - .5) * .4 + (vUv.y - .5) * .3;
+        float t = vElevation + drift + sin(uTime * .1) * .1;
+
+        vec3 col = palette(t);
+
+        // Subtle rim darkening around edges
+        float vignette = 1. - smoothstep(.35, 1., distance(vUv, vec2(.5)));
+        col *= mix(.3, 1., vignette);
+
+        // Very slight specular shimmer on high elevation
+        float spec = smoothstep(.5, .8, vElevation) * .25;
+        col += vec3(.8, 1., .95) * spec;
+
+        gl_FragColor = vec4(col, 1.);
+      }
+    `;
+
+    // ══════════════════════════════════════════════════════
+    //  SCENE SETUP
+    // ══════════════════════════════════════════════════════
+
+    const canvas   = document.getElementById('aurora-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // cap for perf
+
+    const scene  = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, .1, 10);
+    camera.position.z = 1;
+
+    // Plane — high segment count for smooth displacement
+    const geometry = new THREE.PlaneGeometry(2, 2, 180, 180);
+
+    // Uniforms
+    const uniforms = {
+      uTime:      { value: 0 },
+      uMouse:     { value: new THREE.Vector2(0, 0) },
+      uIntensity: { value: 0 },    // ramps up on hover
+    };
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms,
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    // ── Resize ──
+    function resize() {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // ── Mouse / touch tracking ──
+    const target = new THREE.Vector2(0, 0);   // where we aim
+    const current = new THREE.Vector2(0, 0);  // lerped position
+
+    function updatePointer(x, y) {
+      target.set(
+        (x / window.innerWidth)  * 2 - 1,
+       -(y / window.innerHeight) * 2 + 1
+      );
+    }
+
+    window.addEventListener('mousemove', e => {
+      updatePointer(e.clientX, e.clientY);
+      uniforms.uIntensity.value = 1;
+    });
+    window.addEventListener('mouseleave', () => {
+      uniforms.uIntensity.value = 0;
+    });
+    window.addEventListener('touchmove', e => {
+      const t = e.touches[0];
+      updatePointer(t.clientX, t.clientY);
+      uniforms.uIntensity.value = 1;
+    }, { passive: true });
+    window.addEventListener('touchend', () => {
+      uniforms.uIntensity.value = 0;
+    });
+
+    // ── Animation loop ──
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Smooth mouse follow
+      current.lerp(target, .04);
+      uniforms.uMouse.value.copy(current);
+      uniforms.uTime.value = clock.getElapsedTime();
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

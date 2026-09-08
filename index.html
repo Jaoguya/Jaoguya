@@ -13,15 +13,19 @@
   <meta name="theme-color" content="#0a0e1a">
   <title>Jaoguya — Computer Engineering Portfolio</title>
   <link rel="stylesheet" href="styles.css">
-  <!-- Favicon (inline SVG as data URI) -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='80'>⚡</text></svg>">
+  <!-- Favicon (Modern SVG) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%231a1b26'/><path d='M30 25 L65 50 L30 75' stroke='%2300FF41' stroke-width='12' stroke-linecap='round' stroke-linejoin='round' fill='none'/><circle cx='70' cy='50' r='8' fill='%237aa2f7'/></svg>">
 </head>
 <body>
-  <!-- Background Mesh -->
-  <div class="bg-mesh" aria-hidden="true"></div>
-
-  <!-- Skip Link (Accessibility) -->
-  <a href="#main-content" class="skip-link" id="skip-link">Skip to main content</a>
+  <!-- Aurora / Liquid Mesh Gradient Background -->
+  <div class="aurora-bg" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <div class="blob blob-5"></div>
+    <div class="blob blob-6"></div>
+  </div>
 
   <!-- ============ HEADER / NAVIGATION ============ -->
   <header class="header" id="header" role="banner">
@@ -36,7 +40,7 @@
           <li role="none"><a href="#about" role="menuitem">About</a></li>
           <li role="none"><a href="#skills" role="menuitem">Skills</a></li>
           <li role="none"><a href="#projects" role="menuitem">Projects</a></li>
-          <li role="none"><a href="#experience" role="menuitem">Experience</a></li>
+          <li role="none"><a href="#courses" role="menuitem">Courses</a></li>
           <li role="none"><a href="#contact" role="menuitem">Contact</a></li>
         </ul>
       </nav>
@@ -57,7 +61,7 @@
       <li role="none"><a href="#about" role="menuitem">About</a></li>
       <li role="none"><a href="#skills" role="menuitem">Skills</a></li>
       <li role="none"><a href="#projects" role="menuitem">Projects</a></li>
-      <li role="none"><a href="#experience" role="menuitem">Experience</a></li>
+      <li role="none"><a href="#courses" role="menuitem">Courses</a></li>
       <li role="none"><a href="#contact" role="menuitem">Contact</a></li>
     </ul>
   </div>
@@ -73,20 +77,30 @@
           <h1 class="hero-name">
             <span class="gradient-text">Tagrid Chongkolrattanapond</span>
           </h1>
+          <div class="hero-role-badge" aria-label="Current roles">
+            <span class="hero-role-prompt" aria-hidden="true">$</span>
+            <span id="typing-text" class="typing-text">Computer Engineering @ SIIT</span><span class="typing-cursor" aria-hidden="true"></span>
+          </div>
           <p class="hero-description">
             Computer Engineering senior at SIIT, Thammasat University. Co-author of five research projects in secure and privacy-preserving systems for industrial IoT, with hands-on experience in full-stack development, database design, and cybersecurity.
           </p>
           <div class="hero-ctas">
             <a href="#projects" class="btn btn-primary" id="hero-cta-projects">
-              <span aria-hidden="true">🚀</span> View My Work
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              View Work
             </a>
             <a href="#contact" class="btn btn-outline" id="hero-cta-contact">
-              <span aria-hidden="true">💬</span> Get In Touch
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Get In Touch
             </a>
+            <button type="button" class="btn btn-secondary" id="hero-cta-cv" aria-haspopup="dialog" aria-controls="cv-modal">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              View CV
+            </button>
           </div>
           <div class="hero-status">
             <span class="status-dot" aria-hidden="true"></span>
-            <span>Open to internships &amp; collaborations</span>
+            <span>Open to internships</span>
           </div>
         </div>
       </div>
@@ -109,45 +123,71 @@
 
             <div class="about-info-cards">
               <div class="info-card reveal reveal-delay-1">
-                <div class="info-card-icon" aria-hidden="true">⛓️</div>
+                <div class="info-card-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </div>
                 <div class="info-card-label">Research Project · IEEE IoT-J</div>
                 <div class="info-card-value">BVCRSA</div>
                 <p class="info-card-desc">Verifiable conjunctive range search &amp; homomorphic aggregation over encrypted IIoT data.</p>
               </div>
 
               <div class="info-card reveal reveal-delay-2">
-                <div class="info-card-icon" aria-hidden="true">🛡️</div>
+                <div class="info-card-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                </div>
                 <div class="info-card-label">Research Project · IEEE IoT-J</div>
                 <div class="info-card-value">PLOSHA-RMFR</div>
                 <p class="info-card-desc">Predictive load-sharing hierarchical aggregation with risk-aware multi-layer fault recovery.</p>
               </div>
 
               <div class="info-card reveal reveal-delay-3">
-                <div class="info-card-icon" aria-hidden="true">🌲</div>
+                <div class="info-card-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                </div>
                 <div class="info-card-label">Research Project · IoMT</div>
                 <div class="info-card-value">PQ-AVDSE-OJCOMS</div>
                 <p class="info-card-desc">Post-quantum &amp; dynamic load-balanced verifiable searchable encryption for multi-authority IoMT.</p>
               </div>
 
               <div class="info-card reveal reveal-delay-4">
-                <div class="info-card-icon" aria-hidden="true">🔐</div>
+                <div class="info-card-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
                 <div class="info-card-label">Research Project · Blockchain</div>
                 <div class="info-card-value">ZKRedact</div>
                 <p class="info-card-desc">Zero-knowledge authorized redaction &amp; provenance auditing for permissioned blockchains.</p>
               </div>
 
               <div class="info-card reveal reveal-delay-1">
-                <div class="info-card-icon" aria-hidden="true">🎓</div>
+                <div class="info-card-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                </div>
                 <div class="info-card-label">Education</div>
                 <div class="info-card-value">B.Eng. Computer Engineering</div>
                 <p class="info-card-desc">SIIT, Thammasat University (Cloud &amp; Cyber Security track, exp. 2027)</p>
               </div>
 
               <div class="info-card reveal reveal-delay-2">
-                <div class="info-card-icon" aria-hidden="true">🏆</div>
-                <div class="info-card-label">Competitions &amp; Awards</div>
-                <div class="info-card-value">CTF Competitor &amp; Winner</div>
-                <p class="info-card-desc">Thailand Cyber Top Talent 2026 · Top 5 Term-Project Paper Award (SIIT)</p>
+                <div class="info-card-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                </div>
+                <div class="info-card-label">Honors &amp; Certifications</div>
+                <div class="info-card-value">Paper Award &amp; Credentials</div>
+                <p class="info-card-desc"><strong>Top 5 Paper Award</strong> (SIIT) · <strong>Participant</strong>, Cyber Top Talent CTF · <strong>AI Ready ASEAN</strong> (Google.org)</p>
+                <div class="info-card-btn-row">
+                  <button type="button" class="btn-cert-pill" data-open-cert="top5" aria-label="View Top 5 Paper Award Certificate">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                    <span>Paper Award</span>
+                  </button>
+                  <button type="button" class="btn-cert-pill" data-open-cert="ctf" aria-label="View Thailand Cyber Top Talent CTF Certificate">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>CTF 2026</span>
+                  </button>
+                  <button type="button" class="btn-cert-pill" data-open-cert="ai" aria-label="View AI Ready ASEAN Certificate">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <span>AI Ready ASEAN</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -159,7 +199,7 @@
     <section class="section" id="skills" aria-label="Technical skills">
       <div class="container">
         <div class="section-header reveal">
-          <span class="section-label">// Skills</span>
+          <span class="section-label">Expertise</span>
           <h2 class="section-title">Tech Stack &amp; Tools</h2>
           <p class="section-subtitle">Technologies and tools I work with on a regular basis.</p>
         </div>
@@ -168,7 +208,9 @@
           <!-- Frontend -->
           <div class="skill-category reveal reveal-delay-1" id="skill-frontend">
             <div class="skill-category-header">
-              <div class="skill-category-icon" aria-hidden="true">🎨</div>
+              <div class="skill-category-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
               <h3 class="skill-category-name">Frontend</h3>
             </div>
             <div class="skill-tags" role="list">
@@ -179,61 +221,69 @@
               <span class="skill-tag" role="listitem">React</span>
               <span class="skill-tag" role="listitem">Next.js</span>
               <span class="skill-tag" role="listitem">Tailwind CSS</span>
-              <span class="skill-tag" role="listitem">Responsive Design</span>
+              <span class="skill-tag" role="listitem">Responsive UI</span>
             </div>
           </div>
 
-          <!-- Backend -->
+          <!-- Backend & Database -->
           <div class="skill-category reveal reveal-delay-2" id="skill-backend">
             <div class="skill-category-header">
-              <div class="skill-category-icon" aria-hidden="true">⚙️</div>
-              <h3 class="skill-category-name">Backend</h3>
+              <div class="skill-category-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+              </div>
+              <h3 class="skill-category-name">Backend &amp; Data</h3>
             </div>
             <div class="skill-tags" role="list">
               <span class="skill-tag" role="listitem">Node.js</span>
-              <span class="skill-tag" role="listitem">Express.js</span>
               <span class="skill-tag" role="listitem">Python</span>
-              <span class="skill-tag" role="listitem">Flask</span>
-              <span class="skill-tag" role="listitem">REST APIs</span>
+              <span class="skill-tag" role="listitem">C#</span>
+              <span class="skill-tag" role="listitem">C++</span>
+              <span class="skill-tag" role="listitem">PHP</span>
               <span class="skill-tag" role="listitem">PostgreSQL</span>
+              <span class="skill-tag" role="listitem">MySQL</span>
+              <span class="skill-tag" role="listitem">SQLite</span>
               <span class="skill-tag" role="listitem">MongoDB</span>
-              <span class="skill-tag" role="listitem">Firebase</span>
+              <span class="skill-tag" role="listitem">REST APIs</span>
             </div>
           </div>
 
-          <!-- Security -->
+          <!-- Security & CTF -->
           <div class="skill-category reveal reveal-delay-3" id="skill-security">
             <div class="skill-category-header">
-              <div class="skill-category-icon" aria-hidden="true">🛡️</div>
+              <div class="skill-category-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
               <h3 class="skill-category-name">Security &amp; CTF</h3>
             </div>
             <div class="skill-tags" role="list">
               <span class="skill-tag" role="listitem">Web Exploitation</span>
-              <span class="skill-tag" role="listitem">Reverse Engineering</span>
               <span class="skill-tag" role="listitem">Cryptography</span>
-              <span class="skill-tag" role="listitem">Forensics</span>
+              <span class="skill-tag" role="listitem">Reverse Engineering</span>
+              <span class="skill-tag" role="listitem">Digital Forensics</span>
               <span class="skill-tag" role="listitem">Burp Suite</span>
               <span class="skill-tag" role="listitem">Wireshark</span>
-              <span class="skill-tag" role="listitem">Linux</span>
-              <span class="skill-tag" role="listitem">OWASP</span>
+              <span class="skill-tag" role="listitem">Linux Hardening</span>
+              <span class="skill-tag" role="listitem">OWASP Top 10</span>
             </div>
           </div>
 
-          <!-- Tools & Research -->
+          <!-- Cloud, Systems & Research -->
           <div class="skill-category reveal reveal-delay-4" id="skill-tools">
             <div class="skill-category-header">
-              <div class="skill-category-icon" aria-hidden="true">🔧</div>
-              <h3 class="skill-category-name">Tools &amp; Research</h3>
+              <div class="skill-category-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <h3 class="skill-category-name">Systems &amp; Research</h3>
             </div>
             <div class="skill-tags" role="list">
               <span class="skill-tag" role="listitem">Git &amp; GitHub</span>
               <span class="skill-tag" role="listitem">Docker</span>
-              <span class="skill-tag" role="listitem">VS Code</span>
-              <span class="skill-tag" role="listitem">LaTeX</span>
+              <span class="skill-tag" role="listitem">AWS EC2</span>
+              <span class="skill-tag" role="listitem">LaTeX / Overleaf</span>
               <span class="skill-tag" role="listitem">Figma</span>
               <span class="skill-tag" role="listitem">CI/CD</span>
-              <span class="skill-tag" role="listitem">Agile/Scrum</span>
-              <span class="skill-tag" role="listitem">Research Papers</span>
+              <span class="skill-tag" role="listitem">Zero-Knowledge</span>
+              <span class="skill-tag" role="listitem">ABSE Architecture</span>
             </div>
           </div>
         </div>
@@ -244,19 +294,37 @@
     <section class="section" id="projects" aria-label="Featured projects">
       <div class="container">
         <div class="section-header reveal">
-          <span class="section-label">// Projects</span>
+          <span class="section-label">Portfolio</span>
           <h2 class="section-title">Featured Work</h2>
-          <p class="section-subtitle">A selection of projects that demonstrate my skills and interests.</p>
+          <p class="section-subtitle">Academic research papers, cryptographic systems, and full-stack software architectures.</p>
         </div>
 
-        <div class="projects-grid">
+        <!-- Project Filter Tabs -->
+        <div class="project-filters reveal" role="tablist" aria-label="Filter projects">
+          <button class="project-tab active" data-filter="all" role="tab" aria-selected="true" aria-controls="projects-grid">
+            All Projects <span class="project-tab-count">6</span>
+          </button>
+          <button class="project-tab" data-filter="research" role="tab" aria-selected="false" aria-controls="projects-grid">
+            Research &amp; Cryptography (IEEE) <span class="project-tab-count">4</span>
+          </button>
+          <button class="project-tab" data-filter="systems" role="tab" aria-selected="false" aria-controls="projects-grid">
+            Systems &amp; Full-Stack <span class="project-tab-count">2</span>
+          </button>
+        </div>
+
+        <div class="projects-grid" id="projects-grid">
           <!-- Project 1: BVCRSA -->
-          <article class="project-card reveal reveal-delay-1" id="project-bvcrsa">
+          <article class="project-card reveal reveal-delay-1" id="project-bvcrsa" data-category="research">
             <div class="project-card-header">
-              <div class="project-card-icon" aria-hidden="true">⛓️</div>
+              <div class="project-card-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge ieee">IEEE IoT-J · Q1 (2nd Rev)</span>
+              </div>
               <div class="project-card-links">
                 <a href="https://github.com/Jaoguya/BVCRSA" target="_blank" rel="noopener noreferrer" aria-label="View BVCRSA source code on GitHub" title="GitHub Repository">
-                  <span aria-hidden="true">📂</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
                 </a>
               </div>
             </div>
@@ -267,20 +335,25 @@
             <div class="project-card-footer">
               <div class="project-tech-tags" role="list">
                 <span class="project-tech-tag" role="listitem">Blockchain</span>
-                <span class="project-tech-tag" role="listitem">Cryptography</span>
-                <span class="project-tech-tag" role="listitem">IIoT</span>
-                <span class="project-tech-tag" role="listitem">Searchable Encryption</span>
+                <span class="project-tech-tag" role="listitem">ABSE Cryptography</span>
+                <span class="project-tech-tag" role="listitem">Industrial IoT</span>
+                <span class="project-tech-tag" role="listitem">Verifiable Aggregation</span>
               </div>
             </div>
           </article>
 
           <!-- Project 2: PLOSHA-RMFR -->
-          <article class="project-card reveal reveal-delay-2" id="project-plosha">
+          <article class="project-card reveal reveal-delay-2" id="project-plosha" data-category="research">
             <div class="project-card-header">
-              <div class="project-card-icon" aria-hidden="true">🛡️</div>
+              <div class="project-card-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge review">IEEE IoT-J · Q1 (Under Review)</span>
+              </div>
               <div class="project-card-links">
                 <a href="https://github.com/Jaoguya/PLOSHA-RMFR" target="_blank" rel="noopener noreferrer" aria-label="View PLOSHA-RMFR source code on GitHub" title="GitHub Repository">
-                  <span aria-hidden="true">📂</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
                 </a>
               </div>
             </div>
@@ -299,12 +372,17 @@
           </article>
 
           <!-- Project 3: ZKRedact -->
-          <article class="project-card reveal reveal-delay-3" id="project-zkredact">
+          <article class="project-card reveal reveal-delay-3" id="project-zkredact" data-category="research">
             <div class="project-card-header">
-              <div class="project-card-icon" aria-hidden="true">🔐</div>
+              <div class="project-card-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge working">Working Paper · Blockchain</span>
+              </div>
               <div class="project-card-links">
                 <a href="https://github.com/Jaoguya/ZKRedact" target="_blank" rel="noopener noreferrer" aria-label="View ZKRedact source code on GitHub" title="GitHub Repository">
-                  <span aria-hidden="true">📂</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
                 </a>
               </div>
             </div>
@@ -316,32 +394,96 @@
               <div class="project-tech-tags" role="list">
                 <span class="project-tech-tag" role="listitem">Zero-Knowledge Proofs</span>
                 <span class="project-tech-tag" role="listitem">Blockchain</span>
-                <span class="project-tech-tag" role="listitem">Privacy</span>
-                <span class="project-tech-tag" role="listitem">Auditability</span>
+                <span class="project-tech-tag" role="listitem">Provenance Audit</span>
+                <span class="project-tech-tag" role="listitem">Cryptography</span>
               </div>
             </div>
           </article>
 
           <!-- Project 4: PQ-AVDSE-OJCOMS -->
-          <article class="project-card reveal reveal-delay-4" id="project-pq-avdse">
+          <article class="project-card reveal reveal-delay-4" id="project-pq-avdse" data-category="research">
             <div class="project-card-header">
-              <div class="project-card-icon" aria-hidden="true">🌲</div>
+              <div class="project-card-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge working">Working Paper · IoMT</span>
+              </div>
               <div class="project-card-links">
                 <a href="https://github.com/Jaoguya/ABCD" target="_blank" rel="noopener noreferrer" aria-label="View PQ-AVDSE-OJCOMS source code on GitHub" title="GitHub Repository">
-                  <span aria-hidden="true">📂</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
                 </a>
               </div>
             </div>
             <div class="project-card-body">
               <h3 class="project-card-title"><a href="https://github.com/Jaoguya/ABCD" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">PQ-AVDSE-OJCOMS</a></h3>
-              <p class="project-card-description">Achieving post-quantum and dynamic load-balanced verifiable searchable encryption for multi-authority IoMT data sharing — a self-optimizing encrypted search index that adapts dynamically to query patterns for rapid range retrieval.</p>
+              <p class="project-card-description">Post-quantum and dynamic load-balanced verifiable searchable encryption for multi-authority IoMT data sharing — an adaptive encrypted search index that optimizes dynamically for rapid range retrieval.</p>
             </div>
             <div class="project-card-footer">
               <div class="project-tech-tags" role="list">
                 <span class="project-tech-tag" role="listitem">Post-Quantum</span>
-                <span class="project-tech-tag" role="listitem">IoMT</span>
-                <span class="project-tech-tag" role="listitem">Searchable Encryption</span>
+                <span class="project-tech-tag" role="listitem">IoMT Security</span>
                 <span class="project-tech-tag" role="listitem">Index Trees</span>
+                <span class="project-tech-tag" role="listitem">Load Balancing</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 5: DressUp Architecture -->
+          <article class="project-card reveal reveal-delay-1" id="project-dressup" data-category="systems">
+            <div class="project-card-header">
+              <div class="project-card-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge system">Full-Stack &amp; AWS</span>
+              </div>
+              <div class="project-card-links">
+                <button type="button" class="open-cv-trigger" aria-label="View DressUp architecture in CV" title="View details in CV" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0;">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-card-title">DressUp — AI Architecture &amp; System Design</h3>
+              <p class="project-card-description">Full SRS/SDS specification and PDPA-compliant AWS EC2 cloud backend design (Node.js, PostgreSQL, OpenAI API integration) featuring normalized ERDs and interactive high-fidelity Figma user prototypes.</p>
+            </div>
+            <div class="project-card-footer">
+              <div class="project-tech-tags" role="list">
+                <span class="project-tech-tag" role="listitem">AWS EC2</span>
+                <span class="project-tech-tag" role="listitem">Node.js</span>
+                <span class="project-tech-tag" role="listitem">PostgreSQL</span>
+                <span class="project-tech-tag" role="listitem">OpenAI API</span>
+                <span class="project-tech-tag" role="listitem">System Design</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 6: Lost & Found Web App -->
+          <article class="project-card reveal reveal-delay-2" id="project-lost-found" data-category="systems">
+            <div class="project-card-header">
+              <div class="project-card-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+              </div>
+              <div class="project-badges">
+                <span class="project-badge system">Database System</span>
+              </div>
+              <div class="project-card-links">
+                <button type="button" class="open-cv-trigger" aria-label="View Lost & Found architecture in CV" title="View details in CV" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0;">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-card-title">Lost &amp; Found Web Application</h3>
+              <p class="project-card-description">Database-backed web application for reporting and claiming lost items. Built with robust relational schema design, custom SQL triggers and stored procedures, password hashing, and responsive UI.</p>
+            </div>
+            <div class="project-card-footer">
+              <div class="project-tech-tags" role="list">
+                <span class="project-tech-tag" role="listitem">MySQL Database</span>
+                <span class="project-tech-tag" role="listitem">SQL Triggers &amp; Procedures</span>
+                <span class="project-tech-tag" role="listitem">HTML5/CSS3</span>
+                <span class="project-tech-tag" role="listitem">Authentication</span>
               </div>
             </div>
           </article>
@@ -349,53 +491,50 @@
       </div>
     </section>
 
-    <!-- ===== EXPERIENCE / TIMELINE SECTION ===== -->
-    <section class="section" id="experience" aria-label="Experience and education timeline">
+    <!-- ===== RELEVANT COURSES SECTION ===== -->
+    <section class="section" id="courses" aria-label="Relevant academic courses">
+      <span id="experience" style="position: absolute; top: 0; left: 0; pointer-events: none; opacity: 0;" aria-hidden="true"></span>
       <div class="container">
         <div class="section-header reveal">
-          <span class="section-label">Experience</span>
-          <h2 class="section-title">My Journey</h2>
-          <p class="section-subtitle">Key milestones in my academic and technical career.</p>
+          <span class="section-label">Academic Record</span>
+          <h2 class="section-title">Relevant Courses</h2>
+          <p class="section-subtitle">Core computer engineering, systems, cybersecurity, and software courses completed at SIIT, Thammasat University.</p>
         </div>
 
-        <div class="timeline" role="list" aria-label="Timeline of experiences">
-          <div class="timeline-item reveal" role="listitem">
-            <div class="timeline-dot" aria-hidden="true"></div>
-            <span class="timeline-date">Present</span>
-            <div class="timeline-card">
-              <h3 class="timeline-title">ABSE &amp; Cryptographic Systems Research</h3>
-              <p class="timeline-org">SIIT, Thammasat University</p>
-              <p class="timeline-description">Co-authoring five research projects in secure, privacy-preserving IoT systems, homomorphic aggregation, verifiable searchable encryption, and zero-knowledge blockchain auditing.</p>
+        <div class="courses-wrapper reveal">
+          <div class="courses-card">
+            <div class="courses-card-header">
+              <div class="courses-card-title-group">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="courses-card-icon" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                <h3 class="courses-card-title">Relevant Courses</h3>
+              </div>
+              <span class="courses-counter-badge">23 Courses Completed · SIIT</span>
             </div>
-          </div>
 
-          <div class="timeline-item reveal" role="listitem">
-            <div class="timeline-dot" aria-hidden="true"></div>
-            <span class="timeline-date">2024 – Present</span>
-            <div class="timeline-card">
-              <h3 class="timeline-title">CTF Competitor</h3>
-              <p class="timeline-org">Cybersecurity Club</p>
-              <p class="timeline-description">Active participant in national CTF competitions including Thailand Cyber Top Talent 2026. Specializing in web exploitation, cryptography, reverse engineering, and forensics.</p>
-            </div>
-          </div>
-
-          <div class="timeline-item reveal" role="listitem">
-            <div class="timeline-dot" aria-hidden="true"></div>
-            <span class="timeline-date">2023 – Present</span>
-            <div class="timeline-card">
-              <h3 class="timeline-title">Full-Stack &amp; Systems Engineering</h3>
-              <p class="timeline-org">Academic &amp; Independent Projects</p>
-              <p class="timeline-description">Developing full-stack applications and database architectures with Node.js, PostgreSQL, MySQL, Docker, and modern web technologies.</p>
-            </div>
-          </div>
-
-          <div class="timeline-item reveal" role="listitem">
-            <div class="timeline-dot" aria-hidden="true"></div>
-            <span class="timeline-date">2022 – 2027</span>
-            <div class="timeline-card">
-              <h3 class="timeline-title">B.Eng. Computer Engineering</h3>
-              <p class="timeline-org">Sirindhorn International Institute of Technology (SIIT)</p>
-              <p class="timeline-description">Specializing in Cloud Computing &amp; Cyber Security track. Coursework in secure systems, networks, operating systems, algorithms, and distributed databases.</p>
+            <div class="course-pills" role="list" aria-label="List of relevant courses">
+              <span class="course-pill" role="listitem">Data Structures and Algorithms</span>
+              <span class="course-pill" role="listitem">Object-Oriented Programming</span>
+              <span class="course-pill" role="listitem">Algorithms Design</span>
+              <span class="course-pill" role="listitem">Software Engineering</span>
+              <span class="course-pill" role="listitem">Database Systems</span>
+              <span class="course-pill" role="listitem">Database Programming</span>
+              <span class="course-pill" role="listitem">Computer Architecture</span>
+              <span class="course-pill" role="listitem">Operating Systems</span>
+              <span class="course-pill" role="listitem">Computer Networks</span>
+              <span class="course-pill" role="listitem">Computer and Communication Security</span>
+              <span class="course-pill" role="listitem">System Analysis and Design</span>
+              <span class="course-pill" role="listitem">Cloud Computing</span>
+              <span class="course-pill" role="listitem">Discrete Mathematics</span>
+              <span class="course-pill" role="listitem">Artificial Intelligence</span>
+              <span class="course-pill" role="listitem">Human-Computer Interface</span>
+              <span class="course-pill" role="listitem">Microcontrollers</span>
+              <span class="course-pill" role="listitem">Cyber Crimes and Digital Forensics</span>
+              <span class="course-pill" role="listitem">Networking Laboratory</span>
+              <span class="course-pill" role="listitem">Theory of Computation</span>
+              <span class="course-pill" role="listitem">Scientific Computing</span>
+              <span class="course-pill" role="listitem">Computer Graphics and Applications</span>
+              <span class="course-pill" role="listitem">Digital Circuits</span>
+              <span class="course-pill" role="listitem">Fundamentals of Data Communications</span>
             </div>
           </div>
         </div>
@@ -414,15 +553,24 @@
         <div class="contact-grid">
           <div class="contact-info reveal">
             <div class="contact-info-item">
-              <div class="contact-info-icon" aria-hidden="true">📧</div>
+              <div class="contact-info-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
               <div class="contact-info-text">
-                <div class="contact-info-label">Email</div>
-                <div class="contact-info-value"><a href="https://mail.google.com/mail/?view=cm&fs=1&to=guyhd9119@gmail.com" target="_blank" rel="noopener noreferrer" title="Open Gmail Compose">guyhd9119@gmail.com</a></div>
+                <div class="contact-info-label">Direct Email</div>
+                <div class="contact-info-value">
+                  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=guyhd9119@gmail.com" target="_blank" rel="noopener noreferrer" title="Open Gmail Compose">guyhd9119@gmail.com</a>
+                  <button type="button" class="copy-email-btn" id="copy-email-btn" title="Copy email address" aria-label="Copy email address to clipboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  </button>
+                </div>
               </div>
             </div>
 
             <div class="contact-info-item">
-              <div class="contact-info-icon" aria-hidden="true">📍</div>
+              <div class="contact-info-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
               <div class="contact-info-text">
                 <div class="contact-info-label">Location</div>
                 <div class="contact-info-value">Pathum Thani, Thailand</div>
@@ -430,7 +578,9 @@
             </div>
 
             <div class="contact-info-item">
-              <div class="contact-info-icon" aria-hidden="true">🎓</div>
+              <div class="contact-info-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
               <div class="contact-info-text">
                 <div class="contact-info-label">University</div>
                 <div class="contact-info-value">SIIT, Thammasat University</div>
@@ -468,7 +618,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#projects">Projects</a></li>
-            <li><a href="#experience">Experience</a></li>
+            <li><a href="#courses">Courses</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
@@ -512,7 +662,8 @@
     <div class="container">
       <div class="cookie-text">
         <p id="cookie-desc">
-          🍪 This website uses essential cookies to ensure proper functionality. We do not use tracking cookies unless you provide explicit consent.
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: -3px; margin-right: 4px; color: var(--accent-yellow);"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 10 10 0 0 0-10-10 14.5 14.5 0 0 0 10-10z"/></svg>
+          This website uses essential cookies to ensure proper functionality. We do not use tracking cookies unless you provide explicit consent.
           <a href="cookies-policy.html">Learn more about our Cookie Policy</a>.
         </p>
       </div>
@@ -529,10 +680,440 @@
 
   <!-- ============ BACK TO TOP ============ -->
   <button class="back-to-top" id="back-to-top" aria-label="Back to top">
-    <span aria-hidden="true">↑</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
   </button>
+
+  <!-- ============ TOAST NOTIFICATION ============ -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true">
+    <div class="toast" id="email-toast">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Email copied to clipboard! (guyhd9119@gmail.com)</span>
+    </div>
+  </div>
+
+  <!-- ============ CV / RESUME MODAL ============ -->
+  <div class="modal-overlay" id="cv-modal" role="dialog" aria-modal="true" aria-labelledby="cv-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title" id="cv-modal-title">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Curriculum Vitae — Tagrid Chongkolrattanapond
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline btn-sm" id="cv-print-btn" aria-label="Print or Save CV">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print / Save
+          </button>
+          <button type="button" class="modal-close-btn" id="cv-modal-close" aria-label="Close CV Modal">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body" id="cv-modal-body">
+        <div class="cv-section">
+          <div class="cv-section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profile &amp; Contact
+          </div>
+          <p class="cv-item-desc">
+            <strong>Tagrid Chongkolrattanapond</strong> · Computer Engineering senior at SIIT, Thammasat University (Cloud Computing &amp; Cyber Security track, expected graduation 2027). Co-author of five research projects in secure, privacy-preserving industrial IoT systems with hands-on experience in full-stack engineering, database systems, and cybersecurity.
+          </p>
+          <p style="margin-top: 0.65rem; font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--accent-cyan); line-height: 1.8;">
+            📧 guyhd9119@gmail.com · 📞 099-757-3959 · 📍 Pathum Thani, Thailand · 🔗 github.com/Jaoguya
+          </p>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Education
+          </div>
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">B.Eng. Computer Engineering (Cloud Computing &amp; Cyber Security track)</span>
+              <span class="cv-item-date">2022 – 2027</span>
+            </div>
+            <div class="cv-item-sub">Sirindhorn International Institute of Technology (SIIT), Thammasat University</div>
+            <p class="cv-item-desc">Specialized track coursework in secure systems, networks, operating systems, algorithms, cryptographic engineering, and distributed databases.</p>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Academic Research &amp; Publications
+          </div>
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Blockchain-Based Verifiable Conjunctive Range Search &amp; Aggregation (BVCRSA)</span>
+              <span class="cv-item-date">May 2026</span>
+            </div>
+            <div class="cv-item-sub">IEEE IoT-J 2nd Revision | Q1 Journal</div>
+            <p class="cv-item-desc">Blockchain-verified search and analytics over encrypted industrial sensor data with attribute-based access control and verifiable homomorphic aggregation. Contributed to scheme design, implemented prototype, and executed evaluation.</p>
+          </div>
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Predictive Load-Sharing Hierarchical Aggregation with Risk-Aware Recovery (PLOSHA-RMFR)</span>
+              <span class="cv-item-date">Jul 2026</span>
+            </div>
+            <div class="cv-item-sub">IEEE IoT-J Under Review | Q1 Journal</div>
+            <p class="cv-item-desc">Fault-tolerant secure aggregation framework keeping industrial IoT data processing alive through node failures, cutting recovery latency and data loss.</p>
+          </div>
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Post-Quantum &amp; Dynamic Load-Balanced Verifiable Searchable Encryption (PQ-AVDSE-OJCOMS)</span>
+              <span class="cv-item-date">Working Paper</span>
+            </div>
+            <div class="cv-item-sub">Multi-Authority IoMT Data Sharing Architecture</div>
+            <p class="cv-item-desc">Self-optimizing encrypted search index that adapts dynamically to query patterns for rapid range retrieval across hospital networks.</p>
+          </div>
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Efficient Zero-Knowledge Authorized Redaction &amp; Provenance Auditing (ZKRedact)</span>
+              <span class="cv-item-date">Working Paper</span>
+            </div>
+            <div class="cv-item-sub">Permissioned Blockchain Architecture</div>
+            <p class="cv-item-desc">Privacy-preserving framework for authorized blockchain redaction using state- and policy-bound zero-knowledge proofs, sharded batch verification, and Merkle-authenticated provenance.</p>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            Engineering Systems &amp; Software
+          </div>
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">DressUp — AI Architecture &amp; System Design</span>
+              <span class="cv-item-date">Apr 2026</span>
+            </div>
+            <div class="cv-item-sub">AWS EC2 · Node.js · PostgreSQL · OpenAI API · Figma</div>
+            <p class="cv-item-desc">Full SRS/SDS specification and PDPA-compliant AWS backend design, normalized ERD database models, and interactive high-fidelity user prototypes.</p>
+          </div>
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Lost &amp; Found Web Application</span>
+              <span class="cv-item-date">Dec 2025</span>
+            </div>
+            <div class="cv-item-sub">Full-Stack · MySQL · HTML5/CSS3 · Stored Procedures</div>
+            <p class="cv-item-desc">Engineered relational database schema, custom SQL triggers and procedures, password hashing, and user portal for tracking lost items.</p>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+            Honors &amp; Competitions
+          </div>
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Top 5 Best Term-Project Paper Award (Winner)</span>
+              <span class="cv-item-date">29 Apr 2026</span>
+            </div>
+            <div class="cv-item-sub">Cloud Computing &amp; Security · SIIT, Thammasat University</div>
+            <p class="cv-item-desc">Awarded for research paper <em>"Privacy-Preserving Range Query and Aggregation over Encrypted IIoT Data Using ABSE"</em> (Co-authors: P. P. Smith, N. Tungsriworakan, K. Malaiwong, T. Chongkolrattanapond; Instructor: Assoc.Prof.Dr. Somchart Fugkeaw).</p>
+            <div class="cv-item-actions">
+              <button type="button" class="btn-cert-pill" data-open-cert="top5" aria-label="View Top 5 Paper Award Certificate">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>View Certificate</span>
+              </button>
+            </div>
+          </div>
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Thailand Cyber Top Talent 2026 — CTF Participant</span>
+              <span class="cv-item-date">15 Aug 2026</span>
+            </div>
+            <div class="cv-item-sub">National Cyber Security Agency (NCSA Thailand) &amp; Huawei · Team "Cyber Six Xac"</div>
+            <p class="cv-item-desc">Certificate of Participation (Code: CERT-2026-GTTES6). Participated and competed in national-level cybersecurity CTF tournament covering web exploitation, cryptography, reverse engineering, and digital forensics.</p>
+            <div class="cv-item-actions">
+              <button type="button" class="btn-cert-pill" data-open-cert="ctf" aria-label="View CTF Participation Certificate">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>View Certificate</span>
+              </button>
+            </div>
+          </div>
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">AI Ready ASEAN — Certificate of Completion</span>
+              <span class="cv-item-date">06 Sep 2026</span>
+            </div>
+            <div class="cv-item-sub">ASEAN Foundation · Supported by Google.org · 15 Modules (12-Hour Curriculum)</div>
+            <p class="cv-item-desc">Completed all 15 AI learning modules on AIClassASEAN.org covering Generative AI fundamentals, prompt engineering (AI Prompts 101), AI tool development, data privacy &amp; safety, and responsible AI ethics.</p>
+            <div class="cv-item-actions">
+              <button type="button" class="btn-cert-pill" data-open-cert="ai" aria-label="View AI Ready ASEAN Certificate">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>View Certificate</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <div class="cv-section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Activities &amp; Volunteering
+          </div>
+
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">RFID Staff — University Graduation Ceremony</span>
+              <span class="cv-item-date">SIIT, TU</span>
+            </div>
+            <p class="cv-item-desc">Operated and maintained the RFID check-in system, troubleshooting hardware and software issues on-site to keep the ceremony running without delays.</p>
+          </div>
+
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Facilitator — AIAT × Microsoft Competition</span>
+            </div>
+            <p class="cv-item-desc">Event logistics and team support through the final round of the AIAT × Microsoft competition.</p>
+          </div>
+
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Director Staff Helper — National Software Contest (NSC) Hackathon</span>
+              <span class="cv-item-date">SIIT, TU</span>
+            </div>
+            <p class="cv-item-desc">Supported the SIIT organising team through the National Software Contest hackathon event under the direction of the SIIT Director.</p>
+          </div>
+
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Volunteer — Art The Heart</span>
+            </div>
+            <p class="cv-item-desc">Temple restoration painting; organised activities and provided meals for children at the community event.</p>
+          </div>
+
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Volunteer — BaaTorFun &amp; RongSomManut</span>
+            </div>
+            <p class="cv-item-desc">Organised activities and delivered meals and supplies to underserved communities near the Thai–Myanmar border.</p>
+          </div>
+
+          <div class="cv-item">
+            <div class="cv-item-header">
+              <span class="cv-item-title">Welfare Staff — SIIT First Meet &amp; Nanny Team, CPE First Meet</span>
+            </div>
+            <p class="cv-item-desc">Welfare team member for SIIT First Meet orientation; Nanny Team member for CPE First Meet, supporting new students during faculty welcome events.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CERTIFICATE VIEWER MODAL ============ -->
+  <div class="modal-overlay" id="cert-modal" role="dialog" aria-modal="true" aria-labelledby="cert-modal-title" aria-hidden="true">
+    <div class="modal-dialog cert-modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title" id="cert-modal-title">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+          <span>Verified Credentials</span>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-close-btn" id="cert-modal-close" aria-label="Close certificate dialog">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Certificate Switcher Tabs -->
+      <div class="cert-tabs" role="tablist" aria-label="Certificate Switcher">
+        <button type="button" class="cert-tab-btn active" role="tab" id="cert-tab-top5" aria-selected="true" aria-controls="cert-panel-top5" data-cert-target="top5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+          <span>Top 5 Paper Award (SIIT)</span>
+        </button>
+        <button type="button" class="cert-tab-btn" role="tab" id="cert-tab-ctf" aria-selected="false" aria-controls="cert-panel-ctf" data-cert-target="ctf">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>CTF 2026 Participation (NCSA)</span>
+        </button>
+        <button type="button" class="cert-tab-btn" role="tab" id="cert-tab-ai" aria-selected="false" aria-controls="cert-panel-ai" data-cert-target="ai">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span>AI Ready ASEAN (Google.org)</span>
+        </button>
+      </div>
+
+      <div class="modal-body cert-modal-body">
+        <!-- Panel 1: Top 5 Award -->
+        <div class="cert-panel active" id="cert-panel-top5" role="tabpanel" aria-labelledby="cert-tab-top5">
+          <div class="cert-preview-col">
+            <div class="cert-img-wrapper">
+              <img src="assets/certificates/top5-best-term-project-paper-award.png" alt="Top 5 Best Term-Project Paper Award Certificate - SIIT, Thammasat University" class="cert-img" loading="lazy">
+              <a href="assets/certificates/top5-best-term-project-paper-award.png" target="_blank" rel="noopener noreferrer" class="cert-zoom-btn" title="Open Full Certificate Image in New Tab">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                <span>Full Image</span>
+              </a>
+            </div>
+          </div>
+          <div class="cert-details-col">
+            <div class="cert-badge award-badge">🏆 Winner · Top 5 Paper Award</div>
+            <h3 class="cert-title">Top 5 Best Term-Project Paper Award</h3>
+            <div class="cert-meta-grid">
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Course</span>
+                <span class="cert-meta-val">Cloud Computing &amp; Computer and Communication Security</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Institution</span>
+                <span class="cert-meta-val">SIIT, Thammasat University</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Date Awarded</span>
+                <span class="cert-meta-val">29 April 2026</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Instructor</span>
+                <span class="cert-meta-val">Assoc.Prof.Dr. Somchart Fugkeaw</span>
+              </div>
+              <div class="cert-meta-item full-width">
+                <span class="cert-meta-label">Paper Title</span>
+                <span class="cert-meta-val highlight">"Privacy-Preserving Range Query and Aggregation over Encrypted IIoT Data Using ABSE"</span>
+              </div>
+              <div class="cert-meta-item full-width">
+                <span class="cert-meta-label">Awarded To</span>
+                <span class="cert-meta-val">Paphavin Patrick Smith, Natthawat Tungsriworakan, Kristrin Malaiwong, Tagrid Chongkolrattanapond</span>
+              </div>
+            </div>
+            <p class="cert-description">
+              Recognized as one of the <strong>Top 5 Best Term-Project Papers</strong> in advanced computer engineering coursework. The research proposed an Attribute-Based Searchable Encryption (ABSE) scheme capable of supporting privacy-preserving range queries and verifiable aggregation over resource-constrained Industrial IoT telemetry.
+            </p>
+          </div>
+        </div>
+
+        <!-- Panel 2: CTF Participation -->
+        <div class="cert-panel" id="cert-panel-ctf" role="tabpanel" aria-labelledby="cert-tab-ctf" hidden>
+          <div class="cert-preview-col">
+            <div class="cert-img-wrapper">
+              <img src="assets/certificates/ctf-thailand-cyber-top-talent-2026.png" alt="Thailand Cyber Top Talent 2026 Certificate of Participation - NCSA" class="cert-img" loading="lazy">
+              <a href="assets/certificates/ctf-thailand-cyber-top-talent-2026.png" target="_blank" rel="noopener noreferrer" class="cert-zoom-btn" title="Open Full Certificate Image in New Tab">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                <span>Full Image</span>
+              </a>
+            </div>
+          </div>
+          <div class="cert-details-col">
+            <div class="cert-badge ctf-badge">🛡️ CTF Tournament Participant</div>
+            <h3 class="cert-title">Thailand Cyber Top Talent 2026</h3>
+            <div class="cert-meta-grid">
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Credential Type</span>
+                <span class="cert-meta-val">Certificate of Participation</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Organized By</span>
+                <span class="cert-meta-val">National Cyber Security Agency (NCSA) &amp; Huawei / THNCA</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Date Presented</span>
+                <span class="cert-meta-val">15 August 2026</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Certificate Code</span>
+                <span class="cert-meta-val font-mono">CERT-2026-GTTES6</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Team Name</span>
+                <span class="cert-meta-val">Cyber Six Xac</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Signatory</span>
+                <span class="cert-meta-val">Air Vice Marshal Amorn Chomchoey (Secretary General, NCSA)</span>
+              </div>
+            </div>
+            <p class="cert-description">
+              Awarded to <strong>นาย ธกฤต จงลกรัตนาภรณ์ (Tagrid Chongkolrattanapond)</strong> as a member of team <strong>Cyber Six Xac</strong> for participating in Thailand's premier national Capture The Flag (CTF) tournament, testing applied offensive and defensive capabilities in web exploitation, cryptography, reverse engineering, digital forensics, and network security.
+            </p>
+          </div>
+        </div>
+
+        <!-- Panel 3: AI Ready ASEAN -->
+        <div class="cert-panel" id="cert-panel-ai" role="tabpanel" aria-labelledby="cert-tab-ai" hidden>
+          <div class="cert-preview-col">
+            <div class="cert-img-wrapper">
+              <img src="assets/certificates/ai-ready-asean-certificate.png" alt="AI Ready ASEAN Certificate of Completion - ASEAN Foundation &amp; Google.org" class="cert-img" loading="lazy">
+              <a href="assets/certificates/ai-ready-asean-certificate.png" target="_blank" rel="noopener noreferrer" class="cert-zoom-btn" title="Open Full Certificate Image in New Tab">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                <span>Full Image</span>
+              </a>
+            </div>
+            <div class="cert-sub-actions">
+              <a href="assets/certificates/ai-ready-asean-modules.png" target="_blank" rel="noopener noreferrer" class="cert-sub-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>View 15 Modules Transcript</span>
+              </a>
+              <a href="assets/certificates/ai-ready-asean-certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-sub-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Official PDF</span>
+              </a>
+            </div>
+          </div>
+          <div class="cert-details-col">
+            <div class="cert-badge ai-badge">🤖 AI Specialization · Completion</div>
+            <h3 class="cert-title">AI Ready ASEAN</h3>
+            <div class="cert-meta-grid">
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Credential</span>
+                <span class="cert-meta-val">Certificate of Completion (12-Hour Modules)</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Organizers</span>
+                <span class="cert-meta-val">ASEAN Foundation &amp; Google.org</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Presented To</span>
+                <span class="cert-meta-val">Tagrid Chongkolrattanapond</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Date Issued</span>
+                <span class="cert-meta-val">06 September 2026</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Signatory</span>
+                <span class="cert-meta-val">Dr. Piti Srisangnam (Executive Director, ASEAN Foundation)</span>
+              </div>
+              <div class="cert-meta-item">
+                <span class="cert-meta-label">Learning Portal</span>
+                <span class="cert-meta-val font-mono">www.AIClassASEAN.org</span>
+              </div>
+              <div class="cert-meta-item full-width">
+                <span class="cert-meta-label">Curriculum Covered (15 Modules)</span>
+                <span class="cert-meta-val highlight">Generative AI, Prompt Engineering (101), AI Tool Dev, Data Privacy &amp; Safety, AI Ethics &amp; Misinformation</span>
+              </div>
+            </div>
+            <p class="cert-description">
+              Awarded for demonstrating a strong commitment to building future-ready artificial intelligence capabilities, successfully completing all 15 AI learning modules for Youth on AIClassASEAN.org supported by Google.org.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">
+          &copy; 2026 <strong>Tagrid Cho.</strong>
+        </span>
+        <span class="footer-divider" aria-hidden="true">·</span>
+        <span class="footer-built">
+          Built with
+          <span class="footer-stack">
+            <span class="footer-pill">HTML</span>
+            <span class="footer-pill">CSS</span>
+            <span class="footer-pill">JavaScript</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </footer>
 
   <!-- ============ SCRIPTS ============ -->
   <script src="script.js"></script>
+
 </body>
 </html>

@@ -9,6 +9,7 @@ full-stack development, database design, and cybersecurity.
 EDUCATION
 B.Eng. Computer Engineering (Cloud Computing & Cyber Security track), Sirindhorn International Institute
 of Technology, Thammasat University — expected graduation 2027.
+Relevant Coursework: Data Structures & Algorithms, Object-Oriented Programming, Algorithm Design, Software Engineering, Database Systems & Programming, Computer Architecture, Operating Systems, Computer Networks & Internetworking, Computer & Communication Security, System Analysis & Design, Cloud Computing, Discrete Mathematics, Artificial Intelligence, Microcontrollers.
 
 TECHNICAL SKILLS
 Programming: Python, C#, C++, PHP, JavaScript/TypeScript, SQL
@@ -57,11 +58,23 @@ Online Shop Database | Sep 2025
 Designed and built a MySQL database for coffee shop operations, data modeling, table implementation,
 business reporting queries for sales and inventory insights.
 
-AWARDS & COMPETITIONS
-Top 5 Best Term-Project Paper Award — Cloud Computing and Computer & Communication
-Security, SIIT, (Apr 2026). Awarded for Privacy-Preserving Range Query and Aggregation over
-Encrypted IIoT Data Using ABSE.
+AWARDS & HONORS
+Top 5 Best Term-Project Paper Award | 29 Apr 2026
+Cloud Computing and Computer & Communication Security · SIIT, Thammasat University
+Awarded for "Privacy-Preserving Range Query and Aggregation over Encrypted IIoT Data Using ABSE"
+Co-authors: Paphavin Patrick Smith, Natthawat Tungsriworakan, Kristrin Malaiwong, Tagrid Chongkolrattanapond
+Instructor: Assoc.Prof.Dr. Somchart Fugkeaw
 
-Thailand Cyber Top Talent 2026 — National Cyber Security Agency, Open Track (Aug 2026).
-Competed in a three-person team at a national CTF.
+COMPETITIONS & PARTICIPATION
+Thailand Cyber Top Talent 2026 — CTF Competitor & Participant | 15 Aug 2026
+National Cyber Security Agency (NCSA Thailand) & Huawei (Certificate Code: CERT-2026-GTTES6)
+Member of team "Cyber Six Xac". Participated in national-level cybersecurity CTF tournament covering
+web exploitation, cryptography, reverse engineering, and digital forensics.
+
+CERTIFICATIONS & CREDENTIALS
+AI Ready ASEAN — Certificate of Completion | 06 Sep 2026
+ASEAN Foundation (Supported by Google.org) · AIClassASEAN.org
+Successfully completed all 15 AI learning modules (12-hour curriculum) covering Generative AI fundamentals,
+prompt engineering (AI Prompts 101), AI tool development, data privacy & safety, and responsible AI ethics.
+
 
