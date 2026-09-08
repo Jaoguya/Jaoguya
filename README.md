@@ -9,10 +9,10 @@
 </p>
 
 <p align="center">
+  <a href="https://jaoguya.github.io/Jaoguya/"><img src="https://img.shields.io/badge/🌐%20Portfolio-Live%20Site-8B5CF6?style=flat-square" alt="Portfolio" /></a>
   <a href="mailto:chongkolratt@gmail.com"><img src="https://img.shields.io/badge/Email-chongkolratt%40gmail.com-EA4335?style=flat-square&logo=gmail&logoColor=white" alt="Email" /></a>
   <a href="https://github.com/Jaoguya"><img src="https://img.shields.io/badge/GitHub-Jaoguya-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub" /></a>
-  <img src="https://img.shields.io/badge/Location-Pathum%20Thani%2C%20Thailand-blue?style=flat-square&logo=googlemaps&logoColor=white" alt="Location" />
-  <img src="https://img.shields.io/badge/Status-Open%20to%20Internships%20%26%20Collaborations-brightgreen?style=flat-square" alt="Status" />
+  <img src="https://img.shields.io/badge/Status-Open%20to%20Internships-brightgreen?style=flat-square" alt="Status" />
 </p>
 
 ---
@@ -34,10 +34,10 @@ Beyond development, I actively compete in **Capture The Flag (CTF)** cybersecuri
 | Category | Technologies |
 |---|---|
 | **Languages** | Python · C# · C++ · PHP · JavaScript · TypeScript · SQL |
-| **Frontend** | HTML5 · CSS3 · React · Next.js · Tailwind CSS · Responsive Design |
+| **Frontend** | HTML5 · CSS3 · React · Next.js · Responsive Design |
 | **Backend** | Node.js · Express.js · Flask · REST APIs |
-| **Databases** | PostgreSQL · MySQL · MongoDB · SQLite · Firebase |
-| **Security & CTF** | Web Exploitation · Reverse Engineering · Cryptography · Forensics · Burp Suite · Wireshark · OWASP |
+| **Databases** | PostgreSQL · MySQL · MongoDB · SQLite |
+| **Security & CTF** | Web Exploitation · Cryptography · Forensics · Burp Suite · Wireshark · OWASP · ProDiscover |
 | **Tools & Platforms** | Git/GitHub · Docker · AWS EC2 · Linux · VirtualBox · Arduino IDE · LaTeX/Overleaf · Figma · CI/CD |
 | **Languages (Spoken)** | Thai (native) · English (intermediate) |
 
