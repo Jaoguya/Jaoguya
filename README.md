@@ -12,8 +12,6 @@
 
 I'm **Tagrid** — a Computer Engineering student from **Pathum Thani, Thailand**, currently studying at [SIIT, Thammasat University](https://www.siit.tu.ac.th/) on the Cloud Computing & Cyber Security track.
 
-I like building things on the web, breaking things in CTFs, and reading about cryptography when I probably should be sleeping. When I'm not coding, you'll find me exploring new tools or tinkering with side projects.
-
 ---
 
 ### 🧰 Tools & Technologies
@@ -68,13 +66,6 @@ I like building things on the web, breaking things in CTFs, and reading about cr
 | [**ABCD**](https://github.com/Jaoguya/ABCD) | Adaptive context-bound secure range-cover aggregate tree — a self-optimizing encrypted search index for IIoT data. |
 
 ---
-
-### 📊 GitHub Stats
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Jaoguya&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="GitHub Stats" height="165" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Jaoguya&layout=compact&theme=tokyonight&hide_border=true" alt="Top Languages" height="165" />
-</p>
 
 ---
 
