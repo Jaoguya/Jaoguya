@@ -1,8 +1,4 @@
-<p align="center">
-  <a href="assets/profile-avatar.jpg">
-    <img src="assets/profile-avatar.jpg" alt="Jaoguya" width="160" style="border-radius: 50%;" />
-  </a>
-</p>
+
 
 <h1 align="center">Hey there 👋 I'm Jaoguya</h1>
 
