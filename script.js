@@ -26,28 +26,10 @@
   const footerYear = $('#footer-year');
 
   // ————————————————————————————————————
-  // 1. THEME TOGGLE
+  // 1. THEME INITIALIZATION (Locked to Dark Mode)
   // ————————————————————————————————————
   function initTheme() {
-    const saved = localStorage.getItem('jaoguya-theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = saved || (prefersDark ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('jaoguya-theme', next);
-
-    // Announce to screen readers
-    const label = next === 'dark' ? 'Dark theme enabled' : 'Light theme enabled';
-    announceToSR(label);
-  }
-
-  if (themeToggle) {
-    themeToggle.addEventListener('click', toggleTheme);
+    document.documentElement.setAttribute('data-theme', 'dark');
   }
 
   initTheme();
@@ -407,6 +389,51 @@
   }
 
   initCookieBanner();
+
+  // ————————————————————————————————————
+  // 9.5. TYPEWRITER EFFECT
+  // ————————————————————————————————————
+  if (typingText) {
+    const phrases = [
+      'Computer Engineering @ SIIT',
+      'Cryptographic Researcher',
+      'CTF Player & Security Enthusiast',
+      'Full-Stack Developer'
+    ];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typingSpeed = 90;
+    const deletingSpeed = 45;
+    const pauseTime = 1800;
+
+    function typeLoop() {
+      const currentPhrase = phrases[phraseIndex];
+
+      if (!isDeleting) {
+        typingText.textContent = currentPhrase.substring(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === currentPhrase.length) {
+          isDeleting = true;
+          setTimeout(typeLoop, pauseTime);
+          return;
+        }
+        setTimeout(typeLoop, typingSpeed);
+      } else {
+        typingText.textContent = currentPhrase.substring(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          setTimeout(typeLoop, 400);
+          return;
+        }
+        setTimeout(typeLoop, deletingSpeed);
+      }
+    }
+
+    typeLoop();
+  }
 
   // ————————————————————————————————————
   // 10. FOOTER YEAR
