@@ -10,7 +10,7 @@
 
 ### 🙋‍♂️ About Me
 
-I'm **Tagrid** — a Computer Engineering student, currently studying at [SIIT, Thammasat University](https://www.siit.tu.ac.th/) on the Cloud Computing & Cyber Security track.
+I'm **Tagrid Chongkolrattanpond** — a Computer Engineering student, currently studying at [SIIT, Thammasat University](https://www.siit.tu.ac.th/) on the Cloud Computing & Cyber Security track.
 
 ---
 
