@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="assets/profile-avatar.jpg" alt="Jaoguya" width="160" style="border-radius: 50%;" />
+  <a href="assets/profile-avatar.jpg">
+    <img src="assets/profile-avatar.jpg" alt="Jaoguya" width="160" style="border-radius: 50%;" />
+  </a>
 </p>
 
 <h1 align="center">👋 Hi, I'm Tagrid (Jaoguya)</h1>
