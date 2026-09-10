@@ -6,7 +6,7 @@
 
 ---
 
-#### 🙋‍♂️ About Me
+###### 🙋‍♂️ About Me
 
 I'm **Tagrid Chongkolrattanapond** — a Computer Engineering student from **Pathum Thani, Thailand**, currently studying at [SIIT, Thammasat University](https://www.siit.tu.ac.th/) on the Cloud Computing & Cyber Security track.
 ---
