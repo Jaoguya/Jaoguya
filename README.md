@@ -1,4 +1,4 @@
-<h1 align="center">Hey there 👋 I'm Jaoguya</h1>
+<h1 align="center">Welcome to my Github</h1>
 
 <p align="center">
   <em>Computer Engineering · SIIT, Thammasat University 🇹🇭</em>
@@ -6,12 +6,12 @@
 
 ---
 
-###### 🙋‍♂️ About Me
+### About Jaoguya
 
 I'm **Tagrid Chongkolrattanapond** — a Computer Engineering student from **Pathum Thani, Thailand**, currently studying at [SIIT, Thammasat University](https://www.siit.tu.ac.th/) on the Cloud Computing & Cyber Security track.
 ---
 
-### 🧰 Tools & Technologies
+### Tools & Technologies
 
 <p>
   <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" />
@@ -43,7 +43,7 @@ I'm **Tagrid Chongkolrattanapond** — a Computer Engineering student from **Pat
 
 ---
 
-### 🔬 Featured Projects
+### My Projects
 
 | Project | Description |
 |---|---|
