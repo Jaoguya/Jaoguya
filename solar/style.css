@@ -1,0 +1,449 @@
+html { scroll-padding-top: 24px; }
+
+:root {
+  color-scheme: dark;
+  --void: #05070f;
+  --paper: #eef3f8;
+  --mute: #93a2c0;
+  --line: rgba(150, 190, 255, .16);
+
+  --green: #4fe0a8;
+  --cyan: #52c7ff;
+  --violet: #a97bff;
+
+  --ui: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --text: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  --card-w: min(820px, 84vw);
+  --card-h: min(520px, 54vh);
+  --rail-w: 236px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--void);
+  color: var(--paper);
+  font: 16px/1.7 var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+/* ---------- sky: photograph, veil, moving space ---------- */
+#sky { position: fixed; inset: 0; overflow: hidden; }
+
+/* the milky way sits underneath, cooled and dimmed so nothing above it clashes */
+.galaxy {
+  position: absolute;
+  inset: -6%;
+  background: url("assets/milkyway.avif") center / cover no-repeat;
+  filter: saturate(.58) brightness(.68) contrast(1.04);
+  animation: swell 150s ease-in-out infinite;
+}
+
+/* pulls the photo's warm gold toward the page's indigo */
+.veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 40%, rgba(10, 16, 44, .58), rgba(4, 6, 16, .88) 78%),
+    linear-gradient(rgba(24, 30, 74, .42), rgba(6, 9, 24, .55));
+}
+
+#stars {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 170vmax; height: 170vmax;
+  margin: -85vmax 0 0 -85vmax;
+  opacity: .75;
+  animation: spin 240s linear infinite;
+}
+
+.curtain {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.c1 {
+  width: 90vw; height: 52vh;
+  top: -14vh; left: -14vw;
+  background: radial-gradient(closest-side, rgba(79, 224, 168, .30), transparent);
+  animation: drift 52s linear infinite;
+}
+.c2 {
+  width: 70vw; height: 64vh;
+  top: 8vh; right: -18vw;
+  background: radial-gradient(closest-side, rgba(169, 123, 255, .30), transparent);
+  animation: drift 71s linear infinite reverse;
+}
+.c3 {
+  width: 96vw; height: 44vh;
+  bottom: -20vh; left: 6vw;
+  background: radial-gradient(closest-side, rgba(82, 199, 255, .20), transparent);
+  animation: drift 89s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes swell {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50%      { transform: scale(1.09) translate(-1.5%, 1%); }
+}
+@keyframes drift {
+  0%   { transform: rotate(0deg)   scale(1)    translateX(0); }
+  50%  { transform: rotate(180deg) scale(1.18) translateX(4vw); }
+  100% { transform: rotate(360deg) scale(1)    translateX(0); }
+}
+
+/* ---------- hero ---------- */
+#hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 600px;
+}
+
+#stage {
+  position: absolute;
+  inset: 0 0 0 var(--rail-w);
+  perspective: 1600px;
+  touch-action: pan-y;
+  cursor: grab;
+}
+#stage:active { cursor: grabbing; }
+
+#deck { position: absolute; inset: 0; }
+#ring { position: absolute; left: 0; right: 0; top: 70px; bottom: 90px; }
+
+.slide {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: var(--card-w);
+  height: auto;
+  min-height: 300px;
+  max-height: var(--card-h);
+  display: flex;
+  flex-direction: column;
+  padding: 32px 38px 26px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(158deg, rgba(18, 25, 52, .82), rgba(6, 9, 22, .90));
+  backdrop-filter: blur(2px);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, .6);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  transition: box-shadow .5s ease, border-color .5s ease;
+}
+
+.slide.active {
+  border-color: color-mix(in srgb, var(--tint) 55%, transparent);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, .62),
+              0 0 60px -18px color-mix(in srgb, var(--tint) 70%, transparent);
+}
+
+.slide .step {
+  align-self: flex-start;
+  margin: 0;
+  font: italic 500 15px var(--text);
+  color: var(--tint);
+}
+
+.slide h2 {
+  margin: 6px 0 20px;
+  font: italic 600 40px/1.14 var(--text);
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+
+.slide:not(.active) .body { opacity: 0; }
+
+.slide .body {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  transition: opacity .45s ease;
+  mask-image: linear-gradient(#000 90%, transparent);
+}
+
+/* ---------- shared body typography ---------- */
+.body h3 { margin: 20px 0 1px; font: italic 600 17px/1.35 var(--text); }
+.body h3:first-child { margin-top: 0; }
+.body .date { float: right; padding-left: 16px; font: 400 13px var(--ui); color: var(--mute); }
+.body .venue { margin: 0; font-size: 15px; font-style: italic; color: var(--mute); }
+.body p { margin: 9px 0; }
+.body ul { margin: 7px 0; padding-left: 18px; }
+.body li { margin: 5px 0; }
+.body li::marker { color: var(--tint); }
+.body b { font-weight: 600; }
+.body a { color: var(--cyan); }
+
+/* ---------- left rail: the system, stacked ---------- */
+#chapters {
+  position: absolute;
+  top: 50%; left: 0;
+  z-index: 5;
+  width: var(--rail-w);
+  padding: 0 18px 0 26px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* the orbital track the planets are strung along */
+#chapters::before {
+  content: "";
+  position: absolute;
+  left: 43px;
+  top: 22px; bottom: 22px;
+  width: 1px;
+  background: linear-gradient(transparent, var(--line) 12%, var(--line) 88%, transparent);
+}
+
+#chapters button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 7px 0;
+  border: 0;
+  background: none;
+  color: var(--mute);
+  font: italic 500 15px var(--text);
+  text-align: left;
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: color .3s;
+}
+#chapters button:hover { color: var(--paper); }
+#chapters button.on { color: var(--paper); }
+
+/* a lit sphere: highlight, body, terminator */
+.orb {
+  position: relative;
+  flex: none;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 33% 27%, rgba(255, 255, 255, .55) 0 9%, transparent 42%),
+    radial-gradient(circle at 36% 30%,
+      var(--tint) 0%,
+      color-mix(in srgb, var(--tint) 42%, #060a18) 62%,
+      #04060e 100%);
+  box-shadow:
+    inset -4px -4px 8px rgba(0, 0, 0, .6),
+    0 0 0 1px rgba(0, 0, 0, .35);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+
+.orb.sun {
+  background:
+    radial-gradient(circle at 42% 38%, #fffbe8 0 16%, #ffd977 42%, #ffa53a 74%, #f07a12 100%);
+  box-shadow:
+    0 0 18px 3px rgba(255, 178, 74, .40),
+    0 0 40px 10px rgba(255, 140, 40, .16);
+}
+
+#chapters button.on .orb {
+  transform: scale(1.18);
+  box-shadow:
+    inset -4px -4px 8px rgba(0, 0, 0, .55),
+    0 0 20px 2px color-mix(in srgb, var(--tint) 55%, transparent);
+}
+#chapters button.on .orb.sun {
+  transform: scale(1.18);
+  box-shadow:
+    0 0 26px 5px rgba(255, 178, 74, .55),
+    0 0 54px 14px rgba(255, 140, 40, .22);
+}
+
+/* ---------- hero controls ---------- */
+.arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  width: 44px; height: 44px;
+  margin-top: -22px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(8, 12, 28, .55);
+  backdrop-filter: blur(8px);
+  color: var(--paper);
+  font: 400 24px/1 ui-sans-serif, system-ui, sans-serif;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.arrow:hover { border-color: var(--cyan); color: var(--cyan); }
+#prev { left: calc(var(--rail-w) + 8px); }
+#next { right: 24px; }
+
+#more {
+  position: absolute;
+  bottom: 46px; left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(8, 12, 28, .6);
+  backdrop-filter: blur(8px);
+  color: var(--paper);
+  font: italic 500 15px var(--text);
+  touch-action: manipulation;
+  cursor: pointer;
+}
+#more:hover { border-color: var(--cyan); background: rgba(82, 199, 255, .12); }
+
+/* ---------- the document ---------- */
+#doc {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(rgba(5, 7, 15, 0), rgba(5, 7, 15, .96) 220px, rgba(5, 7, 15, .96));
+}
+
+#doc .wrap, footer { max-width: 740px; margin: 0 auto; padding-inline: 24px; }
+#doc .wrap { padding-block: 96px 0; }
+
+#intro { padding-bottom: 44px; }
+#intro h1 { margin: 0; font: italic 700 42px/1.1 var(--text); letter-spacing: -.015em; }
+#intro p { margin: 10px 0 0; font-size: 17px; color: var(--mute); }
+
+.doc-section { padding-block: 54px; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
+
+.doc-section h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin: 0 0 22px;
+  font: italic 600 32px/1.2 var(--text);
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+
+.doc-section h2 .n {
+  flex: none;
+  font: 400 15px var(--ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--tint);
+}
+
+/* ---------- footer ---------- */
+footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-block: 34px max(40px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+}
+
+footer nav { display: flex; gap: 18px; }
+footer nav a { color: var(--mute); font: italic 400 16px var(--text); text-decoration: none; }
+footer nav a:hover { color: var(--paper); }
+
+.btn {
+  padding: 9px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(8, 12, 28, .6);
+  color: var(--paper);
+  font: italic 500 15px var(--text);
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.btn:hover { border-color: var(--cyan); background: rgba(82, 199, 255, .12); }
+
+.sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- modal ---------- */
+#modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(3, 5, 14, .74);
+  backdrop-filter: blur(6px);
+  overscroll-behavior: contain;
+}
+#modal[hidden] { display: none; }
+
+#card {
+  position: relative;
+  width: min(500px, 100%);
+  padding: 30px 32px 32px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(158deg, rgba(20, 28, 56, .97), rgba(7, 10, 24, .98));
+}
+
+#close {
+  position: absolute;
+  top: 10px; right: 14px;
+  border: 0;
+  background: none;
+  color: var(--mute);
+  font: 400 26px/1 ui-sans-serif, system-ui, sans-serif;
+  cursor: pointer;
+}
+#close:hover { color: var(--paper); }
+
+#modal-title { margin: 0 0 16px; font: italic 600 25px var(--text); }
+#modal-body p { margin: 10px 0; }
+#modal-body a { color: var(--cyan); }
+
+/* ---------- small screens: the rail lies down ---------- */
+@media (max-width: 900px) {
+  :root { --card-w: 88vw; --card-h: 46vh; --rail-w: 0px; }
+  body { font-size: 15px; }
+
+  #stage { inset: 0; }
+  #ring { top: 24px; bottom: 190px; }
+  .slide { padding: 24px 26px 20px; border-radius: 14px; }
+  .slide h2 { font-size: 28px; }
+  .arrow { display: none; }
+
+  #chapters {
+    top: auto; bottom: 104px; left: 0; right: 0;
+    width: auto;
+    padding: 0 16px;
+    transform: none;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 18px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #chapters::-webkit-scrollbar { display: none; }
+  #chapters::before { display: none; }
+  #chapters button { flex-direction: column; gap: 8px; font-size: 12px; white-space: nowrap; }
+  #more { bottom: 40px; }
+
+  #intro h1 { font-size: 32px; }
+  .doc-section h2 { font-size: 26px; gap: 12px; }
+  #doc .wrap { padding-block: 72px 0; }
+  footer { flex-direction: column; align-items: flex-start; gap: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #stars, .curtain, .galaxy { animation: none; }
+  .slide, .orb { transition: none; }
+}
