@@ -13,21 +13,46 @@
   <div class="bg-mesh" aria-hidden="true"></div>
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <header class="header" role="banner">
+  <!-- ============ HEADER / NAVIGATION ============ -->
+  <header class="header" id="header" role="banner">
     <div class="container">
-      <a href="index.html" class="logo" aria-label="Jaoguya — Home">
-        <span class="logo-bracket" aria-hidden="true">{</span>
+      <a href="index.html#hero" class="logo github-logo-btn" aria-label="Jaoguya — Home" title="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         <span>Jaoguya</span>
-        <span class="logo-bracket" aria-hidden="true">}</span>
       </a>
+
+      <nav aria-label="Main navigation">
+        <ul class="nav-links" id="nav-links" role="menubar">
+          <li role="none"><a href="index.html#about" role="menuitem">About</a></li>
+          <li role="none"><a href="index.html#certificates" role="menuitem">Certificates</a></li>
+          <li role="none"><a href="index.html#skills" role="menuitem">Skills</a></li>
+          <li role="none"><a href="index.html#projects" role="menuitem">Projects</a></li>
+          <li role="none"><a href="index.html#courses" role="menuitem">Courses</a></li>
+          <li role="none"><a href="index.html#contact" role="menuitem">Contact</a></li>
+        </ul>
+      </nav>
+
       <div class="nav-actions">
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark and light theme">
-          <span class="icon-moon" aria-hidden="true">🌙</span>
-          <span class="icon-sun" aria-hidden="true">☀️</span>
+        <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile Nav Overlay -->
+  <div class="nav-mobile-overlay" id="mobile-nav" role="dialog" aria-label="Mobile navigation" aria-hidden="true">
+    <ul class="nav-mobile" role="menu">
+      <li role="none"><a href="index.html#about" role="menuitem">About</a></li>
+      <li role="none"><a href="index.html#certificates" role="menuitem">Certificates</a></li>
+      <li role="none"><a href="index.html#skills" role="menuitem">Skills</a></li>
+      <li role="none"><a href="index.html#projects" role="menuitem">Projects</a></li>
+      <li role="none"><a href="index.html#courses" role="menuitem">Courses</a></li>
+      <li role="none"><a href="index.html#contact" role="menuitem">Contact</a></li>
+    </ul>
+  </div>
 
   <main id="main-content" class="policy-page">
     <div class="policy-content">
@@ -55,7 +80,7 @@
       </ul>
 
       <h2>4. Contact Form</h2>
-      <p>When you use the contact form on this Site, you agree to provide accurate and truthful information. We reserve the right to disregard messages that contain spam, offensive content, or fraudulent information. Data submitted through the contact form is processed in accordance with our <a href="privacy-policy.html">Privacy Policy</a>.</p>
+      <p>When you use the contact form on this Site, you agree to provide accurate and truthful information. We reserve the right to disregard messages that contain spam, offensive content, or fraudulent information.</p>
 
       <h2>5. External Links</h2>
       <p>This Site may contain links to external websites (such as GitHub, LinkedIn, or other platforms). We are not responsible for the content, privacy practices, or availability of these external sites. Visiting external links is at your own risk.</p>
@@ -85,29 +110,12 @@
       <div class="footer-bottom" style="border-top: none; padding-top: 0;">
         <p class="footer-copyright">&copy; <span id="footer-year"></span> Tagrid Chongkolrattanapond. All rights reserved.</p>
         <div class="footer-bottom-links">
-          <a href="privacy-policy.html">Privacy</a>
           <a href="terms.html">Terms</a>
-          <a href="cookies-policy.html">Cookies</a>
-          <a href="refund-policy.html">Refund</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <script>
-    (function() {
-      const saved = localStorage.getItem('jaoguya-theme');
-      if (saved) document.documentElement.setAttribute('data-theme', saved);
-      const toggle = document.getElementById('theme-toggle');
-      if (toggle) toggle.addEventListener('click', function() {
-        const c = document.documentElement.getAttribute('data-theme');
-        const n = c === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', n);
-        localStorage.setItem('jaoguya-theme', n);
-      });
-      const fy = document.getElementById('footer-year');
-      if (fy) fy.textContent = new Date().getFullYear();
-    })();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

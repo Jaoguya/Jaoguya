@@ -1,0 +1,186 @@
+%==============================================================================
+% Harvard-style academic CV
+% Tagrid Chongkolrattanapond
+% Compile with pdfLaTeX (Overleaf default). No custom .cls required.
+%==============================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext}          % Times-like text; comment out for Computer Modern
+\usepackage[margin=0.85in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{0pt}
+
+%------------------------------------------------------------------ headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}{}{0em}{}[\vspace{-0.6ex}\titlerule]
+\titlespacing*{\section}{0pt}{11pt}{6pt}
+
+%------------------------------------------------------------------ entries
+% \entry{left-hand title}{right-hand date}
+\newcommand{\entry}[2]{%
+  \begin{minipage}[t]{0.79\textwidth}\raggedright #1\end{minipage}%
+  \hfill%
+  \begin{minipage}[t]{0.20\textwidth}\raggedleft\textit{#2}\end{minipage}%
+  \par\vspace{1pt}%
+}
+
+% tight bullet list used inside an entry
+\newenvironment{details}
+  {\begin{itemize}[leftmargin=1.4em,topsep=2pt,itemsep=1pt,parsep=0pt]}
+  {\end{itemize}\vspace{4pt}}
+
+\newcommand{\venue}[1]{\textit{#1}\par}
+\newcommand{\skill}[2]{\textbf{#1:} #2\par\vspace{1.5pt}}
+
+%==============================================================================
+\begin{document}
+
+%------------------------------------------------------------------ header
+\begin{center}
+  {\LARGE\scshape\bfseries Tagrid Chongkolrattanapond}\\[4pt]
+  099-757-3959 \quad\textbar\quad
+  \href{mailto:guyhd9119@gmail.com}{guyhd9119@gmail.com} \quad\textbar\quad
+  Pathum Thani, Thailand
+\end{center}
+\vspace{2pt}
+
+%------------------------------------------------------------------ profile
+\section{Profile}
+Computer Engineering senior at SIIT, Thammasat University. Co-author of five research
+projects in secure and privacy-preserving systems for industrial IoT, three under IEEE
+review, with hands-on experience in full-stack development, database design, and
+cybersecurity.
+
+%------------------------------------------------------------------ education
+\section{Education}
+\entry{\textbf{Sirindhorn International Institute of Technology, Thammasat University}}
+      {Expected 2027}
+B.Eng. Computer Engineering --- Cloud Computing \& Cyber Security track\par
+\vspace{2pt}
+\textbf{Relevant Coursework:} Data Structures \& Algorithms; Object-Oriented Programming;
+Algorithm Design; Software Engineering; Database Systems \& Programming; Computer
+Architecture; Operating Systems; Computer Networks \& Internetworking; Computer \&
+Communication Security; System Analysis \& Design; Cloud Computing; Discrete Mathematics;
+Artificial Intelligence; Microcontrollers.
+
+%------------------------------------------------------------------ skills
+\section{Technical Skills}
+\skill{Programming}{Python, C\#, C++, PHP, JavaScript/TypeScript, SQL}
+\skill{Tools \& Platforms}{Linux, Git/GitHub, AWS EC2, VirtualBox, MAMP, Arduino IDE, LaTeX/Overleaf, Figma}
+\skill{Web \& Backend}{Node.js, PostgreSQL, MySQL, MongoDB, SQLite, relational database design}
+\skill{Languages}{Thai (native), English (intermediate)}
+
+%------------------------------------------------------------------ research
+\section{Research \& Academic Work}
+
+\entry{\textbf{Blockchain-Based Verifiable Conjunctive Range Search and Aggregation over
+       Encrypted IIoT Data}}{May 2026}
+\venue{IEEE Internet of Things Journal --- 2nd Revision (Q1)}
+\begin{details}
+  \item Blockchain-verified search and analytics over encrypted industrial sensor data
+        with attribute-based access control and verifiable homomorphic aggregation.
+  \item Contributed to scheme design; implemented the prototype and ran the evaluation.
+\end{details}
+
+\entry{\textbf{Predictive Load-Sharing Hierarchical Aggregation with Risk-Aware
+       Multi-Layer Fault Recovery}}{Jul 2026}
+\venue{IEEE Internet of Things Journal --- Under review (Q1)}
+\begin{details}
+  \item Fault-tolerant secure aggregation framework that keeps industrial IoT data
+        processing running through node failures, cutting recovery time and data loss.
+  \item Implemented and debugged the framework and ran the experimental evaluation.
+\end{details}
+
+\entry{\textbf{Adaptive Context-Bound Secure Range-Cover Aggregate Tree over Encrypted
+       IIoT Data}}{Jun 2026}
+\venue{IEEE Conference --- Under review}
+\begin{details}
+  \item Self-optimizing encrypted search index that adapts to query patterns for faster
+        range retrieval.
+  \item Contributed to scheme design; implemented the prototype and ran the evaluation.
+\end{details}
+
+\entry{\textbf{Achieving Post-Quantum and Dynamic Load-Balanced Verifiable Searchable
+       Encryption for Multi-Authority IoMT Data Sharing}}{Working paper}
+\begin{details}
+  \item Self-optimizing encrypted search index that adapts to query patterns for faster
+        range retrieval.
+  \item Contributed to scheme design; implemented the prototype and ran the evaluation.
+\end{details}
+
+\entry{\textbf{Efficient Zero-Knowledge Authorized Redaction and Provenance Auditing for
+       Permissioned Blockchains}}{Working paper}
+\begin{details}
+  \item Privacy-preserving framework for authorized blockchain redaction using state- and
+        policy-bound zero-knowledge proofs, with sharded batch proof verification and
+        Merkle-authenticated provenance for efficient audit of redaction history.
+  \item Contributed to scheme design; implemented the prototype and ran the evaluation.
+\end{details}
+
+%------------------------------------------------------------------ projects
+\section{Projects}
+
+\entry{\textbf{DressUp} --- System Architecture \& Prototyping}{Apr 2026}
+\begin{details}
+  \item Authored the full SRS/SDS and a PDPA-compliant AWS backend design
+        (Node.js, PostgreSQL, OpenAI) for an AI fashion app.
+  \item Produced a normalized ERD and interactive Figma prototypes.
+\end{details}
+
+\entry{\textbf{Lost \& Found Web Application}}{Dec 2025}
+\begin{details}
+  \item Database systems team project: a site for posting and searching lost items.
+  \item Built the frontend in HTML/CSS and a MySQL backend with queries, triggers,
+        stored procedures, and password hashing.
+\end{details}
+
+\entry{\textbf{Online Shop Database}}{Sep 2025}
+\begin{details}
+  \item Designed and built a MySQL database for coffee shop operations: data modeling
+        and table implementation.
+  \item Wrote business reporting queries for sales and inventory insights.
+\end{details}
+
+%------------------------------------------------------------------ awards
+\section{Awards \& Honors}
+
+\entry{\textbf{Top 5 Best Term-Project Paper Award}}{29 Apr 2026}
+\venue{Cloud Computing and Computer \& Communication Security --- SIIT, Thammasat University}
+\begin{details}
+  \item Awarded for ``Privacy-Preserving Range Query and Aggregation over Encrypted IIoT
+        Data Using ABSE.''
+  \item Co-authors: Paphavin Patrick Smith, Natthawat Tungsriworakan, Kristrin Malaiwong,
+        Tagrid Chongkolrattanapond. Instructor: Assoc.\ Prof.\ Dr.\ Somchart Fugkeaw.
+\end{details}
+
+%------------------------------------------------------------------ competitions
+\section{Competitions \& Participation}
+
+\entry{\textbf{Thailand Cyber Top Talent 2026} --- CTF Competitor}{15 Aug 2026}
+\venue{National Cyber Security Agency (NCSA Thailand) \& Huawei --- Certificate Code: CERT-2026-GTTES6}
+\begin{details}
+  \item Member of team ``Cyber Six Xac'' in the national-level cybersecurity CTF tournament.
+  \item Categories covered: web exploitation, cryptography, reverse engineering, and
+        digital forensics.
+\end{details}
+
+%------------------------------------------------------------------ certifications
+\section{Certifications \& Credentials}
+
+\entry{\textbf{AI Ready ASEAN} --- Certificate of Completion}{06 Sep 2026}
+\venue{ASEAN Foundation (supported by Google.org) --- AIClassASEAN.org}
+\begin{details}
+  \item Completed all 15 AI learning modules (12-hour curriculum) covering generative AI
+        fundamentals, prompt engineering (AI Prompts 101), AI tool development, data
+        privacy \& safety, and responsible AI ethics.
+\end{details}
+
+\end{document}

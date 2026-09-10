@@ -1,7 +1,7 @@
 /* ============================================================
    JAOGUYA PORTFOLIO — Interactive Scripts
    Theme toggle, scroll animations, form validation,
-   cookie consent, mobile nav, typing effect
+   mobile nav, typing effect
    ============================================================ */
 
 (function () {
@@ -18,9 +18,6 @@
   const mobileNav = $('#mobile-nav');
   const themeToggle = $('#theme-toggle');
   const backToTop = $('#back-to-top');
-  const cookieBanner = $('#cookie-banner');
-  const cookieAccept = $('#cookie-accept');
-  const cookieDecline = $('#cookie-decline');
   const contactForm = $('#contact-form');
   const typingText = $('#typing-text');
   const footerYear = $('#footer-year');
@@ -37,7 +34,10 @@
   // ————————————————————————————————————
   // 2. MOBILE NAVIGATION
   // ————————————————————————————————————
+  let isProgrammaticScroll = false;
+
   function openMobileNav() {
+    if (!hamburger || !mobileNav) return;
     hamburger.classList.add('active');
     hamburger.setAttribute('aria-expanded', 'true');
     mobileNav.classList.add('open');
@@ -49,35 +49,32 @@
     if (firstLink) firstLink.focus();
   }
 
-  function closeMobileNav() {
+  function closeMobileNav(focusHamburger = false) {
+    if (!hamburger || !mobileNav) return;
     hamburger.classList.remove('active');
     hamburger.setAttribute('aria-expanded', 'false');
     mobileNav.classList.remove('open');
     mobileNav.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    hamburger.focus();
+    if (focusHamburger) {
+      hamburger.focus();
+    }
   }
 
   function toggleMobileNav() {
+    if (!mobileNav) return;
     const isOpen = mobileNav.classList.contains('open');
-    isOpen ? closeMobileNav() : openMobileNav();
+    isOpen ? closeMobileNav(true) : openMobileNav();
   }
 
   if (hamburger) {
     hamburger.addEventListener('click', toggleMobileNav);
   }
 
-  // Close mobile nav on link click
-  if (mobileNav) {
-    mobileNav.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeMobileNav);
-    });
-  }
-
   // Close mobile nav on Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && mobileNav && mobileNav.classList.contains('open')) {
-      closeMobileNav();
+      closeMobileNav(true);
     }
   });
 
@@ -88,6 +85,7 @@
   let ticking = false;
 
   function handleHeaderScroll() {
+    if (!header || isProgrammaticScroll) return;
     const currentScrollY = window.scrollY;
 
     if (currentScrollY > lastScrollY && currentScrollY > 100) {
@@ -112,14 +110,18 @@
   // ————————————————————————————————————
   function updateActiveNav() {
     const sections = $$('section[id]');
-    const scrollPos = window.scrollY + 150;
+    if (!sections.length) return;
+    const headerHeight = header ? header.getBoundingClientRect().height : 70;
+    const scrollPos = window.scrollY + headerHeight + 60;
 
     sections.forEach((section) => {
-      const top = section.offsetTop;
+      const top = section.getBoundingClientRect().top + window.pageYOffset;
       const height = section.offsetHeight;
       const id = section.getAttribute('id');
 
-      const links = $$(`nav a[href="#${id}"]`);
+      const links = $$(
+        `nav a[href="#${id}"], nav a[href$="#${id}"], #mobile-nav a[href="#${id}"], #mobile-nav a[href$="#${id}"]`
+      );
 
       if (scrollPos >= top && scrollPos < top + height) {
         links.forEach((l) => l.classList.add('active'));
@@ -345,52 +347,6 @@
       }, 1500);
     });
   }
-
-  // ————————————————————————————————————
-  // 9. COOKIE CONSENT BANNER
-  // ————————————————————————————————————
-  function initCookieBanner() {
-    if (!cookieBanner) return;
-
-    const consent = localStorage.getItem('jaoguya-cookie-consent');
-
-    if (!consent) {
-      // Show banner after a short delay
-      setTimeout(() => {
-        cookieBanner.classList.add('visible');
-      }, 1500);
-    }
-
-    if (cookieAccept) {
-      cookieAccept.addEventListener('click', () => {
-        localStorage.setItem('jaoguya-cookie-consent', 'accepted');
-        cookieBanner.classList.remove('visible');
-        announceToSR('Cookies accepted');
-        // Here you would initialize analytics/tracking scripts
-        loadTrackingScripts();
-      });
-    }
-
-    if (cookieDecline) {
-      cookieDecline.addEventListener('click', () => {
-        localStorage.setItem('jaoguya-cookie-consent', 'declined');
-        cookieBanner.classList.remove('visible');
-        announceToSR('Cookies declined');
-      });
-    }
-  }
-
-  function loadTrackingScripts() {
-    // Placeholder: Only load tracking/analytics scripts AFTER user consent
-    // Example:
-    // const gaScript = document.createElement('script');
-    // gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=YOUR_ID';
-    // gaScript.async = true;
-    // document.head.appendChild(gaScript);
-    console.log('[Cookie Consent] User accepted cookies. Tracking scripts can now be loaded.');
-  }
-
-  initCookieBanner();
 
   // ————————————————————————————————————
   // 9.5. PROJECT CATEGORY FILTERING
@@ -631,23 +587,90 @@
   }
 
   // ————————————————————————————————————
-  // 11. SMOOTH SCROLL FOR ANCHOR LINKS
+  // 11. SMOOTH SCROLL FOR ANCHOR LINKS & MOBILE NAV
   // ————————————————————————————————————
+  function smoothScrollTo(targetEl, targetId) {
+    if (!targetEl) return;
+    const headerEl = $('#header');
+    const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 70;
+    const targetRect = targetEl.getBoundingClientRect();
+    const targetPos = targetRect.top + window.pageYOffset - headerHeight;
+
+    isProgrammaticScroll = true;
+    if (headerEl) headerEl.classList.remove('hidden');
+
+    window.scrollTo({
+      top: Math.max(0, targetPos),
+      behavior: 'smooth'
+    });
+
+    if (targetId && history.pushState) {
+      history.pushState(null, null, targetId);
+    }
+
+    setTimeout(() => {
+      isProgrammaticScroll = false;
+      lastScrollY = window.scrollY;
+      updateActiveNav();
+    }, 850);
+  }
+
+  // Handle mobile nav links safely without jumping
+  if (mobileNav) {
+    mobileNav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        closeMobileNav(false); // Do not focus hamburger! Prevents scroll-to-top jump
+        if (href) {
+          const hashIndex = href.indexOf('#');
+          if (hashIndex !== -1) {
+            const hash = href.substring(hashIndex);
+            const path = href.substring(0, hashIndex);
+            const isCurrentPage =
+              !path ||
+              path === window.location.pathname.split('/').pop() ||
+              (window.location.pathname.endsWith('/') && (path === 'index.html' || path === ''));
+            if (isCurrentPage && hash !== '#') {
+              const targetEl = $(hash);
+              if (targetEl) {
+                e.preventDefault();
+                setTimeout(() => {
+                  smoothScrollTo(targetEl, hash);
+                }, 60);
+              }
+            }
+          }
+        }
+      });
+    });
+  }
+
+  // Handle all in-page anchor links (header desktop nav, buttons, etc.)
   $$('a[href^="#"]').forEach((anchor) => {
+    if (anchor.closest('#mobile-nav')) return;
+
     anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');
-      if (targetId === '#') return;
+      if (!targetId || targetId === '#') return;
 
       const targetEl = $(targetId);
       if (targetEl) {
         e.preventDefault();
-        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        // Update URL without jumping
-        history.pushState(null, null, targetId);
+        smoothScrollTo(targetEl, targetId);
       }
     });
   });
+
+  // Handle cross-page / hash landing on page load (e.g. index.html#certificates)
+  if (window.location.hash) {
+    const hash = window.location.hash;
+    const targetEl = $(hash);
+    if (targetEl) {
+      setTimeout(() => {
+        smoothScrollTo(targetEl, hash);
+      }, 250);
+    }
+  }
 
   // ————————————————————————————————————
   // 12. ACCESSIBILITY: Screen Reader Announcements
