@@ -34,7 +34,6 @@ I'm **Tagrid Chongkolrattanapond** — a Computer Engineering student from **Pat
 </p>
 
 <p>
-  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
   <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
   <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
   <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
@@ -43,7 +42,7 @@ I'm **Tagrid Chongkolrattanapond** — a Computer Engineering student from **Pat
 <p>
   <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
   <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
-  <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white" alt="AWS" />
+  <img src="https://img.shields.io/badge/AWS EC2-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white" alt="AWS" />
   <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux" />
   <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma" />
   <img src="https://img.shields.io/badge/LaTeX-008080?style=for-the-badge&logo=latex&logoColor=white" alt="LaTeX" />
@@ -59,8 +58,9 @@ I'm **Tagrid Chongkolrattanapond** — a Computer Engineering student from **Pat
 |---|---|
 | [**BVCRSA**](https://github.com/Jaoguya/BVCRSA) | Blockchain-verified conjunctive range search & aggregation over encrypted IIoT data with attribute-based access control. |
 | [**PLOSHA-RMFR**](https://github.com/Jaoguya/PLOSHA-RMFR) | Fault-tolerant secure aggregation for Industrial IoT — predictive load-sharing with multi-layer fault recovery. |
+| [**OJCOMS**](https://github.com/Jaoguya/OJCOMS) | Adaptive context-bound secure range-cover aggregate tree — a self-optimizing encrypted search index for IIoT data. |
 | [**ZKRedact**](https://github.com/Jaoguya/ZKRedact) | Privacy-preserving blockchain redaction using zero-knowledge proofs with sharded batch verification & Merkle-authenticated provenance auditing. |
-| [**ABCD**](https://github.com/Jaoguya/ABCD) | Adaptive context-bound secure range-cover aggregate tree — a self-optimizing encrypted search index for IIoT data. |
+
 
 ---
 
