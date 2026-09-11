@@ -99,23 +99,6 @@ modal.onclick = e => { if (e.target === modal) shut(); };
 
 document.getElementById('contact-btn').onclick = () => open('Get in touch', CONTACT_HTML);
 
-/* ---------- starfield --------------------------------------------------- */
-const sky = document.getElementById('stars');
-function drawStars() {
-  const r = sky.getBoundingClientRect();
-  sky.width = r.width;
-  sky.height = r.height;
-  const g = sky.getContext('2d');
-  const hues = ['#ffffff', '#cfe4ff', '#ffe9d6', '#d8ccff'];
-  for (let i = 0; i < 700; i++) {
-    const size = Math.random() < 0.10 ? 2 : 1;
-    g.globalAlpha = 0.15 + Math.random() * 0.75;
-    g.fillStyle = hues[(Math.random() * hues.length) | 0];
-    g.fillRect(Math.random() * sky.width, Math.random() * sky.height, size, size);
-  }
-}
-
-
 /* ---------- orbital deck ------------------------------------------------ */
 /* Slides ride an oval seen from above. The one at the near point of the
    curve fills the screen; the rest shrink and swing round behind it.        */
@@ -343,10 +326,7 @@ addEventListener('visibilitychange', () => {
 });
 
 addEventListener('resize', () => {
-  drawStars();
   if (!N) return;
   measure();
   place();
 });
-
-drawStars();
