@@ -134,17 +134,23 @@ function place() {
     const x = Math.sin(a) * radiusX;
     const y = (Math.cos(a) - 1) * radiusY;       // near sits centred, far rides up
 
+    // transform and opacity are the only per-frame writes: both compositor-only.
+    // filter used to be set here too, which re-rasterised every card every frame.
     s.style.transform =
       `translate(-50%, -50%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)` +
       ` scale(${scale.toFixed(3)}) rotateY(${(-Math.sin(a) * 22).toFixed(1)}deg)` +
       ` rotateX(${((1 - Math.cos(a)) * 5).toFixed(1)}deg)`;
     s.style.opacity = (1 / (1 + away * 0.42)).toFixed(3);
-    s.style.filter = away < 0.05 ? 'none' : `blur(${Math.min(away * 0.95, 2.6).toFixed(2)}px)`;
-    s.style.zIndex = 1000 - Math.round(away * 100);
 
-    const front = Math.abs(d) < 0.5;
-    s.classList.toggle('active', front);
-    s.inert = !front;
+    const z = 1000 - Math.round(away * 100);            // restacking is not free
+    if (s._z !== z) { s.style.zIndex = s._z = z; }
+
+    const front = away < 0.5;
+    if (s._front !== front) {                            // class and inert only on change
+      s._front = front;
+      s.classList.toggle('active', front);
+      s.inert = !front;
+    }
   });
 }
 
@@ -244,14 +250,29 @@ function orderRepos(list) {
   return keep.sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
 }
 
-fetch(`https://api.github.com/users/${GH_USER}/repos?per_page=100&sort=updated`)
-  .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-  .then(list => buildOrbit(orderRepos(list)))
-  .catch(() => {                                         // offline, or rate-limited
-    buildOrbit(GH_ORDER.map(name => ({
-      name, html_url: `https://github.com/${GH_USER}/${name}`,
-    })));
-  });
+const CACHE_KEY = 'repos:' + GH_USER;
+
+function loadProjects() {
+  let cached = null;
+  try { cached = JSON.parse(sessionStorage.getItem(CACHE_KEY)); } catch {}
+  if (cached) buildOrbit(orderRepos(cached));            // paint at once on a repeat visit
+
+  return fetch(`https://api.github.com/users/${GH_USER}/repos?per_page=100&sort=updated`)
+    .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+    .then(list => {
+      const lean = list.map(({ name, description, language, pushed_at, html_url }) =>
+        ({ name, description, language, pushed_at, html_url }));
+      try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(lean)); } catch {}
+      if (!cached) buildOrbit(orderRepos(lean));
+    })
+    .catch(() => {                                       // offline, or rate-limited
+      if (cached) return;
+      buildOrbit(GH_ORDER.map(name => ({
+        name, html_url: `https://github.com/${GH_USER}/${name}`,
+      })));
+    });
+}
+loadProjects();
 
 /* ---------- 2: the CV as a document ------------------------------------- */
 function buildDoc(sections) {
