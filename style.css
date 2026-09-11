@@ -289,7 +289,7 @@ body {
 
 .doc-section h2 {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 16px;
   margin: 0 0 22px;
   font: italic 600 32px/1.2 var(--text);
@@ -299,9 +299,9 @@ body {
 
 .doc-section h2 .n {
   flex: none;
-  font: 400 15px var(--ui);
-  font-variant-numeric: tabular-nums;
-  color: var(--tint);
+  height: 20px;
+  width: auto;
+  border-radius: 3px;
 }
 
 /* ---------- footer ---------- */

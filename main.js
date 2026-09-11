@@ -6,6 +6,18 @@ const GH_SKIP = ['Jaoguya'];           // the profile repo itself is not a proje
 // order the ones you care about; anything new on GitHub is appended automatically
 const GH_ORDER = ['BVCRSA', 'PLOSHA-RMFR', 'OJCOMS', 'ZKRedact'];
 
+// one planet per CV section, in order out from the sun.
+// widths are the badge's real pixel width, so nothing shifts while they load.
+const PLANETS = [
+  ['Mercury', '9c8b7d', 55],
+  ['Venus',   'e6c27a', 43],
+  ['Earth',   '4a90d9', 39],
+  ['Mars',    'c1440e', 37],
+  ['Jupiter', 'd8a47f', 47],
+  ['Saturn',  'e3d9a6', 47],
+  ['Uranus',  '7fd8d8', 49],
+];
+
 // what GitHub cannot tell us. Anything omitted falls back to the repo description.
 const NOTES = {
   'BVCRSA': {
@@ -276,11 +288,16 @@ loadProjects();
 
 /* ---------- 2: the CV as a document ------------------------------------- */
 function buildDoc(sections) {
-  document.getElementById('sections').innerHTML = sections.map((s, i) => `
+  document.getElementById('sections').innerHTML = sections.map((s, i) => {
+    const [name, colour, w] = PLANETS[i % PLANETS.length];
+    const badge = `<img class="n" width="${w}" height="20" loading="lazy" decoding="async"
+        src="https://img.shields.io/badge/${name}-${colour}?style=flat-square" alt="${name}">`;
+    return `
     <article class="doc-section" id="s-${slug(s.title)}" style="--tint:${TINTS[i % TINTS.length]}">
-      <h2><span class="n">${String(i + 1).padStart(2, '0')}</span>${s.title}</h2>
+      <h2>${badge}${s.title}</h2>
       <div class="body">${s.html}</div>
-    </article>`).join('');
+    </article>`;
+  }).join('');
 
   const toc = document.getElementById('toc');
   toc.innerHTML = sections.map((s, i) =>
