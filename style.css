@@ -320,13 +320,15 @@ body {
 .saturn  { --a: #f5e9b8; --b: #cdb173; --c: #453820; }
 .uranus  { --a: #bff0ef; --b: #62b9c4; --c: #163944; }
 
-/* a green continent or two */
+/* land: five masses, enough that the blue reads as ocean between them */
 .earth {
   background:
-    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, .5) 0 8%, transparent 40%),
-    radial-gradient(42% 30% at 62% 56%, rgba(86, 166, 106, .9), transparent 72%),
-    radial-gradient(30% 24% at 31% 63%, rgba(86, 166, 106, .78), transparent 74%),
-    radial-gradient(24% 16% at 52% 26%, rgba(86, 166, 106, .6), transparent 76%),
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, .42) 0 7%, transparent 38%),
+    radial-gradient(40% 30% at 63% 61%, rgba(74, 166, 92, 1) 0 34%, transparent 70%),
+    radial-gradient(31% 24% at 25% 65%, rgba(96, 186, 110, 1) 0 32%, transparent 72%),
+    radial-gradient(27% 18% at 47% 21%, rgba(68, 152, 86, .98) 0 32%, transparent 72%),
+    radial-gradient(20% 16% at 81% 36%, rgba(90, 176, 102, .95) 0 30%, transparent 74%),
+    radial-gradient(17% 21% at 17% 33%, rgba(74, 160, 92, .92) 0 28%, transparent 76%),
     radial-gradient(circle at 36% 30%, var(--a) 0%, var(--b) 58%, var(--c) 100%);
 }
 
