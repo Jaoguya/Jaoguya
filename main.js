@@ -122,7 +122,6 @@ function drawStars() {
 
 const stage = document.getElementById('stage');
 const ring = document.getElementById('ring');
-const chapters = document.getElementById('chapters');
 const live = document.getElementById('live');
 const slug = t => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
@@ -169,10 +168,6 @@ function place() {
 /* rail, screen-reader announcement and URL follow the settled slide */
 function sync() {
   const now = cur();
-  [...chapters.children].forEach((b, i) => {
-    b.classList.toggle('on', i === now);
-    b.setAttribute('aria-current', i === now ? 'true' : 'false');
-  });
   if (titles[now]) {
     live.textContent = `Step ${now + 1} of ${N}: ${titles[now]}`;
     history.replaceState(null, '', '#' + slug(titles[now]));
@@ -200,13 +195,6 @@ const go = n => {
   const over = target - pos;
   // round, or a clamped burst leaves the deck resting between two slides
   if (Math.abs(over) > BACKLOG) target = Math.round(pos + Math.sign(over) * BACKLOG);
-  sync();
-  kick();
-};
-
-const goTo = i => {                                      // one deliberate jump, no clamp
-  let d = (((i - target) % N) + N) % N;
-  target += d > N / 2 ? d - N : d;
   sync();
   kick();
 };
@@ -255,12 +243,6 @@ function buildOrbit(repos) {
       <div class="body">${projectHtml(r)}</div>
     </article>`).join('');
   slides = [...ring.children];
-
-  chapters.innerHTML = repos.map((r, i) =>
-    `<button style="--tint:${TINTS[i % TINTS.length]}">
-       <span class="orb${i ? '' : ' sun'}"></span><span>${r.name}</span>
-     </button>`).join('');
-  [...chapters.children].forEach((b, i) => (b.onclick = () => goTo(i)));
 
   measure();
   jump();

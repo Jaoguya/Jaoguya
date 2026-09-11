@@ -16,7 +16,6 @@ html { scroll-padding-top: 24px; }
 
   --card-w: min(820px, 84vw);
   --card-h: min(520px, 54vh);
-  --rail-w: 236px;
 }
 
 * { box-sizing: border-box; }
@@ -120,7 +119,7 @@ body {
 
 #stage {
   position: absolute;
-  inset: 0 0 0 var(--rail-w);
+  inset: 0;
   perspective: 1600px;
   touch-action: pan-y;
   cursor: grab;
@@ -195,86 +194,6 @@ body {
 .body .meta a { color: var(--mute); text-decoration: underline; text-underline-offset: 3px; }
 .body .meta a:hover { color: var(--paper); }
 
-/* ---------- left rail: the system, stacked ---------- */
-#chapters {
-  position: absolute;
-  top: 50%; left: 0;
-  z-index: 5;
-  width: var(--rail-w);
-  padding: 0 18px 0 26px;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-/* the orbital track the planets are strung along */
-#chapters::before {
-  content: "";
-  position: absolute;
-  left: 43px;
-  top: 22px; bottom: 22px;
-  width: 1px;
-  background: linear-gradient(transparent, var(--line) 12%, var(--line) 88%, transparent);
-}
-
-#chapters button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 7px 0;
-  border: 0;
-  background: none;
-  color: var(--mute);
-  font: italic 500 15px var(--text);
-  text-align: left;
-  touch-action: manipulation;
-  cursor: pointer;
-  transition: color .3s;
-}
-#chapters button:hover { color: var(--paper); }
-#chapters button.on { color: var(--paper); }
-
-/* a lit sphere: highlight, body, terminator */
-.orb {
-  position: relative;
-  flex: none;
-  width: 26px; height: 26px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 33% 27%, rgba(255, 255, 255, .55) 0 9%, transparent 42%),
-    radial-gradient(circle at 36% 30%,
-      var(--tint) 0%,
-      color-mix(in srgb, var(--tint) 42%, #060a18) 62%,
-      #04060e 100%);
-  box-shadow:
-    inset -4px -4px 8px rgba(0, 0, 0, .6),
-    0 0 0 1px rgba(0, 0, 0, .35);
-  transition: transform .35s ease, box-shadow .35s ease;
-}
-
-.orb.sun {
-  background:
-    radial-gradient(circle at 42% 38%, #fffbe8 0 16%, #ffd977 42%, #ffa53a 74%, #f07a12 100%);
-  box-shadow:
-    0 0 18px 3px rgba(255, 178, 74, .40),
-    0 0 40px 10px rgba(255, 140, 40, .16);
-}
-
-#chapters button.on .orb {
-  transform: scale(1.18);
-  box-shadow:
-    inset -4px -4px 8px rgba(0, 0, 0, .55),
-    0 0 20px 2px color-mix(in srgb, var(--tint) 55%, transparent);
-}
-#chapters button.on .orb.sun {
-  transform: scale(1.18);
-  box-shadow:
-    0 0 26px 5px rgba(255, 178, 74, .55),
-    0 0 54px 14px rgba(255, 140, 40, .22);
-}
-
 /* ---------- hero controls ---------- */
 .arrow {
   position: absolute;
@@ -292,7 +211,7 @@ body {
   cursor: pointer;
 }
 .arrow:hover { border-color: var(--cyan); color: var(--cyan); }
-#prev { left: calc(var(--rail-w) + 8px); }
+#prev { left: 24px; }
 #next { right: 24px; }
 
 #more {
@@ -342,20 +261,27 @@ body {
 #toc {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin: 28px 0;
-  padding-left: 13px;
-  border-left: 1px solid var(--line);
+  gap: 8px;
+  margin: 30px 0 26px;
 }
+
+/* links, so middle-click and Cmd-click still work — styled as buttons */
 #toc a {
-  padding: 4px 0;
+  padding: 9px 15px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: rgba(8, 12, 28, .55);
   color: var(--mute);
-  font: italic 400 15px var(--text);
+  font: italic 500 15px var(--text);
   text-decoration: none;
-  transition: color .25s;
+  transition: color .25s, border-color .25s, background .25s;
 }
-#toc a:hover { color: var(--paper); }
-#toc a.on { color: var(--tint, var(--cyan)); }
+#toc a:hover { border-color: var(--cyan); color: var(--paper); }
+#toc a.on {
+  border-color: color-mix(in srgb, var(--tint) 55%, transparent);
+  background: color-mix(in srgb, var(--tint) 11%, transparent);
+  color: var(--tint);
+}
 
 #side-links { display: flex; gap: 16px; margin-bottom: 20px; }
 #side-links a { color: var(--mute); font: italic 400 15px var(--text); text-decoration: none; }
@@ -454,36 +380,21 @@ footer code { font: 400 13px var(--ui); }
 
 /* ---------- small screens: the rail lies down ---------- */
 @media (max-width: 900px) {
-  :root { --card-w: 88vw; --card-h: 46vh; --rail-w: 0px; }
+  :root { --card-w: 88vw; --card-h: 46vh; }
   body { font-size: 15px; }
 
   #label { top: 22px; font-size: 15px; }
   #doc { grid-template-columns: 1fr; gap: 34px; padding: 72px 22px 32px; }
   #side { position: static; }
   #side h1 { font-size: 28px; }
-  #toc { display: none; }
+  #toc { flex-direction: row; flex-wrap: wrap; gap: 8px; }
   footer { padding-inline: 22px; }
 
-  #stage { inset: 0; }
-  #ring { top: 24px; bottom: 190px; }
+  #ring { top: 24px; bottom: 150px; }
   .slide { padding: 24px 26px 20px; border-radius: 14px; }
   .slide h2 { font-size: 28px; }
   .arrow { display: none; }
 
-  #chapters {
-    top: auto; bottom: 104px; left: 0; right: 0;
-    width: auto;
-    padding: 0 16px;
-    transform: none;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 18px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  #chapters::-webkit-scrollbar { display: none; }
-  #chapters::before { display: none; }
-  #chapters button { flex-direction: column; gap: 8px; font-size: 12px; white-space: nowrap; }
   #more { bottom: 40px; }
 
   .doc-section h2 { font-size: 26px; gap: 12px; }
@@ -491,5 +402,5 @@ footer code { font: 400 13px var(--ui); }
 
 @media (prefers-reduced-motion: reduce) {
   #stars, .curtain, .galaxy { animation: none; }
-  .slide, .orb { transition: none; }
+  .slide { transition: none; }
 }
