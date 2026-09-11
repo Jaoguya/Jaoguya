@@ -1,5 +1,39 @@
 /* ---------- edit me ---------------------------------------------------- */
-const CV_URL = 'cv.tex';               // swap the header link to cv.pdf once you compile one
+const CV_URL = 'cv.tex';
+const GH_USER = 'Jaoguya';
+const GH_SKIP = ['Jaoguya'];           // the profile repo itself is not a project
+
+// order the ones you care about; anything new on GitHub is appended automatically
+const GH_ORDER = ['BVCRSA', 'PLOSHA-RMFR', 'OJCOMS', 'ZKRedact'];
+
+// what GitHub cannot tell us. Anything omitted falls back to the repo description.
+const NOTES = {
+  'BVCRSA': {
+    full: 'Blockchain-Based Verifiable Conjunctive Range Search and Aggregation over Encrypted IIoT Data',
+    venue: 'IEEE Internet of Things Journal — 2nd revision',
+    points: [
+      'Blockchain-verified search and analytics over encrypted industrial sensor data, with attribute-based access control and verifiable homomorphic aggregation.',
+      'Contributed to scheme design; implemented the prototype and ran the evaluation.',
+    ],
+  },
+  'PLOSHA-RMFR': {
+    full: 'Predictive Load-Sharing Hierarchical Aggregation with Risk-Aware Multi-Layer Fault Recovery',
+    venue: 'IEEE Internet of Things Journal — under review',
+    points: [
+      'Fault-tolerant secure aggregation that keeps industrial IoT data processing running through node failures, cutting recovery time and data loss.',
+      'Implemented and debugged the framework and ran the experimental evaluation.',
+    ],
+  },
+  'OJCOMS': {
+    full: 'Achieving Post-Quantum and Dynamic Load-Balanced Verifiable Searchable Encryption for Multi-Authority IoMT Data Sharing',
+    venue: 'IEEE Open Journal of the Communications Society — in progress',
+    points: [
+      'Self-optimizing encrypted search index that adapts to query patterns for faster range retrieval.',
+      'Contributed to scheme design; implemented the prototype and ran the evaluation.',
+    ],
+  },
+};
+
 const RENAME = { 'Profile': 'About Me' };   // show a friendlier title for a \section
 const TINTS = ['#ffb765', '#4fe0a8', '#52c7ff', '#a97bff', '#ff7ab8', '#4fe0a8', '#52c7ff'];
 const CONTACT_HTML = `
@@ -187,34 +221,100 @@ function jump() {                                        // honour a #section li
 }
 addEventListener('hashchange', () => { if (jump()) { sync(); kick(); } });
 
-function build(sections) {
-  N = sections.length;
-  titles = sections.map(s => s.title);
-  ring.innerHTML = sections.map((s, i) => `
+
+/* ---------- 1: the projects in orbit ------------------------------------ */
+const fmtDate = iso => new Intl.DateTimeFormat(navigator.language || 'en', {
+  month: 'short', year: 'numeric',
+}).format(new Date(iso));
+
+function projectHtml(p) {
+  const n = NOTES[p.name] || {};
+  const lead = n.full || p.description;
+  const meta = [
+    p.language,
+    p.pushed_at ? `updated ${fmtDate(p.pushed_at)}` : '',
+    `<a href="${p.html_url}" target="_blank" rel="noopener">View on GitHub</a>`,
+  ].filter(Boolean).join(' · ');
+
+  return [
+    n.venue ? `<p class="venue">${n.venue}</p>` : '',
+    lead ? `<p>${lead}</p>` : `<p class="venue">No description yet — add one on GitHub and it shows up here.</p>`,
+    n.points ? `<ul>${n.points.map(t => `<li>${t}</li>`).join('')}</ul>` : '',
+    `<p class="meta">${meta}</p>`,
+  ].join('');
+}
+
+function buildOrbit(repos) {
+  N = repos.length;
+  titles = repos.map(r => r.name);
+
+  ring.innerHTML = repos.map((r, i) => `
     <article class="slide" style="--tint:${TINTS[i % TINTS.length]}">
-      <p class="step">Step ${i + 1} of ${N}</p>
-      <h2>${s.title}</h2>
-      <div class="body">${s.html}</div>
+      <p class="step">Project ${i + 1} of ${N}</p>
+      <h2>${r.name}</h2>
+      <div class="body">${projectHtml(r)}</div>
     </article>`).join('');
   slides = [...ring.children];
-  chapters.innerHTML = sections.map((s, i) =>
+
+  chapters.innerHTML = repos.map((r, i) =>
     `<button style="--tint:${TINTS[i % TINTS.length]}">
-       <span class="orb${i ? '' : ' sun'}"></span><span>${s.title}</span>
+       <span class="orb${i ? '' : ' sun'}"></span><span>${r.name}</span>
      </button>`).join('');
   [...chapters.children].forEach((b, i) => (b.onclick = () => goTo(i)));
 
-  // the same sections again, as a plain scrolling document
-  document.getElementById('sections').innerHTML = sections.map((s, i) => `
-    <article class="doc-section" id="s-${slug(s.title)}" style="--tint:${TINTS[i % TINTS.length]}">
-      <h2><span class="n">${String(i + 1).padStart(2, '0')}</span>${s.title}</h2>
-      <div class="body">${s.html}</div>
-    </article>`).join('');
   measure();
   jump();
   pos = target;
   place();
   sync();
 }
+
+/* known repos first, in GH_ORDER; anything new lands after them */
+function orderRepos(list) {
+  const keep = list.filter(r => !GH_SKIP.includes(r.name));
+  const rank = r => {
+    const i = GH_ORDER.indexOf(r.name);
+    return i < 0 ? GH_ORDER.length : i;
+  };
+  return keep.sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
+}
+
+fetch(`https://api.github.com/users/${GH_USER}/repos?per_page=100&sort=updated`)
+  .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+  .then(list => buildOrbit(orderRepos(list)))
+  .catch(() => {                                         // offline, or rate-limited
+    buildOrbit(GH_ORDER.map(name => ({
+      name, html_url: `https://github.com/${GH_USER}/${name}`,
+    })));
+  });
+
+/* ---------- 2: the CV as a document ------------------------------------- */
+function buildDoc(sections) {
+  document.getElementById('sections').innerHTML = sections.map((s, i) => `
+    <article class="doc-section" id="s-${slug(s.title)}" style="--tint:${TINTS[i % TINTS.length]}">
+      <h2><span class="n">${String(i + 1).padStart(2, '0')}</span>${s.title}</h2>
+      <div class="body">${s.html}</div>
+    </article>`).join('');
+
+  const toc = document.getElementById('toc');
+  toc.innerHTML = sections.map((s, i) =>
+    `<a href="#s-${slug(s.title)}" style="--tint:${TINTS[i % TINTS.length]}">${s.title}</a>`).join('');
+
+  // light up whichever section the reader is in
+  const links = [...toc.children];
+  const marks = [...document.querySelectorAll('.doc-section')];
+  let pending = 0;
+  const spy = () => {
+    pending = 0;
+    let at = 0;
+    marks.forEach((el, i) => { if (el.getBoundingClientRect().top < innerHeight * 0.35) at = i; });
+    links.forEach((a, i) => a.classList.toggle('on', i === at));
+  };
+  addEventListener('scroll', () => { pending ||= requestAnimationFrame(spy); }, { passive: true });
+  spy();
+}
+
+fetch(CV_URL).then(r => r.text()).then(tex => buildDoc(parseCV(tex)));
 
 /* ---------- input ------------------------------------------------------- */
 /* the wheel is left entirely to the page; the orbit moves on clicks, drags and keys */
@@ -267,6 +367,4 @@ addEventListener('resize', () => {
   place();
 });
 
-/* ---------- load CV ----------------------------------------------------- */
 drawStars();
-fetch(CV_URL).then(r => r.text()).then(tex => build(parseCV(tex)));

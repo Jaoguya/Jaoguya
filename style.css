@@ -101,6 +101,16 @@ body {
 }
 
 /* ---------- hero ---------- */
+#label {
+  position: absolute;
+  top: 34px; left: 0; right: 0;
+  z-index: 5;
+  margin: 0;
+  text-align: center;
+  font: italic 400 17px var(--text);
+  color: var(--mute);
+}
+
 #hero {
   position: relative;
   height: 100vh;
@@ -181,6 +191,9 @@ body {
 .body li::marker { color: var(--tint); }
 .body b { font-weight: 600; }
 .body a { color: var(--cyan); }
+.body .meta { margin-top: 14px; font: 400 13px var(--ui); color: var(--mute); }
+.body .meta a { color: var(--mute); text-decoration: underline; text-underline-offset: 3px; }
+.body .meta a:hover { color: var(--paper); }
 
 /* ---------- left rail: the system, stacked ---------- */
 #chapters {
@@ -300,20 +313,56 @@ body {
 #more:hover { border-color: var(--cyan); background: rgba(82, 199, 255, .12); }
 
 /* ---------- the document ---------- */
-#doc {
+/* full-bleed ground so the document has no hard side edges */
+#page {
   position: relative;
   z-index: 2;
   background: linear-gradient(rgba(5, 7, 15, 0), rgba(5, 7, 15, .96) 220px, rgba(5, 7, 15, .96));
 }
 
-#doc .wrap, footer { max-width: 740px; margin: 0 auto; padding-inline: 24px; }
-#doc .wrap { padding-block: 96px 0; }
+#doc {
+  display: grid;
+  grid-template-columns: 268px 1fr;
+  gap: 64px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 96px 40px 40px;
+}
 
-#intro { padding-bottom: 44px; }
-#intro h1 { margin: 0; font: italic 700 42px/1.1 var(--text); letter-spacing: -.015em; }
-#intro p { margin: 10px 0 0; font-size: 17px; color: var(--mute); }
+/* the header lives here, so it only exists once you have scrolled down */
+#side {
+  position: sticky;
+  top: 48px;
+  align-self: start;
+}
 
-.doc-section { padding-block: 54px; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
+#side h1 { margin: 0; font: italic 700 33px/1.12 var(--text); letter-spacing: -.015em; }
+#side .role { margin: 12px 0 0; font-size: 15px; line-height: 1.55; color: var(--mute); }
+
+#toc {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 28px 0;
+  padding-left: 13px;
+  border-left: 1px solid var(--line);
+}
+#toc a {
+  padding: 4px 0;
+  color: var(--mute);
+  font: italic 400 15px var(--text);
+  text-decoration: none;
+  transition: color .25s;
+}
+#toc a:hover { color: var(--paper); }
+#toc a.on { color: var(--tint, var(--cyan)); }
+
+#side-links { display: flex; gap: 16px; margin-bottom: 20px; }
+#side-links a { color: var(--mute); font: italic 400 15px var(--text); text-decoration: none; }
+#side-links a:hover { color: var(--paper); }
+
+.doc-section { padding-block: 0 54px; scroll-margin-top: 32px; }
+.doc-section + .doc-section { padding-top: 54px; border-top: 1px solid var(--line); }
 
 .doc-section h2 {
   display: flex;
@@ -334,20 +383,13 @@ body {
 
 /* ---------- footer ---------- */
 footer {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-  padding-block: 34px max(40px, env(safe-area-inset-bottom));
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 26px 40px max(40px, env(safe-area-inset-bottom));
   border-top: 1px solid var(--line);
 }
-
-footer nav { display: flex; gap: 18px; }
-footer nav a { color: var(--mute); font: italic 400 16px var(--text); text-decoration: none; }
-footer nav a:hover { color: var(--paper); }
+footer p { margin: 0; font-size: 14px; color: var(--mute); }
+footer code { font: 400 13px var(--ui); }
 
 .btn {
   padding: 9px 16px;
@@ -415,6 +457,13 @@ footer nav a:hover { color: var(--paper); }
   :root { --card-w: 88vw; --card-h: 46vh; --rail-w: 0px; }
   body { font-size: 15px; }
 
+  #label { top: 22px; font-size: 15px; }
+  #doc { grid-template-columns: 1fr; gap: 34px; padding: 72px 22px 32px; }
+  #side { position: static; }
+  #side h1 { font-size: 28px; }
+  #toc { display: none; }
+  footer { padding-inline: 22px; }
+
   #stage { inset: 0; }
   #ring { top: 24px; bottom: 190px; }
   .slide { padding: 24px 26px 20px; border-radius: 14px; }
@@ -437,10 +486,7 @@ footer nav a:hover { color: var(--paper); }
   #chapters button { flex-direction: column; gap: 8px; font-size: 12px; white-space: nowrap; }
   #more { bottom: 40px; }
 
-  #intro h1 { font-size: 32px; }
   .doc-section h2 { font-size: 26px; gap: 12px; }
-  #doc .wrap { padding-block: 72px 0; }
-  footer { flex-direction: column; align-items: flex-start; gap: 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
