@@ -39,7 +39,7 @@ body {
   position: absolute;
   inset: -6%;
   background: url("assets/milkyway.avif") center / cover no-repeat;
-  filter: saturate(.58) brightness(.68) contrast(1.04);
+  filter: saturate(.92) brightness(1.05) contrast(1.06);
   will-change: transform;
   animation: swell 150s ease-in-out infinite;
 }
@@ -49,8 +49,8 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(120% 90% at 50% 40%, rgba(10, 16, 44, .58), rgba(4, 6, 16, .88) 78%),
-    linear-gradient(rgba(24, 30, 74, .42), rgba(6, 9, 24, .55));
+    radial-gradient(115% 88% at 50% 42%, rgba(10, 16, 44, .10), rgba(4, 6, 16, .72) 88%),
+    linear-gradient(rgba(24, 30, 74, .06), rgba(6, 9, 24, .20));
 }
 
 .curtain {
@@ -98,7 +98,8 @@ body {
   margin: 0;
   text-align: center;
   font: italic 400 17px var(--text);
-  color: var(--mute);
+  color: #c3cee6;
+  text-shadow: 0 1px 14px rgba(2, 4, 12, .95), 0 0 4px rgba(2, 4, 12, .8);
 }
 
 #hero {
