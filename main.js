@@ -265,9 +265,28 @@ function buildDoc(sections) {
   toc.innerHTML = sections.map((s, i) =>
     `<a href="#s-${slug(s.title)}" style="--tint:${TINTS[i % TINTS.length]}">${s.title}</a>`).join('');
 
-  // light up whichever section the reader is in
   const links = [...toc.children];
   const marks = [...document.querySelectorAll('.doc-section')];
+
+  // scroll there instead of letting the browser jump to the anchor
+  const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const travel = el => {
+    const from = scrollY;
+    el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+    // a hidden tab, or an engine that ignores smooth, would otherwise go nowhere
+    if (smooth) setTimeout(() => {
+      if (Math.abs(scrollY - from) < 4) el.scrollIntoView({ block: 'start' });
+    }, 250);
+  };
+
+  links.forEach((a, i) => (a.onclick = e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;   // keep new-tab clicks
+    e.preventDefault();
+    travel(marks[i]);
+    history.replaceState(null, '', a.getAttribute('href'));
+  }));
+
+  // light up whichever section the reader is in
   let pending = 0;
   const spy = () => {
     pending = 0;
