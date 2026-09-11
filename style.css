@@ -297,11 +297,76 @@ body {
   text-wrap: balance;
 }
 
-.doc-section h2 .n {
+/* ---------- the planets, lit spheres drawn in CSS ---------- */
+.planet {
+  position: relative;
   flex: none;
-  height: 20px;
-  width: auto;
-  border-radius: 3px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, .5) 0 8%, transparent 40%),
+    radial-gradient(circle at 36% 30%, var(--a) 0%, var(--b) 58%, var(--c) 100%);
+  box-shadow:
+    inset -5px -5px 10px rgba(0, 0, 0, .55),
+    0 0 0 1px rgba(0, 0, 0, .45),
+    0 0 20px -7px var(--a);
+}
+
+.mercury { --a: #b8ab9c; --b: #6f6459; --c: #2a2521; }
+.venus   { --a: #f3dfa8; --b: #d1a55f; --c: #4a3a1c; }
+.earth   { --a: #7cc4f0; --b: #2f6fb5; --c: #0d2340; }
+.mars    { --a: #e08a5a; --b: #b8441c; --c: #3a1208; }
+.jupiter { --a: #f0d5b4; --b: #c08a5e; --c: #3e2415; }
+.saturn  { --a: #f5e9b8; --b: #cdb173; --c: #453820; }
+.uranus  { --a: #bff0ef; --b: #62b9c4; --c: #163944; }
+
+/* a green continent or two */
+.earth {
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, .5) 0 8%, transparent 40%),
+    radial-gradient(42% 30% at 62% 56%, rgba(86, 166, 106, .9), transparent 72%),
+    radial-gradient(30% 24% at 31% 63%, rgba(86, 166, 106, .78), transparent 74%),
+    radial-gradient(24% 16% at 52% 26%, rgba(86, 166, 106, .6), transparent 76%),
+    radial-gradient(circle at 36% 30%, var(--a) 0%, var(--b) 58%, var(--c) 100%);
+}
+
+/* banded gas giants */
+.jupiter::before, .saturn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-linear-gradient(
+    170deg,
+    rgba(80, 45, 20, .30) 0 2px,
+    transparent 2px 5px);
+  mix-blend-mode: multiply;
+}
+.saturn::before { background: repeating-linear-gradient(172deg, rgba(90, 70, 30, .22) 0 2px, transparent 2px 6px); }
+
+/* the ring is what makes it Saturn */
+.saturn::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 48px; height: 15px;
+  margin: -7.5px 0 0 -24px;
+  border: 2px solid rgba(238, 219, 163, .72);
+  border-radius: 50%;
+  transform: rotate(-17deg);
+  box-shadow: 0 0 6px -1px rgba(238, 219, 163, .5);
+}
+
+/* Uranus rides on its side, so its rings stand up */
+.uranus::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 13px; height: 44px;
+  margin: -22px 0 0 -6.5px;
+  border: 1.5px solid rgba(191, 240, 239, .4);
+  border-radius: 50%;
+  transform: rotate(8deg);
 }
 
 /* ---------- footer ---------- */

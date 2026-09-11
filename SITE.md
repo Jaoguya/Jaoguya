@@ -18,13 +18,18 @@ site. No build step and no JavaScript dependencies.
 
 **1 — Solar Project System.** An oval orbit seen from a high angle. Each slide is
 a GitHub repository; the one at the near point of the curve fills the screen while
-the rest shrink, blur and swing round behind it. A left rail lists them as lit
-spheres, the sun first.
+the rest shrink and swing round behind it.
 
 **2 — The CV.** Scroll down and the page becomes an ordinary two-column site: a
 sticky left column carrying the name, a section index and the contact links, with
 the CV itself on the right. That column *is* the header — it exists only in this
 section, so it appears when you scroll and never covers the orbit.
+
+Each section is marked by a planet rather than a number, in order out from the
+sun: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus. They are drawn in CSS
+— stacked radial gradients for the lit face and terminator, a repeating gradient
+for the gas giants' bands, and a rotated ellipse for Saturn's ring and Uranus's
+upright ones. No images, no requests.
 
 ## Where the content comes from
 
@@ -53,7 +58,6 @@ two can't fight.
 | Input | Action |
 |---|---|
 | Scroll | move through the page |
-| Planets in the left rail | jump to that project |
 | Drag horizontally, or swipe | next / previous project |
 | `←` `→` keys, `‹` `›` buttons | next / previous project (hero only) |
 | **Read the full CV** | jump to the document |
@@ -70,17 +74,16 @@ and z-order come off the same distance. A small rAF tween eases `pos` toward
 `target` so slides follow the arc rather than cutting a straight line; dragging
 scrubs `pos` under your finger. `pos` is unbounded, so the orbit loops forever.
 
-Tuning lives in `main.js` (`radiusX`, `radiusY`, `FALLOFF`, `EASE`) and
-`style.css` (`--rail-w` for how much room the rail takes from the orbit).
+Tuning lives in `main.js`: `radiusX`, `radiusY`, `FALLOFF`, `EASE`.
 
 ## The sky
 
-Bottom to top: the Milky Way photograph, cooled and dimmed
-(`saturate(.58) brightness(.68)`) and slowly swelling; a `.veil` of indigo
-gradients pulling its warm gold toward the page palette; a 700-star canvas turning
-once every 240s; three blurred aurora curtains at ~30% opacity on
-`mix-blend-mode: screen`. All motion stops under `prefers-reduced-motion`. If a
-browser can't decode AVIF the photo simply doesn't paint and the rest carries it.
+Bottom to top: the Milky Way photograph, slowly swelling; a thin `.veil` of indigo
+gradients that keeps the corners from blowing out; three aurora curtains on
+`mix-blend-mode: screen`. Nothing is blurred at runtime — the curtains are soft
+gradients rather than `filter: blur()`, which is what used to cost every frame.
+All motion stops under `prefers-reduced-motion`. If a browser can't decode AVIF
+the photo simply doesn't paint and the veil carries the background alone.
 
 ## Type
 
