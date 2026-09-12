@@ -43,15 +43,8 @@ I'm **Tagrid Chongkolrattanapond** — a Computer Engineering student from **Pat
 
 ---
 
-### My Projects
-
-| Project | Description |
-|---|---|
-| [**BVCRSA**](https://github.com/Jaoguya/BVCRSA) | Blockchain-verified conjunctive range search & aggregation over encrypted IIoT data with attribute-based access control. |
-| [**PLOSHA-RMFR**](https://github.com/Jaoguya/PLOSHA-RMFR) | Fault-tolerant secure aggregation for Industrial IoT — predictive load-sharing with multi-layer fault recovery. |
-| [**OJCOMS**](https://github.com/Jaoguya/OJCOMS) | Adaptive context-bound secure range-cover aggregate tree — a self-optimizing encrypted search index for IIoT data. |
-| [**ZKRedact**](https://github.com/Jaoguya/ZKRedact) | Privacy-preserving blockchain redaction using zero-knowledge proofs with sharded batch verification & Merkle-authenticated provenance auditing. |
-
+### Feature Project Showcase
+Coming Soon ~~
 
 ---
 
