@@ -1,45 +1,39 @@
-<h1 align="center">Welcome to my Github</h1>
+<h1 align="center">Hello, my name is Guy 👋</h1>
 
 <p align="center">
-  <em>Computer Engineering · SIIT, Thammasat University 🇹🇭</em>
+  <em>Welcome to my GitHub! Here are some of the projects I've been working on.</em>
 </p>
 
 ---
 
-### About Jaoguya
+### 🔬 Feature Project Showcase
 
-I'm **Tagrid Chongkolrattanapond** — a Computer Engineering student from **Pathum Thani, Thailand**, currently studying at [SIIT, Thammasat University](https://www.siit.tu.ac.th/) on the Cloud Computing & Cyber Security track.
----
-
-### Tools & Technologies
-
-<p>
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" />
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/C++-00599C?style=flat-square&logo=cplusplus&logoColor=white" alt="C++" />
-  <img src="https://img.shields.io/badge/C%23-512BD4?style=flat-square&logo=csharp&logoColor=white" alt="C#" />
-  <img src="https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP" />
-  <img src="https://img.shields.io/badge/SQL-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="SQL" />
-  <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5" />
-  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React" />
-  <img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js" />
-  <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="MySQL" />
-  <img src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white" alt="MongoDB" />
-  <img src="https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white" alt="SQLite" />
-  <img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white" alt="Git" />
-  <img src="https://img.shields.io/badge/AWS%20EC2-232F3E?style=flat-square&logo=amazonwebservices&logoColor=white" alt="AWS EC2" />
-  <img src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black" alt="Linux" />
-  <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white" alt="Figma" />
-  <img src="https://img.shields.io/badge/LaTeX-008080?style=flat-square&logo=latex&logoColor=white" alt="LaTeX" />
-  <img src="https://img.shields.io/badge/Wireshark-1679A7?style=flat-square&logo=wireshark&logoColor=white" alt="Wireshark" />
-</p>
-
----
-
-### Feature Project Showcase
-Coming Soon ~~
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="https://github.com/Jaoguya/ZKRedact"><img src="assets/projects/zkredact.png" alt="ZKRedact system model" width="100%" /></a>
+      <h4><a href="https://github.com/Jaoguya/ZKRedact">ZKRedact</a></h4>
+      <sub>Zero-knowledge authorized redaction and provenance auditing for permissioned blockchains, with sharded batch proof verification.</sub>
+    </td>
+    <td width="50%" valign="top">
+      <a href="https://github.com/Jaoguya/PLOSHA-RMFR"><img src="assets/projects/plosha-rmfr.png" alt="PLOSHA-RMFR scheduling efficiency" width="100%" /></a>
+      <h4><a href="https://github.com/Jaoguya/PLOSHA-RMFR">PLOSHA-RMFR</a></h4>
+      <sub>Predictive load-sharing hierarchical aggregation with risk-aware multi-layer fault recovery for secure IIoT edge–fog computing.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="https://github.com/Jaoguya/BVCRSA"><img src="assets/projects/bvcrsa.png" alt="BVCRSA query time vs range width" width="100%" /></a>
+      <h4><a href="https://github.com/Jaoguya/BVCRSA">BVCRSA</a></h4>
+      <sub>Blockchain-based verifiable conjunctive range search and aggregation over encrypted IIoT data.</sub>
+    </td>
+    <td width="50%" valign="top">
+      <a href="https://github.com/Jaoguya/OJCOMS"><img src="assets/projects/ojcoms.png" alt="OJCOMS search latency" width="100%" /></a>
+      <h4><a href="https://github.com/Jaoguya/OJCOMS">OJCOMS</a></h4>
+      <sub>Post-quantum, dynamic load-balanced verifiable searchable encryption for multi-authority IoMT data sharing.</sub>
+    </td>
+  </tr>
+</table>
 
 ---
 
