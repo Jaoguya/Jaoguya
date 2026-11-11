@@ -30,7 +30,7 @@
     <td width="50%" valign="top">
       <a href="https://github.com/Jaoguya/OJCOMS"><img src="assets/projects/ojcoms.png" alt="OJCOMS (MA-LB-PQ-VDSE) manuscript first page" width="100%" /></a>
       <h4><a href="https://github.com/Jaoguya/OJCOMS">OJCOMS</a></h4>
-      <sub>Post-quantum, dynamic load-balanced verifiable searchable encryption for multi-authority IoMT data sharing.</sub>
+      <sub>Fog-assisted multi-authority verifiable dynamic searchable encryption with adaptive load balancing.</sub>
     </td>
   </tr>
 </table>

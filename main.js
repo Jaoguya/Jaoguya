@@ -28,7 +28,7 @@ const NOTES = {
     ],
   },
   'OJCOMS': {
-    full: 'Achieving Post-Quantum and Dynamic Load-Balanced Verifiable Searchable Encryption for Multi-Authority IoMT Data Sharing',
+    full: 'Fog-Assisted Multi-Authority Verifiable Dynamic Searchable Encryption with Adaptive Load Balancing',
     venue: 'IEEE Open Journal of the Communications Society — in progress',
     points: [
       'Self-optimizing encrypted search index that adapts to query patterns for faster range retrieval.',
