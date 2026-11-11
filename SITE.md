@@ -27,6 +27,11 @@ small icons and the big Welcome. The clay look is one shadow recipe, `--clay`: a
 light inner highlight top-left, a darker inner shade bottom-right and a soft drop.
 Light theme only.
 
+Soap bubbles drift up behind the folders on a `<canvas>` (`#bubbles`), each tinted
+from `COLORS`, and pop with a ring and droplets when the cursor or a finger touches
+one. Up to 36 at once, scaled to the screen; drawing pauses in a hidden tab and
+becomes a still scatter under `prefers-reduced-motion`.
+
 ## Where the content comes from
 
 **Folders — live from GitHub.** `main.js` fetches

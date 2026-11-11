@@ -454,5 +454,118 @@ function cleanReadme(html, r) {
   return [...doc.body.childNodes];
 }
 
+/* ---------- bubbles ------------------------------------------------------ */
+/* soap bubbles rise behind the folders and pop when the cursor touches them */
+const sky = $('#bubbles');
+const ctx = sky.getContext('2d');
+const TINTS = COLORS.map(h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)).join(','));
+const rand = (a, b) => a + Math.random() * (b - a);
+let skyW = 0, skyH = 0, bubbles = [], pops = [], skyRaf = 0, lastT = 0;
+const pointer = { x: -1e4, y: -1e4 };
+
+function spawn(anywhere) {
+  const r = rand(6, 26);
+  return {
+    r,
+    x: rand(0, skyW),
+    y: anywhere ? rand(0, skyH) : skyH + r + rand(0, skyH * 0.25),
+    vy: rand(16, 34) * (1.25 - r / 40),           // small bubbles rise faster
+    phase: rand(0, Math.PI * 2),
+    sway: rand(6, 22),
+    tint: TINTS[Math.floor(rand(0, TINTS.length))],
+  };
+}
+
+function sizeSky() {
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  skyW = innerWidth;
+  skyH = innerHeight;
+  sky.width = skyW * dpr;
+  sky.height = skyH * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const want = Math.round(Math.min(36, Math.max(12, (skyW * skyH) / 36000)));
+  while (bubbles.length < want) bubbles.push(spawn(true));
+  bubbles.length = want;
+}
+
+function drawBubble(x, y, r, tint) {
+  const film = ctx.createRadialGradient(x - r * 0.35, y - r * 0.35, r * 0.1, x, y, r);
+  film.addColorStop(0, 'rgba(255,255,255,.5)');
+  film.addColorStop(0.6, `rgba(${tint},.08)`);
+  film.addColorStop(0.9, `rgba(${tint},.32)`);
+  film.addColorStop(1, `rgba(${tint},.6)`);
+  ctx.fillStyle = film;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.85)';          // the window glint
+  ctx.beginPath();
+  ctx.ellipse(x - r * 0.38, y - r * 0.42, r * 0.22, r * 0.12, -0.6, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawPop(p) {
+  const k = p.t / 0.35;                              // 0 → 1 over the pop
+  ctx.strokeStyle = `rgba(${p.tint},${0.7 * (1 - k)})`;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, p.r * (1 + k * 0.8), 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.fillStyle = `rgba(${p.tint},${0.8 * (1 - k)})`;
+  for (let i = 0; i < 6; i++) {                      // droplets flung outward
+    const a = (i / 6) * Math.PI * 2 + p.r;
+    const d = p.r * (1 + k * 1.6);
+    ctx.beginPath();
+    ctx.arc(p.x + Math.cos(a) * d, p.y + Math.sin(a) * d, 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function skyFrame(t) {
+  const dt = Math.min(0.05, (t - (lastT || t)) / 1000);
+  lastT = t;
+  ctx.clearRect(0, 0, skyW, skyH);
+  for (const b of bubbles) {
+    b.y -= b.vy * dt;
+    b.phase += dt * 1.3;
+    const x = b.x + Math.sin(b.phase) * b.sway;
+    if (b.y < -b.r * 2) Object.assign(b, spawn(false));
+    else if (Math.hypot(pointer.x - x, pointer.y - b.y) < b.r + 4) {
+      pops.push({ x, y: b.y, r: b.r, tint: b.tint, t: 0 });
+      Object.assign(b, spawn(false));
+    } else drawBubble(x, b.y, b.r, b.tint);
+  }
+  pops = pops.filter(p => (p.t += dt) < 0.35);
+  pops.forEach(drawPop);
+  skyRaf = requestAnimationFrame(skyFrame);
+}
+
+function startSky() {
+  cancelAnimationFrame(skyRaf);
+  skyRaf = 0;
+  lastT = 0;
+  if (still.matches) {                               // reduced motion: a still scatter
+    ctx.clearRect(0, 0, skyW, skyH);
+    bubbles.forEach(b => drawBubble(b.x, b.y, b.r, b.tint));
+    return;
+  }
+  if (!document.hidden) skyRaf = requestAnimationFrame(skyFrame);
+}
+
+addEventListener('pointermove', e => {
+  if (e.pointerType === 'mouse') { pointer.x = e.clientX; pointer.y = e.clientY; }
+}, { passive: true });
+addEventListener('pointerdown', e => { pointer.x = e.clientX; pointer.y = e.clientY; }, { passive: true });
+addEventListener('pointerup', e => {
+  if (e.pointerType !== 'mouse') pointer.x = pointer.y = -1e4;   // a finger lifts away
+}, { passive: true });
+document.documentElement.addEventListener('pointerleave', () => { pointer.x = pointer.y = -1e4; });
+
+addEventListener('resize', () => { sizeSky(); startSky(); });
+document.addEventListener('visibilitychange', startSky);
+still.addEventListener('change', startSky);
+
 /* ---------- go ---------------------------------------------------------- */
+sizeSky();
+startSky();
 loadProjects();
