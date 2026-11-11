@@ -85,22 +85,22 @@ const modal = document.getElementById('modal');
 const closeBtn = document.getElementById('close');
 let opener = null;
 
-const open = (title, html) => {
+const openModal = (title, html) => {
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-body').innerHTML = html;
   modal.hidden = false;
   opener = document.activeElement;
   closeBtn.focus();
 };
-const shut = () => {
+const closeModal = () => {
   modal.hidden = true;
   if (opener) opener.focus();
   opener = null;
 };
-closeBtn.onclick = shut;
-modal.onclick = e => { if (e.target === modal) shut(); };
+closeBtn.onclick = closeModal;
+modal.onclick = e => { if (e.target === modal) closeModal(); };
 
-document.getElementById('contact-btn').onclick = () => open('Get in touch', CONTACT_HTML);
+document.getElementById('contact-btn').onclick = () => openModal('Get in touch', CONTACT_HTML);
 
 /* ---------- orbital deck ------------------------------------------------ */
 /* Slides ride an oval seen from above. The one at the near point of the
@@ -157,12 +157,15 @@ function place() {
   });
 }
 
-/* rail, screen-reader announcement and URL follow the settled slide */
-function sync() {
+/* CV sections own the #s-… anchors; project slides own every other hash */
+const isDocHash = () => location.hash.startsWith('#s-');
+
+/* screen-reader announcement and URL follow the settled slide */
+function sync(writeHash = true) {
   const now = cur();
   if (titles[now]) {
     live.textContent = `Step ${now + 1} of ${N}: ${titles[now]}`;
-    history.replaceState(null, '', '#' + slug(titles[now]));
+    if (writeHash) history.replaceState(null, '', '#' + slug(titles[now]));
   }
 }
 
@@ -240,7 +243,7 @@ function buildOrbit(repos) {
   jump();
   pos = target;
   place();
-  sync();
+  sync(!isDocHash());                  // don't clobber a link to a CV section
 }
 
 /* known repos first, in GH_ORDER; anything new lands after them */
@@ -323,6 +326,10 @@ function buildDoc(sections) {
   };
   addEventListener('scroll', () => { pending ||= requestAnimationFrame(spy); }, { passive: true });
   spy();
+
+  // sections are built after load, so the browser's own jump to #s-… never landed
+  const linked = isDocHash() && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (linked) linked.scrollIntoView({ block: 'start' });
 }
 
 fetch(CV_URL).then(r => r.text()).then(tex => buildDoc(parseCV(tex)));
@@ -336,7 +343,7 @@ document.getElementById('next').onclick = () => go(1);
 document.getElementById('prev').onclick = () => go(-1);
 
 addEventListener('keydown', e => {
-  if (e.key === 'Escape') return shut();
+  if (e.key === 'Escape') return closeModal();
   if (!modal.hidden) return;
   if (scrollY > innerHeight * 0.6) return;               // reading the document, not the orbit
   if (e.key === 'ArrowRight') go(1);

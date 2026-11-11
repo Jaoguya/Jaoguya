@@ -89,7 +89,7 @@ the photo simply doesn't paint and the veil carries the background alone.
 
 Source Serif 4 — italic for every heading, label and button, upright for body
 copy so long passages stay readable. Space Grotesk survives only on dates and
-section numbers, where tabular figures matter.
+the project meta line, where tabular figures matter.
 
 ## Run it
 

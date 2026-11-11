@@ -7,9 +7,7 @@ html { scroll-padding-top: 24px; }
   --mute: #93a2c0;
   --line: rgba(150, 190, 255, .16);
 
-  --green: #4fe0a8;
   --cyan: #52c7ff;
-  --violet: #a97bff;
 
   --ui: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --text: "Source Serif 4", Georgia, "Times New Roman", serif;
@@ -125,7 +123,6 @@ body {
   position: absolute;
   top: 50%; left: 50%;
   width: var(--card-w);
-  height: auto;
   min-height: 300px;
   max-height: var(--card-h);
   display: flex;
@@ -379,7 +376,6 @@ footer {
   border-top: 1px solid var(--line);
 }
 footer p { margin: 0; font-size: 14px; color: var(--mute); }
-footer code { font: 400 13px var(--ui); }
 
 .btn {
   padding: 9px 16px;
@@ -441,7 +437,7 @@ footer code { font: 400 13px var(--ui); }
 #modal-body p { margin: 10px 0; }
 #modal-body a { color: var(--cyan); }
 
-/* ---------- small screens: the rail lies down ---------- */
+/* ---------- small screens: one column, no arrows ---------- */
 @media (max-width: 900px) {
   :root { --card-w: 88vw; --card-h: 46vh; }
   body { font-size: 15px; }
