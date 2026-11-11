@@ -1,95 +1,66 @@
 # The website in this repo
 
 `index.html`, `style.css` and `main.js` at the repo root are Tagrid's portfolio
-site. No build step and no JavaScript dependencies.
+site, live at https://jaoguya.vercel.app. No build step and no JavaScript
+dependencies.
 
 > `README.md` is **not** part of the site — this repo is `Jaoguya/Jaoguya`, so
 > that file is the GitHub profile page. Leave it alone.
 
 | File | What it is |
 |---|---|
-| `index.html` | Markup: project hero, CV document, footer, one modal |
-| `style.css` | All styling, including the sky and the planet orbs |
-| `main.js` | LaTeX parser, GitHub fetch, and the orbit |
-| `cv.tex` | The CV. Sections are read at runtime |
-| `assets/milkyway.avif` | The backdrop photograph |
+| `index.html` | Markup: menu bar, the desk, the Welcome folder, the project window |
+| `style.css` | All styling: the clay recipe, the folders, the window |
+| `main.js` | GitHub fetch, folder layout and dragging, the window, README rendering |
 
-## Two sections
+## The idea
 
-**1 — Solar Project System.** An oval orbit seen from a high angle. Each slide is
-a GitHub repository; the one at the near point of the curve fills the screen while
-the rest shrink and swing round behind it.
+A clay desktop. One big **Welcome** folder sits in the middle and does nothing
+but say hello. Every public GitHub repo is a smaller folder spaced round it in an
+oval. Click a folder and its flap swings open and a window pops out of it with the
+project's details and its README.
 
-**2 — The CV.** Scroll down and the page becomes an ordinary two-column site: a
-sticky left column carrying the name, a section index and the contact links, with
-the CV itself on the right. That column *is* the header — it exists only in this
-section, so it appears when you scroll and never covers the orbit.
-
-Each section is marked by a planet rather than a number, in order out from the
-sun: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus. They are drawn in CSS
-— stacked radial gradients for the lit face and terminator, a repeating gradient
-for the gas giants' bands, and a rotated ellipse for Saturn's ring and Uranus's
-upright ones. No images, no requests.
+Everything is drawn in CSS — no images. A folder is three layers (back panel with
+a tab, a sheet of paper, the front flap), sized in `em` so the same build makes the
+small icons and the big Welcome. The clay look is one shadow recipe, `--clay`: a
+light inner highlight top-left, a darker inner shade bottom-right and a soft drop.
+Light theme only.
 
 ## Where the content comes from
 
-**Projects — live from GitHub.** `main.js` fetches
-`api.github.com/users/Jaoguya/repos`, so a new public repo shows up on the site by
-itself. Three knobs at the top of the file:
+**Folders — live from GitHub.** `main.js` fetches
+`api.github.com/users/Jaoguya/repos`, so a new public repo gets a folder by itself.
+Knobs at the top of the file:
 
-- `GH_ORDER` — the repos to show first, in this order. Anything not listed is
-  appended alphabetically after them.
-- `GH_SKIP` — repos to leave out. The profile repo is already in here.
-- `NOTES` — the venue and bullet points GitHub can't know. A repo with no entry
-  falls back to its GitHub description; a repo with neither says so on the card,
-  which is the nudge to go write a description.
+- `GH_ORDER` — folder order, clockwise from the top. Repos not listed come after.
+- `GH_SKIP` — repos to leave out. The profile repo (this site) is in here.
+- `NOTES` — what GitHub can't know: `label` (a nicer folder name), `full` title,
+  `venue`, `points`. A repo without notes uses its GitHub description.
+- `COLORS` — the pastel each folder gets, in turn.
 
-The API allows 60 unauthenticated requests an hour per visitor. If that fails, or
-the visitor is offline, the orbit falls back to the `GH_ORDER` names as bare links.
+**README — rendered by GitHub.** Opening a folder asks the API for that repo's
+README as HTML (`application/vnd.github.html+json`), once per repo per visit.
+`cleanReadme()` strips scripts and event handlers, drops any id that isn't one of
+GitHub's `user-content-*` ones so it can't clash with the page's own, and points
+relative images and links at the repo.
 
-**CV — from `cv.tex`.** Split on `\section{...}` and converted to HTML at runtime.
-Reorder the `\section{}` blocks and the document reorders with them.
+The API allows 60 unauthenticated requests an hour per visitor. If the repo list
+fails, the folders fall back to the `GH_ORDER` names; if a README fails, the window
+links to it on GitHub instead.
 
-## Navigation
-
-The wheel never touches the orbit — scrolling only ever scrolls the page, so the
-two can't fight.
+## Using it
 
 | Input | Action |
 |---|---|
-| Scroll | move through the page |
-| Drag horizontally, or swipe | next / previous project |
-| `←` `→` keys, `‹` `›` buttons | next / previous project (hero only) |
-| **Read the full CV** | jump to the document |
+| Click / Enter on a folder | open its window |
+| Drag a folder | move it; the spot is remembered in this browser |
+| **Tidy up** | put every folder back in the oval |
+| Esc, the red dot, or clicking outside | close the window |
+| `#repo-name` in the URL | opens that folder on load |
 
-A burst of clicks queues at most `BACKLOG` (1.6) projects, so hammering the arrows
-never starts a long spin.
-
-## How it is drawn
-
-`place()` puts every slide on the oval from one continuous number, `pos`:
-`x = sin(a)·radiusX`, `y = (cos(a) − 1)·radiusY`, and
-`scale = 1 / (1 + distance·FALLOFF)` — a perspective-style falloff. Opacity, blur
-and z-order come off the same distance. A small rAF tween eases `pos` toward
-`target` so slides follow the arc rather than cutting a straight line; dragging
-scrubs `pos` under your finger. `pos` is unbounded, so the orbit loops forever.
-
-Tuning lives in `main.js`: `radiusX`, `radiusY`, `FALLOFF`, `EASE`.
-
-## The sky
-
-Bottom to top: the Milky Way photograph, slowly swelling; a thin `.veil` of indigo
-gradients that keeps the corners from blowing out; three aurora curtains on
-`mix-blend-mode: screen`. Nothing is blurred at runtime — the curtains are soft
-gradients rather than `filter: blur()`, which is what used to cost every frame.
-All motion stops under `prefers-reduced-motion`. If a browser can't decode AVIF
-the photo simply doesn't paint and the veil carries the background alone.
-
-## Type
-
-Source Serif 4 — italic for every heading, label and button, upright for body
-copy so long passages stay readable. Space Grotesk survives only on dates and
-the project meta line, where tabular figures matter.
+Under 720px wide the Welcome folder sits on top and the folders fall into a
+two-column grid; dragging is off there so the page can scroll. Under
+`prefers-reduced-motion` nothing bobs, springs or flies.
 
 ## Run it
 
@@ -97,14 +68,8 @@ the project meta line, where tabular figures matter.
 python3 -m http.server 8000    # then open http://localhost:8000
 ```
 
-`fetch('cv.tex')` is blocked on `file://`, so it needs a real server. Hard-reload
-(`Cmd+Shift+R`) after editing CSS — the dev server's caching is aggressive.
+Hard-reload (`Cmd+Shift+R`) after editing CSS.
 
 ## Deploy
 
-Static, no config, no build command. The site is at the repo root, so a default
-Vercel import serves it:
-
-```sh
-npx vercel --prod
-```
+Static, no config, no build command. Vercel redeploys on every push to `main`.

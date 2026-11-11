@@ -1,15 +1,12 @@
 /* ---------- edit me ---------------------------------------------------- */
-const CV_URL = 'cv.tex';
 const GH_USER = 'Jaoguya';
-const GH_SKIP = ['Jaoguya'];           // the profile repo itself is not a project
+const GH_SKIP = ['Jaoguya'];           // the profile repo is this site, not a project
 
-// order the ones you care about; anything new on GitHub is appended automatically
-const GH_ORDER = ['BVCRSA', 'PLOSHA-RMFR', 'OJCOMS', 'ZKRedact'];
+// folders in this order, clockwise from the top; anything new on GitHub is added after them
+const GH_ORDER = ['BVCRSA', 'PLOSHA-RMFR', 'OJCOMS', 'ZKRedact', 'VeRedact', 'Lost-Found---website', 'jaoguyagmail'];
 
-// one planet per CV section, in order out from the sun. Drawn in CSS.
-const PLANETS = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus'];
-
-// what GitHub cannot tell us. Anything omitted falls back to the repo description.
+// what GitHub cannot tell us. `label` renames the folder; the rest fills its window.
+// Anything left out falls back to the repo's GitHub description.
 const NOTES = {
   'BVCRSA': {
     full: 'Blockchain-Based Verifiable Conjunctive Range Search and Aggregation over Encrypted IIoT Data',
@@ -35,351 +32,362 @@ const NOTES = {
       'Contributed to scheme design; implemented the prototype and ran the evaluation.',
     ],
   },
+  'ZKRedact': {
+    full: 'Efficient Zero-Knowledge Authorized Redaction and Provenance Auditing for Permissioned Blockchains',
+    points: [
+      'Lets requesters prove in zero knowledge that a redaction is authorized, verifies requests in parallel batches, and keeps a Merkle-authenticated provenance history auditors can check.',
+      'Worked with the team on the scheme design and testing.',
+    ],
+  },
+  'VeRedact': {
+    full: 'Post-Quantum Secure Verifiable Redaction and Privacy-Preserving Auditing for Large-Scale Permissioned Blockchains',
+    points: [
+      'Scalable post-quantum redaction with multi-party authorization and verifiable auditing.',
+      'Worked on the scheme design and testing.',
+    ],
+  },
+  'Lost-Found---website': { label: 'Lost & Found' },
+  'jaoguyagmail': { label: 'Inbox Sorter' },
 };
 
-const RENAME = { 'Profile': 'About Me' };   // show a friendlier title for a \section
-const TINTS = ['#ffb765', '#4fe0a8', '#52c7ff', '#a97bff', '#ff7ab8', '#4fe0a8', '#52c7ff'];
-const CONTACT_HTML = `
-  <p>Happy to talk about research, internships, or CTFs.</p>
-  <p><b>Email:</b> <a href="mailto:guyhd9119@gmail.com">guyhd9119@gmail.com</a></p>
-  <p><b>LinkedIn:</b> <a href="https://www.linkedin.com/in/tagrid-chongkolrattanapond-7188b63a8/" target="_blank" rel="noopener">Tagrid Chongkolrattanapond</a></p>
-  <p><b>GitHub:</b> <a href="https://github.com/Jaoguya" target="_blank" rel="noopener">Jaoguya</a></p>`;
+// candy pastels, one per folder in turn
+const COLORS = ['#ffb38a', '#8fd3ff', '#9be7b8', '#c6a8ff', '#ffe27a', '#ff8fa3', '#7fe3d8'];
 
-/* ---------- LaTeX -> HTML ---------------------------------------------- */
-function toHtml(s) {
-  return s
-    .replace(/(^|[^\\])%.*$/gm, '$1')
-    .replace(/\\entry\{((?:[^{}]|\{[^{}]*\})*)\}\s*\{([^{}]*)\}/g,
-      (_, t, d) => `\n<h3>${d ? `<span class="date">${d}</span>` : ''}${t}</h3>\n`)
-    .replace(/\\venue\{((?:[^{}]|\{[^{}]*\})*)\}/g, '<p class="venue">$1</p>')
-    .replace(/\\skill\{([^{}]*)\}\{((?:[^{}]|\{[^{}]*\})*)\}/g, '<p><b>$1:</b> $2</p>')
-    .replace(/\\begin\{details\}/g, '<ul>')
-    .replace(/\\end\{details\}/g, '</ul>')
-    .replace(/\\item\s*/g, '<li>')
-    .replace(/\\href\{([^}]*)\}\{([^}]*)\}/g, '<a href="$1" target="_blank" rel="noopener">$2</a>')
-    .replace(/\\textbf\{([^{}]*)\}/g, '<b>$1</b>')
-    .replace(/\\textit\{([^{}]*)\}/g, '<i>$1</i>')
-    .replace(/\$\\times\$/g, '×')
-    .replace(/\\&/g, '&amp;').replace(/\\([%$_#])/g, '$1')
-    .replace(/---/g, '—').replace(/--/g, '–').replace(/``/g, '“').replace(/''/g, '”')
-    .replace(/\\[a-zA-Z]+\*?(\{[^{}]*\})*(\[[^\]]*\])?/g, '')
-    .replace(/\\\\(\[[^\]]*\])?/g, '')
-    .split(/\n\s*\n/).map(t => t.trim()).filter(Boolean)
-    .map(t => /^<(h3|ul|p|div)/.test(t) ? t : `<p>${t}</p>`).join('\n');
-}
-
-const clean = t => t.replace(/\\&/g, '&').replace(/\\[a-zA-Z]+/g, '').trim();
-
-function parseCV(tex) {
-  const parts = (tex.split('\\begin{document}')[1] || tex).split(/\\section\*?\{([^}]*)\}/);
-  const out = [];
-  for (let i = 1; i < parts.length; i += 2) {
-    const title = clean(parts[i]);
-    out.push({ title: RENAME[title] || title, html: toHtml(parts[i + 1]) });
-  }
-  return out;
-}
-
-/* ---------- modal ------------------------------------------------------- */
-const modal = document.getElementById('modal');
-const closeBtn = document.getElementById('close');
-let opener = null;
-
-const openModal = (title, html) => {
-  document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-body').innerHTML = html;
-  modal.hidden = false;
-  opener = document.activeElement;
-  closeBtn.focus();
-};
-const closeModal = () => {
-  modal.hidden = true;
-  if (opener) opener.focus();
-  opener = null;
-};
-closeBtn.onclick = closeModal;
-modal.onclick = e => { if (e.target === modal) closeModal(); };
-
-document.getElementById('contact-btn').onclick = () => openModal('Get in touch', CONTACT_HTML);
-
-/* ---------- orbital deck ------------------------------------------------ */
-/* Slides ride an oval seen from above. The one at the near point of the
-   curve fills the screen; the rest shrink and swing round behind it.        */
-
-const stage = document.getElementById('stage');
-const ring = document.getElementById('ring');
-const live = document.getElementById('live');
+/* ---------- helpers ----------------------------------------------------- */
+const $ = s => document.querySelector(s);
 const slug = t => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const still = matchMedia('(prefers-reduced-motion: reduce)');
+const narrow = matchMedia('(max-width: 720px)');
 
-const FALLOFF = 0.85;         // how fast a slide shrinks as it leaves the front
-const EASE = 0.18;            // tween stiffness
+const store = {                                  // per-visitor only; may be unavailable
+  get(area, key) { try { return JSON.parse(area.getItem(key)); } catch { return null; } },
+  set(area, key, v) { try { area.setItem(key, JSON.stringify(v)); } catch {} },
+  drop(area, key) { try { area.removeItem(key); } catch {} },
+};
 
-let slides = [], titles = [], N = 0;
-let pos = 0, target = 0, raf = 0;   // pos is continuous, target is the slide we head to
-let radiusX = 0, radiusY = 0;
+const desk = $('#desk');
+const welcome = $('#welcome');
+const holder = $('#folders');
+const live = $('#live');
 
-const cur = () => ((Math.round(target) % N) + N) % N;
+let repos = [];
+let folders = [];
 
-function measure() {
-  radiusX = stage.clientWidth * 0.31;
-  radiusY = stage.clientHeight * 0.125;
+/* ---------- menu bar clock ---------------------------------------------- */
+const clock = $('#clock');
+const tickClock = () => {
+  const now = new Date();
+  clock.dateTime = now.toISOString();
+  clock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+tickClock();
+setInterval(tickClock, 15000);
+
+/* ---------- layout: an oval of folders round the Welcome folder --------- */
+/* positions are stored as fractions of the desk, so a resize keeps the arrangement */
+const LAYOUT_KEY = 'desk-layout:v1';
+let layout = store.get(localStorage, LAYOUT_KEY) || {};
+
+function defaultSpot(i, n) {
+  const W = desk.clientWidth, H = desk.clientHeight;
+  const w = welcome.offsetWidth, h = welcome.offsetHeight;
+  const rx = Math.min(W / 2 - 90, Math.max(w / 2 + 130, W * 0.36));
+  const ry = Math.min(H / 2 - 80, Math.max(h / 2 + 90, H * 0.36));
+  const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
+  return [(W / 2 + Math.cos(a) * rx) / W, (H / 2 + Math.sin(a) * ry) / H];
 }
 
-/* put every slide on the oval for the current `pos` */
-function place() {
-  slides.forEach((s, i) => {
-    let d = (((i - pos) % N) + N) % N;
-    if (d > N / 2) d -= N;                       // nearest way round
-    const a = d * (Math.PI * 2 / N);             // 0 = front of the curve
-    const away = Math.abs(d);                    // slides from the front
-    const scale = 1 / (1 + away * FALLOFF);      // perspective-style falloff
+function clampPx(el, x, y) {
+  const W = desk.clientWidth, H = desk.clientHeight;
+  const hw = el.offsetWidth / 2, hh = el.offsetHeight / 2;
+  return [Math.min(W - hw, Math.max(hw, x)), Math.min(H - hh, Math.max(hh, y))];
+}
 
-    const x = Math.sin(a) * radiusX;
-    const y = (Math.cos(a) - 1) * radiusY;       // near sits centred, far rides up
-
-    // transform and opacity are the only per-frame writes: both compositor-only.
-    // filter used to be set here too, which re-rasterised every card every frame.
-    s.style.transform =
-      `translate(-50%, -50%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)` +
-      ` scale(${scale.toFixed(3)}) rotateY(${(-Math.sin(a) * 22).toFixed(1)}deg)` +
-      ` rotateX(${((1 - Math.cos(a)) * 5).toFixed(1)}deg)`;
-    s.style.opacity = (1 / (1 + away * 0.42)).toFixed(3);
-
-    const z = 1000 - Math.round(away * 100);            // restacking is not free
-    if (s._z !== z) { s.style.zIndex = s._z = z; }
-
-    const front = away < 0.5;
-    if (s._front !== front) {                            // class and inert only on change
-      s._front = front;
-      s.classList.toggle('active', front);
-      s.inert = !front;
-    }
+function placeAll(animate = false) {
+  if (narrow.matches) {                          // phone: CSS grid does the layout
+    folders.forEach(el => { el.style.left = el.style.top = ''; });
+    return;
+  }
+  const W = desk.clientWidth, H = desk.clientHeight;
+  folders.forEach((el, i) => {
+    const [fx, fy] = layout[el.dataset.repo] || defaultSpot(i, folders.length);
+    const [x, y] = clampPx(el, fx * W, fy * H);
+    el.classList.toggle('settle', animate && !still.matches);
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
   });
 }
 
-/* CV sections own the #s-… anchors; project slides own every other hash */
-const isDocHash = () => location.hash.startsWith('#s-');
-
-/* screen-reader announcement and URL follow the settled slide */
-function sync(writeHash = true) {
-  const now = cur();
-  if (titles[now]) {
-    live.textContent = `Step ${now + 1} of ${N}: ${titles[now]}`;
-    if (writeHash) history.replaceState(null, '', '#' + slug(titles[now]));
-  }
-}
-
-function tick() {
-  const diff = target - pos;
-  pos += diff * EASE;
-  if (Math.abs(diff) < 0.001) {
-    pos = target;
-    raf = 0;
-    place();
-    return;
-  }
-  place();
-  raf = requestAnimationFrame(tick);
-}
-const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
-
-const BACKLOG = 1.6;          // most slides a burst of input may queue up
-
-const go = n => {
-  target += n;
-  const over = target - pos;
-  // round, or a clamped burst leaves the deck resting between two slides
-  if (Math.abs(over) > BACKLOG) target = Math.round(pos + Math.sign(over) * BACKLOG);
-  sync();
-  kick();
+$('#tidy').onclick = () => {
+  layout = {};
+  store.drop(localStorage, LAYOUT_KEY);
+  placeAll(true);
+  live.textContent = 'Folders tidied';
 };
 
-function jump() {                                        // honour a #section link
-  const i = titles.findIndex(t => slug(t) === decodeURIComponent(location.hash.slice(1)));
-  if (i < 0) return false;
-  let d = (((i - target) % N) + N) % N;
-  if (d > N / 2) d -= N;
-  target += d;
-  return true;
-}
-addEventListener('hashchange', () => { if (jump()) { sync(); kick(); } });
+addEventListener('resize', () => placeAll());
+narrow.addEventListener('change', () => placeAll());
 
+/* ---------- dragging ----------------------------------------------------- */
+let drag = null;
+let topZ = 10;
 
-/* ---------- 1: the projects in orbit ------------------------------------ */
-const fmtDate = iso => new Intl.DateTimeFormat(navigator.language || 'en', {
-  month: 'short', year: 'numeric',
-}).format(new Date(iso));
-
-function projectHtml(p) {
-  const n = NOTES[p.name] || {};
-  const lead = n.full || p.description;
-  const meta = [
-    p.language,
-    p.pushed_at ? `updated ${fmtDate(p.pushed_at)}` : '',
-    `<a href="${p.html_url}" target="_blank" rel="noopener">View on GitHub</a>`,
-  ].filter(Boolean).join(' · ');
-
-  return [
-    n.venue ? `<p class="venue">${n.venue}</p>` : '',
-    lead ? `<p>${lead}</p>` : `<p class="venue">No description yet — add one on GitHub and it shows up here.</p>`,
-    n.points ? `<ul>${n.points.map(t => `<li>${t}</li>`).join('')}</ul>` : '',
-    `<p class="meta">${meta}</p>`,
-  ].join('');
+function onDown(e) {
+  if (narrow.matches || e.button !== 0) return;
+  const el = e.currentTarget;
+  drag = { el, id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: el.offsetLeft, oy: el.offsetTop, moved: false };
+  el.setPointerCapture(e.pointerId);
 }
 
-function buildOrbit(repos) {
-  N = repos.length;
-  titles = repos.map(r => r.name);
+function onMove(e) {
+  if (!drag || e.pointerId !== drag.id) return;
+  const dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+  if (!drag.moved) {
+    if (Math.hypot(dx, dy) < 6) return;          // still a click
+    drag.moved = true;
+    drag.el.classList.remove('settle');
+    drag.el.classList.add('dragging');
+    drag.el.style.zIndex = ++topZ;
+  }
+  const [x, y] = clampPx(drag.el, drag.ox + dx, drag.oy + dy);
+  drag.el.style.left = `${x}px`;
+  drag.el.style.top = `${y}px`;
+}
 
-  ring.innerHTML = repos.map((r, i) => `
-    <article class="slide" style="--tint:${TINTS[i % TINTS.length]}">
-      <p class="step">Project ${i + 1} of ${N}</p>
-      <h2>${r.name}</h2>
-      <div class="body">${projectHtml(r)}</div>
-    </article>`).join('');
-  slides = [...ring.children];
+function onUp(e) {
+  if (!drag || e.pointerId !== drag.id) return;
+  const { el, moved } = drag;
+  drag = null;
+  if (!moved) return;
+  el.classList.remove('dragging');
+  el._dragged = true;                            // swallow the click that follows
+  layout[el.dataset.repo] = [el.offsetLeft / desk.clientWidth, el.offsetTop / desk.clientHeight];
+  store.set(localStorage, LAYOUT_KEY, layout);
+}
 
-  measure();
-  jump();
-  pos = target;
-  place();
-  sync(!isDocHash());                  // don't clobber a link to a CV section
+/* ---------- building the folders ---------------------------------------- */
+const nameOf = r => NOTES[r.name]?.label || r.name;
+
+function buildDesk(list) {
+  repos = list;
+  holder.innerHTML = list.map((r, i) => `
+    <button class="folder item" type="button" data-repo="${esc(r.name)}" data-i="${i}"
+            style="--c:${COLORS[i % COLORS.length]}" aria-haspopup="dialog">
+      <span class="f-art">
+        <span class="f-back"></span>
+        <span class="f-paper"></span>
+        <span class="f-flap">${r.language ? `<span class="f-tag">${esc(r.language)}</span>` : ''}</span>
+      </span>
+      <span class="f-name">${esc(nameOf(r))}</span>
+    </button>`).join('');
+
+  folders = [...holder.children];
+  folders.forEach(el => {
+    el.addEventListener('pointerdown', onDown);
+    el.addEventListener('pointermove', onMove);
+    el.addEventListener('pointerup', onUp);
+    el.addEventListener('pointercancel', onUp);
+    el.addEventListener('click', () => {
+      if (el._dragged) { el._dragged = false; return; }
+      openProject(+el.dataset.i);
+    });
+  });
+
+  placeAll();
+  openFromHash();
 }
 
 /* known repos first, in GH_ORDER; anything new lands after them */
 function orderRepos(list) {
-  const keep = list.filter(r => !GH_SKIP.includes(r.name));
   const rank = r => {
     const i = GH_ORDER.indexOf(r.name);
     return i < 0 ? GH_ORDER.length : i;
   };
-  return keep.sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
+  return list
+    .filter(r => !GH_SKIP.includes(r.name))
+    .sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
 }
 
 const CACHE_KEY = 'repos:' + GH_USER;
 
 function loadProjects() {
-  let cached = null;
-  try { cached = JSON.parse(sessionStorage.getItem(CACHE_KEY)); } catch {}
-  if (cached) buildOrbit(orderRepos(cached));            // paint at once on a repeat visit
+  const cached = store.get(sessionStorage, CACHE_KEY);
+  if (cached) buildDesk(orderRepos(cached));          // paint at once on a repeat visit
 
-  return fetch(`https://api.github.com/users/${GH_USER}/repos?per_page=100&sort=updated`)
+  fetch(`https://api.github.com/users/${GH_USER}/repos?per_page=100&sort=updated`)
     .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
     .then(list => {
-      const lean = list.map(({ name, description, language, pushed_at, html_url }) =>
-        ({ name, description, language, pushed_at, html_url }));
-      try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(lean)); } catch {}
-      if (!cached) buildOrbit(orderRepos(lean));
+      const lean = list.map(({ name, description, language, pushed_at, html_url, default_branch }) =>
+        ({ name, description, language, pushed_at, html_url, default_branch }));
+      store.set(sessionStorage, CACHE_KEY, lean);
+      if (!cached) buildDesk(orderRepos(lean));
     })
-    .catch(() => {                                       // offline, or rate-limited
+    .catch(() => {                                     // offline, or rate-limited
       if (cached) return;
-      buildOrbit(GH_ORDER.map(name => ({
-        name, html_url: `https://github.com/${GH_USER}/${name}`,
-      })));
+      buildDesk(GH_ORDER.map(name => ({ name, html_url: `https://github.com/${GH_USER}/${name}` })));
     });
 }
-loadProjects();
 
-/* ---------- 2: the CV as a document ------------------------------------- */
-function buildDoc(sections) {
-  document.getElementById('sections').innerHTML = sections.map((s, i) => {
-    const planet = PLANETS[i % PLANETS.length];
-    return `
-    <article class="doc-section" id="s-${slug(s.title)}" style="--tint:${TINTS[i % TINTS.length]}">
-      <h2><span class="planet ${planet.toLowerCase()}" title="${planet}" aria-hidden="true"></span>${s.title}</h2>
-      <div class="body">${s.html}</div>
-    </article>`;
-  }).join('');
+/* ---------- the project window ------------------------------------------ */
+const win = $('#win');
+const card = $('#win-card');
+const closeBtn = $('#win-close');
+const readmeBox = $('#win-readme');
+let openIdx = -1;
 
-  const toc = document.getElementById('toc');
-  toc.innerHTML = sections.map((s, i) =>
-    `<a href="#s-${slug(s.title)}" style="--tint:${TINTS[i % TINTS.length]}">${s.title}</a>`).join('');
+const fmtDate = iso => new Intl.DateTimeFormat(navigator.language || 'en', { month: 'short', year: 'numeric' })
+  .format(new Date(iso));
 
-  const links = [...toc.children];
-  const marks = [...document.querySelectorAll('.doc-section')];
-
-  // scroll there instead of letting the browser jump to the anchor
-  const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const travel = el => {
-    const from = scrollY;
-    el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
-    // a hidden tab, or an engine that ignores smooth, would otherwise go nowhere
-    if (smooth) setTimeout(() => {
-      if (Math.abs(scrollY - from) < 4) el.scrollIntoView({ block: 'start' });
-    }, 250);
-  };
-
-  links.forEach((a, i) => (a.onclick = e => {
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;   // keep new-tab clicks
-    e.preventDefault();
-    travel(marks[i]);
-    history.replaceState(null, '', a.getAttribute('href'));
-  }));
-
-  // light up whichever section the reader is in
-  let pending = 0;
-  const spy = () => {
-    pending = 0;
-    let at = 0;
-    marks.forEach((el, i) => { if (el.getBoundingClientRect().top < innerHeight * 0.35) at = i; });
-    links.forEach((a, i) => a.classList.toggle('on', i === at));
-  };
-  addEventListener('scroll', () => { pending ||= requestAnimationFrame(spy); }, { passive: true });
-  spy();
-
-  // sections are built after load, so the browser's own jump to #s-… never landed
-  const linked = isDocHash() && document.getElementById(decodeURIComponent(location.hash.slice(1)));
-  if (linked) linked.scrollIntoView({ block: 'start' });
+function infoHtml(r) {
+  const n = NOTES[r.name] || {};
+  const lead = n.full || r.description;
+  return [
+    n.venue ? `<p class="venue">${esc(n.venue)}</p>` : '',
+    lead ? `<p class="lead">${esc(lead)}</p>` : '',
+    n.full && r.description && r.description !== n.full ? `<p>${esc(r.description)}</p>` : '',
+    n.points ? `<ul>${n.points.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '',
+    `<p class="meta">${[
+      r.language ? `<span class="chip">${esc(r.language)}</span>` : '',
+      r.pushed_at ? `<span class="chip">Updated ${esc(fmtDate(r.pushed_at))}</span>` : '',
+      `<a class="chip" href="${esc(r.html_url)}" target="_blank" rel="noopener">Open on GitHub ↗</a>`,
+    ].join('')}</p>`,
+  ].join('');
 }
 
-fetch(CV_URL).then(r => r.text()).then(tex => buildDoc(parseCV(tex)));
+function openProject(i, { animate = true } = {}) {
+  const r = repos[i];
+  if (!r) return;
+  if (openIdx >= 0) folders[openIdx]?.classList.remove('open');
 
-/* ---------- input ------------------------------------------------------- */
-/* the wheel is left entirely to the page; the orbit moves on clicks, drags and keys */
-document.getElementById('more').onclick = () =>
-  document.getElementById('doc').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  openIdx = i;
+  const folder = folders[i];
+  folder.classList.add('open');
+  card.style.setProperty('--c', COLORS[i % COLORS.length]);
+  $('#win-title').textContent = nameOf(r);
+  $('#win-info').innerHTML = infoHtml(r);
+  $('#win-body').scrollTop = 0;
+  win.hidden = false;
+  closeBtn.focus();
 
-document.getElementById('next').onclick = () => go(1);
-document.getElementById('prev').onclick = () => go(-1);
+  // fly out of the folder that was opened
+  if (animate && !still.matches) {
+    const f = folder.getBoundingClientRect(), c = card.getBoundingClientRect();
+    const dx = f.left + f.width / 2 - (c.left + c.width / 2);
+    const dy = f.top + f.height / 2 - (c.top + c.height / 2);
+    card.animate(
+      [{ transform: `translate(${dx}px, ${dy}px) scale(.15)`, opacity: 0 }, { transform: 'none', opacity: 1 }],
+      { duration: 520, easing: 'cubic-bezier(.3, 1.35, .45, 1)' });
+  }
 
-addEventListener('keydown', e => {
-  if (e.key === 'Escape') return closeModal();
-  if (!modal.hidden) return;
-  if (scrollY > innerHeight * 0.6) return;               // reading the document, not the orbit
-  if (e.key === 'ArrowRight') go(1);
-  else if (e.key === 'ArrowLeft') go(-1);
+  history.replaceState(null, '', '#' + slug(r.name));
+  live.textContent = `Opened ${nameOf(r)}`;
+  loadReadme(r);
+}
+
+function closeProject() {
+  if (win.hidden) return;
+  const folder = folders[openIdx];
+  const finish = () => {
+    win.hidden = true;
+    folder?.classList.remove('open');
+    folder?.focus();
+  };
+  openIdx = -1;
+  history.replaceState(null, '', location.pathname + location.search);
+
+  if (still.matches || !folder) return finish();
+  const f = folder.getBoundingClientRect(), c = card.getBoundingClientRect();
+  const dx = f.left + f.width / 2 - (c.left + c.width / 2);
+  const dy = f.top + f.height / 2 - (c.top + c.height / 2);
+  card.animate(
+    [{ transform: 'none', opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) scale(.15)`, opacity: 0 }],
+    { duration: 300, easing: 'cubic-bezier(.5, 0, .75, 0)' }).onfinish = finish;
+}
+
+closeBtn.onclick = closeProject;
+win.addEventListener('click', e => { if (e.target === win) closeProject(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') closeProject(); });
+
+// keep Tab inside the open window
+win.addEventListener('keydown', e => {
+  if (e.key !== 'Tab') return;
+  const items = [...card.querySelectorAll('a[href], button')];
+  const first = items[0], last = items[items.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 });
 
-/* dragging scrubs the orbit under your finger, then settles on a slide */
-const PX_PER_SLIDE = 300;
-let dragX = null, dragFrom = 0;
-stage.addEventListener('pointerdown', e => { dragX = e.clientX; dragFrom = target; });
-stage.addEventListener('pointermove', e => {
-  if (dragX === null) return;
-  target = dragFrom - (e.clientX - dragX) / PX_PER_SLIDE;
-  kick();
-});
-stage.addEventListener('pointerup', () => {
-  if (dragX === null) return;
-  dragX = null;
-  target = Math.round(target);
-  sync();
-  kick();
-});
-stage.addEventListener('pointercancel', () => (dragX = null));
+/* a #repo-name link opens that folder */
+function openFromHash() {
+  const want = decodeURIComponent(location.hash.slice(1));
+  const i = repos.findIndex(r => slug(r.name) === want);
+  if (i >= 0 && i !== openIdx) openProject(i, { animate: false });
+}
+addEventListener('hashchange', openFromHash);
 
-// a hidden tab pauses rAF; snap so it never comes back mid-flight
-addEventListener('visibilitychange', () => {
-  if (!document.hidden) return kick();
-  if (raf) cancelAnimationFrame(raf);
-  raf = 0;
-  pos = target = Math.round(target);
-  place();
-  sync();
-});
+/* ---------- README, rendered by GitHub ----------------------------------- */
+/* one API call per repo, only when its window opens, cached for the visit */
+async function loadReadme(r) {
+  readmeBox.dataset.repo = r.name;
+  readmeBox.innerHTML = '<p class="note">Loading README…</p>';
 
-addEventListener('resize', () => {
-  if (!N) return;
-  measure();
-  place();
-});
+  const key = 'readme:' + r.name;
+  let html = store.get(sessionStorage, key);
+  if (html === null) {
+    try {
+      const res = await fetch(`https://api.github.com/repos/${GH_USER}/${r.name}/readme`,
+        { headers: { Accept: 'application/vnd.github.html+json' } });
+      if (res.status === 404) html = '';
+      else if (!res.ok) throw res.status;
+      else html = await res.text();
+      store.set(sessionStorage, key, html);
+    } catch {
+      if (readmeBox.dataset.repo !== r.name) return;
+      readmeBox.innerHTML = `<p class="note">The README couldn't load right now. <a href="${esc(r.html_url)}" target="_blank" rel="noopener">Read it on GitHub</a>.</p>`;
+      return;
+    }
+  }
+  if (readmeBox.dataset.repo !== r.name) return;     // another folder was opened meanwhile
+  readmeBox.replaceChildren(...(html ? cleanReadme(html, r) : []));
+  if (!html) readmeBox.innerHTML = '<p class="note">This repo has no README yet.</p>';
+}
+
+/* strip anything active, give ids their own namespace, point relative links at GitHub */
+function cleanReadme(html, r) {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  doc.querySelectorAll('script, style, link, meta, iframe, object, embed, form, input, button').forEach(n => n.remove());
+
+  const branch = r.default_branch || 'HEAD';
+  const raw = `https://raw.githubusercontent.com/${GH_USER}/${r.name}/${branch}/`;
+  const blob = `https://github.com/${GH_USER}/${r.name}/blob/${branch}/`;
+  const isAbs = u => /^(https?:)?\/\//i.test(u) || /^(data|mailto):/i.test(u);
+
+  doc.body.querySelectorAll('*').forEach(el => {
+    for (const { name } of [...el.attributes]) {
+      if (name.startsWith('on')) el.removeAttribute(name);
+    }
+    if (el.id && !el.id.startsWith('user-content-')) el.removeAttribute('id');   // never clash with the page
+
+    if (el.tagName === 'IMG') {
+      const src = el.getAttribute('src') || '';
+      if (src && !isAbs(src)) el.src = raw + src.replace(/^\.?\//, '');
+      el.loading = 'lazy';
+    }
+    if (el.tagName === 'A') {
+      const href = el.getAttribute('href') || '';
+      if (/^\s*javascript:/i.test(href)) el.removeAttribute('href');
+      else if (href.startsWith('#')) return;
+      else {
+        if (href && !isAbs(href)) el.href = blob + href.replace(/^\.?\//, '');
+        el.target = '_blank';
+        el.rel = 'noopener';
+      }
+    }
+  });
+  return [...doc.body.childNodes];
+}
+
+/* ---------- go ---------------------------------------------------------- */
+loadProjects();
