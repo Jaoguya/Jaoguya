@@ -14,6 +14,7 @@ const NOTES = {
     points: [
       'Blockchain-verified search and analytics over encrypted industrial sensor data, with attribute-based access control and verifiable homomorphic aggregation.',
       'Contributed to scheme design; implemented the prototype and ran the evaluation.',
+      'An earlier version, AC-SCRAT (Adaptive Context-bound Secure Range-Cover Aggregate Tree over Encrypted IIoT Data), was accepted at IEEE CSCloud 2027.',
     ],
   },
   'PLOSHA-RMFR': {
@@ -34,6 +35,7 @@ const NOTES = {
   },
   'ZKRedact': {
     full: 'Efficient Zero-Knowledge Authorized Redaction and Provenance Auditing for Permissioned Blockchains',
+    venue: 'IEEE KST 2027 — accepted',
     points: [
       'Lets requesters prove in zero knowledge that a redaction is authorized, verifies requests in parallel batches, and keeps a Merkle-authenticated provenance history auditors can check.',
       'Worked with the team on the scheme design and testing.',

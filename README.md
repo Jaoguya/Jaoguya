@@ -19,7 +19,7 @@
     <td width="50%" valign="top">
       <a href="https://github.com/Jaoguya/BVCRSA"><img src="assets/projects/bvcrsa.png" alt="BVCRSA folder" width="100%" /></a>
       <h4><a href="https://github.com/Jaoguya/BVCRSA">BVCRSA</a></h4>
-      <sub>Blockchain-based verifiable conjunctive range search and aggregation over encrypted IIoT data. <i>IEEE Internet of Things Journal, 2nd revision.</i></sub>
+      <sub>Blockchain-based verifiable conjunctive range search and aggregation over encrypted IIoT data. <i>IEEE Internet of Things Journal, 2nd revision. Earlier version (AC-SCRAT) accepted at IEEE CSCloud 2027.</i></sub>
     </td>
     <td width="50%" valign="top">
       <a href="https://github.com/Jaoguya/PLOSHA-RMFR"><img src="assets/projects/plosha-rmfr.png" alt="PLOSHA-RMFR folder" width="100%" /></a>
@@ -36,7 +36,7 @@
     <td width="50%" valign="top">
       <a href="https://github.com/Jaoguya/ZKRedact"><img src="assets/projects/zkredact.png" alt="ZKRedact folder" width="100%" /></a>
       <h4><a href="https://github.com/Jaoguya/ZKRedact">ZKRedact</a></h4>
-      <sub>Efficient zero-knowledge authorized redaction and provenance auditing for permissioned blockchains.</sub>
+      <sub>Efficient zero-knowledge authorized redaction and provenance auditing for permissioned blockchains. <i>Accepted at IEEE KST 2027.</i></sub>
     </td>
   </tr>
   <tr>
