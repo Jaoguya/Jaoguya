@@ -145,7 +145,16 @@ body {
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
 }
+#welcome:hover .f-paper, #welcome:focus-visible .f-paper { transform: translateY(-.5em); }
+#welcome.open .f-paper { transform: translateY(-.9em); }
+#welcome.open .f-flap { transform: perspective(40em) rotateX(-24deg); }
 
 #folders { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 
@@ -159,6 +168,7 @@ body {
 
 .f-art {
   position: relative;
+  display: block;
   width: 13em;
   height: 10.4em;
   transition: transform .4s var(--spring);
@@ -269,7 +279,7 @@ body {
   padding: 0 .8em;
   text-align: center;
 }
-.folder.big .f-flap p { margin: 0; }
+.folder.big .f-flap > span { display: block; }
 .hello { font: 700 .5em var(--display); color: var(--ink-soft); letter-spacing: .02em; }
 .title {
   font: 700 1.9em/1 var(--display);
@@ -363,8 +373,39 @@ body {
 }
 a.chip { background: var(--c-light); }
 a.chip:hover { text-decoration: underline; text-underline-offset: 3px; }
+button.chip { border: 0; cursor: pointer; }
+button.chip:active { transform: scale(.96); }
+
+/* the contact card the Welcome folder opens */
+.contact { display: grid; gap: 12px; }
+.c-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: var(--clay-sm);
+}
+.c-k { font: 600 13px var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.c-v {
+  min-width: 0;
+  font: 700 18px var(--body);
+  color: var(--ink);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.c-v:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+@media (max-width: 480px) {
+  .c-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .c-k { grid-column: 1 / -1; }
+}
 
 #win-readme-wrap { display: grid; gap: 10px; }
+#win-readme-wrap[hidden] { display: none; }
 #win-readme-wrap h3 { margin: 0; font: 600 14px var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
 
 /* the repo's README, rendered by GitHub */

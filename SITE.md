@@ -15,8 +15,9 @@ dependencies.
 
 ## The idea
 
-A clay desktop. One big **Welcome** folder sits in the middle and does nothing
-but say hello. Every public GitHub repo is a smaller folder spaced round it in an
+A clay desktop. One big **Welcome** folder sits in the middle; open it and a
+contact card pops out with the email and phone number (copy buttons, Write in
+Gmail, Call, LinkedIn). Every public GitHub repo is a smaller folder spaced round it in an
 oval. Click a folder and its flap swings open and a window pops out of it with the
 project's details and its README.
 
@@ -37,6 +38,7 @@ Knobs at the top of the file:
 - `NOTES` — what GitHub can't know: `label` (a nicer folder name), `full` title,
   `venue`, `points`. A repo without notes uses its GitHub description.
 - `COLORS` — the pastel each folder gets, in turn.
+- `CONTACT` — the email, phone and LinkedIn the Welcome folder shows.
 
 **README — rendered by GitHub.** Opening a folder asks the API for that repo's
 README as HTML (`application/vnd.github.html+json`), once per repo per visit.
@@ -53,10 +55,12 @@ links to it on GitHub instead.
 | Input | Action |
 |---|---|
 | Click / Enter on a folder | open its window |
+| Click the Welcome folder | open the contact card |
 | Drag a folder | move it; the spot is remembered in this browser |
 | **Tidy up** | put every folder back in the oval |
 | Esc, the red dot, or clicking outside | close the window |
 | `#repo-name` in the URL | opens that folder on load |
+| `#contact` in the URL | opens the contact card on load |
 
 Under 720px wide the Welcome folder sits on top and the folders fall into a
 two-column grid; dragging is off there so the page can scroll. Under

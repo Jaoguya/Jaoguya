@@ -50,6 +50,14 @@ const NOTES = {
   'jaoguyagmail': { label: 'Inbox Sorter' },
 };
 
+// what the Welcome folder opens
+const CONTACT = {
+  email: 'guyhd9119@gmail.com',
+  phone: '099-757-3959',
+  tel: '+66997573959',
+  linkedin: 'https://www.linkedin.com/in/tagrid-chongkolrattanapond-7188b63a8/',
+};
+
 // candy pastels, one per folder in turn
 const COLORS = ['#ffb38a', '#8fd3ff', '#9be7b8', '#c6a8ff', '#ffe27a', '#ff8fa3', '#7fe3d8'];
 
@@ -230,12 +238,14 @@ function loadProjects() {
     });
 }
 
-/* ---------- the project window ------------------------------------------ */
+/* ---------- the window: a project, or the contact card ------------------ */
 const win = $('#win');
 const card = $('#win-card');
 const closeBtn = $('#win-close');
 const readmeBox = $('#win-readme');
-let openIdx = -1;
+const readmeWrap = $('#win-readme-wrap');
+let opened = null;            // the folder whose window is showing
+let openKey = '';             // its #hash: a repo slug, or 'contact'
 
 const fmtDate = iso => new Intl.DateTimeFormat(navigator.language || 'en', { month: 'short', year: 'numeric' })
   .format(new Date(iso));
@@ -256,74 +266,129 @@ function infoHtml(r) {
   ].join('');
 }
 
-function openProject(i, { animate = true } = {}) {
-  const r = repos[i];
-  if (!r) return;
-  if (openIdx >= 0) folders[openIdx]?.classList.remove('open');
+const contactHtml = () => `
+  <p class="lead">Happy to talk about research, internships or CTFs. Email or call me.</p>
+  <div class="contact">
+    <div class="c-row">
+      <span class="c-k">Email</span>
+      <a class="c-v" href="mailto:${CONTACT.email}">${CONTACT.email}</a>
+      <button class="chip" type="button" data-copy="${CONTACT.email}">Copy</button>
+    </div>
+    <div class="c-row">
+      <span class="c-k">Phone</span>
+      <a class="c-v" href="tel:${CONTACT.tel}">${CONTACT.phone}</a>
+      <button class="chip" type="button" data-copy="${CONTACT.phone}">Copy</button>
+    </div>
+  </div>
+  <p class="meta">
+    <a class="chip" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=${CONTACT.email}" target="_blank" rel="noopener">Write in Gmail ↗</a>
+    <a class="chip" href="tel:${CONTACT.tel}">Call ${CONTACT.phone}</a>
+    <a class="chip" href="${CONTACT.linkedin}" target="_blank" rel="noopener">LinkedIn ↗</a>
+  </p>`;
 
-  openIdx = i;
-  const folder = folders[i];
+/* the window grows out of its folder and shrinks back into it */
+function fly(folder, out) {
+  const f = folder.getBoundingClientRect(), c = card.getBoundingClientRect();
+  const away = {
+    transform: `translate(${f.left + f.width / 2 - (c.left + c.width / 2)}px, ${f.top + f.height / 2 - (c.top + c.height / 2)}px) scale(.15)`,
+    opacity: 0,
+  };
+  const here = { transform: 'none', opacity: 1 };
+  return card.animate(out ? [here, away] : [away, here], out
+    ? { duration: 300, easing: 'cubic-bezier(.5, 0, .75, 0)' }
+    : { duration: 520, easing: 'cubic-bezier(.3, 1.35, .45, 1)' });
+}
+
+function openWindow({ folder, color, title, html, key, readme, animate = true }) {
+  if (opened && opened !== folder) opened.classList.remove('open');
+  opened = folder;
+  openKey = key;
   folder.classList.add('open');
-  card.style.setProperty('--c', COLORS[i % COLORS.length]);
-  $('#win-title').textContent = nameOf(r);
-  $('#win-info').innerHTML = infoHtml(r);
+  card.style.setProperty('--c', color);
+  $('#win-title').textContent = title;
+  $('#win-info').innerHTML = html;
+  readmeWrap.hidden = !readme;
   $('#win-body').scrollTop = 0;
   win.hidden = false;
   closeBtn.focus();
+  if (animate && !still.matches) fly(folder, false);
 
-  // fly out of the folder that was opened
-  if (animate && !still.matches) {
-    const f = folder.getBoundingClientRect(), c = card.getBoundingClientRect();
-    const dx = f.left + f.width / 2 - (c.left + c.width / 2);
-    const dy = f.top + f.height / 2 - (c.top + c.height / 2);
-    card.animate(
-      [{ transform: `translate(${dx}px, ${dy}px) scale(.15)`, opacity: 0 }, { transform: 'none', opacity: 1 }],
-      { duration: 520, easing: 'cubic-bezier(.3, 1.35, .45, 1)' });
-  }
-
-  history.replaceState(null, '', '#' + slug(r.name));
-  live.textContent = `Opened ${nameOf(r)}`;
-  loadReadme(r);
+  history.replaceState(null, '', '#' + key);
+  live.textContent = `Opened ${title}`;
+  if (readme) loadReadme(readme);
 }
 
-function closeProject() {
+function openProject(i, opts = {}) {
+  const r = repos[i];
+  if (!r) return;
+  openWindow({ folder: folders[i], color: COLORS[i % COLORS.length], title: nameOf(r),
+    html: infoHtml(r), key: slug(r.name), readme: r, ...opts });
+}
+
+function openContact(opts = {}) {
+  openWindow({ folder: welcome, color: COLORS[0], title: 'Get in touch',
+    html: contactHtml(), key: 'contact', readme: null, ...opts });
+}
+welcome.addEventListener('click', () => openContact());
+
+function closeWindow() {
   if (win.hidden) return;
-  const folder = folders[openIdx];
+  const folder = opened;
+  let done = false;
   const finish = () => {
+    if (done) return;
+    done = true;
     win.hidden = true;
     folder?.classList.remove('open');
     folder?.focus();
   };
-  openIdx = -1;
+  opened = null;
+  openKey = '';
   history.replaceState(null, '', location.pathname + location.search);
 
+  card.getAnimations().forEach(a => a.cancel());   // a close mid-open starts from rest
   if (still.matches || !folder) return finish();
-  const f = folder.getBoundingClientRect(), c = card.getBoundingClientRect();
-  const dx = f.left + f.width / 2 - (c.left + c.width / 2);
-  const dy = f.top + f.height / 2 - (c.top + c.height / 2);
-  card.animate(
-    [{ transform: 'none', opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) scale(.15)`, opacity: 0 }],
-    { duration: 300, easing: 'cubic-bezier(.5, 0, .75, 0)' }).onfinish = finish;
+  fly(folder, true).onfinish = finish;
+  setTimeout(finish, 450);                          // never leave it open if frames stall
 }
 
-closeBtn.onclick = closeProject;
-win.addEventListener('click', e => { if (e.target === win) closeProject(); });
-addEventListener('keydown', e => { if (e.key === 'Escape') closeProject(); });
+closeBtn.onclick = closeWindow;
+win.addEventListener('click', e => { if (e.target === win) closeWindow(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') closeWindow(); });
+
+// Copy buttons; where the clipboard is refused, select the text instead
+card.addEventListener('click', async e => {
+  const btn = e.target.closest('[data-copy]');
+  if (!btn) return;
+  try {
+    await navigator.clipboard.writeText(btn.dataset.copy);
+    btn.textContent = 'Copied';
+  } catch {
+    const range = document.createRange();
+    range.selectNodeContents(btn.previousElementSibling);
+    getSelection().removeAllRanges();
+    getSelection().addRange(range);
+    btn.textContent = 'Selected';
+  }
+  setTimeout(() => (btn.textContent = 'Copy'), 1600);
+});
 
 // keep Tab inside the open window
 win.addEventListener('keydown', e => {
   if (e.key !== 'Tab') return;
-  const items = [...card.querySelectorAll('a[href], button')];
+  const items = [...card.querySelectorAll('a[href], button')].filter(el => el.offsetParent);
   const first = items[0], last = items[items.length - 1];
   if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
   else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 });
 
-/* a #repo-name link opens that folder */
+/* #contact opens the Welcome folder; #repo-name opens that folder */
 function openFromHash() {
   const want = decodeURIComponent(location.hash.slice(1));
+  if (!want || want === openKey) return;
+  if (want === 'contact') return openContact({ animate: false });
   const i = repos.findIndex(r => slug(r.name) === want);
-  if (i >= 0 && i !== openIdx) openProject(i, { animate: false });
+  if (i >= 0) openProject(i, { animate: false });
 }
 addEventListener('hashchange', openFromHash);
 
