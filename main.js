@@ -60,8 +60,18 @@ const CONTACT = {
   linkedin: 'https://www.linkedin.com/in/tagrid-chongkolrattanapond-7188b63a8/',
 };
 
-// candy pastels, one per folder in turn
-const COLORS = ['#ffb38a', '#8fd3ff', '#9be7b8', '#c6a8ff', '#ffe27a', '#ff8fa3', '#7fe3d8'];
+// the Welcome folder's color, used by no project folder
+const WELCOME_COLOR = '#ffb38a';
+
+// 30 candy pastels, one per project folder in order, none repeated until the 31st.
+// Each one was picked to be as far as possible from the colors before it.
+const COLORS = [
+  '#bded82', '#8fd3ff', '#9be7b8', '#c6a8ff', '#ffe27a', '#ff8fa3',
+  '#7fe3d8', '#ff8fdd', '#5af6b8', '#8bb1f9', '#ffc2ff', '#52e5ff',
+  '#f6b85a', '#f19dc7', '#94f09d', '#eed18b', '#5af6d7', '#f1a3ff',
+  '#ff9d5c', '#52baff', '#f9968b', '#bbb8ff', '#5af6f6', '#52d4ff',
+  '#ebb470', '#baf19d', '#ff8fc7', '#faa8ee', '#82edb2', '#eee48b',
+];
 
 /* ---------- helpers ----------------------------------------------------- */
 const $ = s => document.querySelector(s);
@@ -328,7 +338,7 @@ function openProject(i, opts = {}) {
 }
 
 function openContact(opts = {}) {
-  openWindow({ folder: welcome, color: COLORS[0], title: 'Get in touch',
+  openWindow({ folder: welcome, color: WELCOME_COLOR, title: 'Get in touch',
     html: contactHtml(), key: 'contact', readme: null, ...opts });
 }
 welcome.addEventListener('click', () => openContact());
@@ -460,7 +470,7 @@ function cleanReadme(html, r) {
 /* soap bubbles rise behind the folders and pop when the cursor touches them */
 const sky = $('#bubbles');
 const ctx = sky.getContext('2d');
-const TINTS = COLORS.map(h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)).join(','));
+const TINTS = [WELCOME_COLOR, ...COLORS].map(h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)).join(','));
 const rand = (a, b) => a + Math.random() * (b - a);
 let skyW = 0, skyH = 0, bubbles = [], pops = [], skyRaf = 0, lastT = 0;
 const pointer = { x: -1e4, y: -1e4 };
