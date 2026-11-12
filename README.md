@@ -57,6 +57,18 @@
       <h4><a href="https://github.com/Jaoguya/jaoguyagmail">Inbox Sorter</a></h4>
       <sub>Sorts a Gmail inbox into Important, General and Ads, cleans it up with saved searches, and brings anything back with one click.</sub>
     </td>
+    <td width="50%" valign="top">
+      <a href="https://github.com/Jaoguya/Charon"><img src="assets/projects/charon.png" alt="The Ferryman (Charon) folder" width="100%" /></a>
+      <h4><a href="https://github.com/Jaoguya/Charon">The Ferryman (Charon)</a></h4>
+      <sub>A desktop strategy game about ferrying souls across the river: 23 souls, 8 quests, 6 destinations. I created the concept and core rules and built the UX/UI. <i>Team of 7, Phaser + Electron.</i></sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="https://github.com/Jaoguya/robotics-siit"><img src="assets/projects/robotics-siit.png" alt="robotics-siit folder" width="100%" /></a>
+      <h4><a href="https://github.com/Jaoguya/robotics-siit">AI Gesture-Controlled Security Robot</a></h4>
+      <sub>A robot you drive with hand gestures: it stops at obstacles, names them aloud, and checks people with a spoken password. I led integration and built the control logic and password checkpoint. <i>Team of 7, ROS 2.</i></sub>
+    </td>
     <td width="50%" valign="top"></td>
   </tr>
 </table>
