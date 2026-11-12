@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://jaoguya.vercel.app"><img src="assets/projects/desktop.png" alt="Tagrid's Desktop: a clay Welcome folder surrounded by project folders" width="100%" /></a>
+  <a href="https://jaoguya.vercel.app"><img src="assets/projects/desktop.gif" alt="Tagrid's Desktop: bubbles drift and pop, a project folder opens, then the Welcome contact card" width="100%" /></a>
   <br />
   <sub>Open the folders on my site → <a href="https://jaoguya.vercel.app">jaoguya.vercel.app</a></sub>
 </p>
