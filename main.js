@@ -10,7 +10,7 @@ const GH_ORDER = ['BVCRSA', 'PLOSHA-RMFR', 'OJCOMS', 'ZKRedact', 'VeRedact', 'Lo
 const NOTES = {
   'BVCRSA': {
     full: 'Blockchain-Based Verifiable Conjunctive Range Search and Aggregation over Encrypted IIoT Data',
-    venue: 'IEEE Internet of Things Journal — 2nd revision',
+    venue: 'IEEE journal — under review',
     points: [
       'Blockchain-verified search and analytics over encrypted industrial sensor data, with attribute-based access control and verifiable homomorphic aggregation.',
       'Contributed to scheme design; implemented the prototype and ran the evaluation.',
