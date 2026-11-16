@@ -17,10 +17,11 @@ dependencies.
 
 A clay desktop. One big **Welcome** folder sits in the middle; open it and a
 contact card pops out with the email and phone number (copy buttons, Write in
-Gmail, Call, LinkedIn). Every public GitHub repo is a smaller folder spaced round it on a
-rounded-rectangle ring. The folders shrink as repos are added, and a second,
-inner ring opens when one ring would crowd, so 30+ repos still fit on a laptop
-screen (`planRings()` in `main.js`). Click a folder and its flap swings open and a window pops out of it with the
+Gmail, Call, LinkedIn). Every public GitHub repo is a smaller folder dropped on a
+random free spot round it. The folders shrink as repos are added, so 30+ still fit
+on a laptop screen (`folderSize()` in `main.js`). Each folder has a box hitbox, so
+none overlap: drag one into another and the one it hits is shoved away, slides,
+bounces off the desk edges, the Welcome folder and other folders, and slows to a stop. Click a folder and its flap swings open and a window pops out of it with the
 project's details and its README.
 
 Everything is drawn in CSS — no images. A folder is three layers (back panel with
@@ -63,15 +64,15 @@ links to it on GitHub instead.
 |---|---|
 | Click / Enter on a folder | open its window |
 | Click the Welcome folder | open the contact card |
-| Drag a folder | move it; the spot is remembered in this browser |
-| **Tidy up** | put every folder back in the oval |
+| Drag a folder | move it, shoving aside any it hits; let go mid-swing and it slides on. Spots are remembered in this browser |
+| **Shuffle** | scatter every folder to new random spots |
 | Esc, the red dot, or clicking outside | close the window |
 | `#repo-name` in the URL | opens that folder on load |
 | `#contact` in the URL | opens the contact card on load |
 
 Under 720px wide the Welcome folder sits on top and the folders fall into a
-two-column grid; dragging is off there so the page can scroll. Under
-`prefers-reduced-motion` nothing bobs, springs or flies.
+grid; dragging is off there so the page can scroll. Under
+`prefers-reduced-motion` nothing bobs, springs or flies, and shoved folders just step aside.
 
 ## Run it
 

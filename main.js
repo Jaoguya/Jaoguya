@@ -105,107 +105,180 @@ const tickClock = () => {
 tickClock();
 setInterval(tickClock, 15000);
 
-/* ---------- layout: an oval of folders round the Welcome folder --------- */
+/* ---------- layout: folders scattered at random round the desk ---------- */
 /* positions are stored as fractions of the desk, so a resize keeps the arrangement */
-const LAYOUT_KEY = 'desk-layout:v1';
+const LAYOUT_KEY = 'desk-layout:v2';
 let layout = store.get(localStorage, LAYOUT_KEY) || {};
+let bodies = [];                                 // { el, x, y, vx, vy, hw, hh }: centre and half size, px
 
-/* folders sit on rounded-rectangle rings (superellipses) round the Welcome
-   folder: one ring, or two when one would crowd, with the biggest folders that fit */
-const SQ = 4;                                    // ring squareness: 2 is an oval
-const CORNER = 2 ** (1 / SQ);                    // how far a ring must reach to clear a box's corner
-let plan = null;
+const GAP = 8;                                   // breathing room between hitboxes
 
-function ring(rx, ry) {                          // sampled points and running length
-  const N = 2048, pts = [], len = [0];
-  const pw = v => Math.sign(v) * Math.abs(v) ** (2 / SQ);
-  for (let j = 0; j <= N; j++) {
-    const a = -Math.PI / 2 + (j / N) * Math.PI * 2;
-    pts.push([pw(Math.cos(a)) * rx, pw(Math.sin(a)) * ry]);
-    if (j) len.push(len[j - 1] + Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]));
+/* the biggest folders that leave the desk roomy enough for n of them */
+function folderSize(n) {
+  const W = desk.clientWidth, H = desk.clientHeight;
+  const free = W * H - (welcome.offsetWidth + 40) * (welcome.offsetHeight + 40);
+  for (let f = 7.5; f > 4.5; f -= 0.25) {
+    const w = 15 * f + GAP, h = 11.3 * f + 40 + GAP;
+    if (n * w * h * 2.4 <= free) return f;
   }
-  return { rx, ry, pts, len };
+  return 4.5;
 }
 
-function planRings(n) {
+function welcomeBox() {
+  const d = desk.getBoundingClientRect(), r = welcome.getBoundingClientRect();
+  return { x: r.left - d.left + r.width / 2, y: r.top - d.top + r.height / 2, hw: r.width / 2 + 6, hh: r.height / 2 + 6 };
+}
+
+/* how far apart two boxes are: below 0 they overlap */
+const clearance = (a, b) =>
+  Math.max(Math.abs(a.x - b.x) - a.hw - b.hw, Math.abs(a.y - b.y) - a.hh - b.hh);
+
+/* drop each folder on a random free spot; the best of many tries if none is free */
+function scatter(list, placed) {
   const W = desk.clientWidth, H = desk.clientHeight;
-  const ww = welcome.offsetWidth / 2, wh = welcome.offsetHeight / 2;
-  const total = rs => rs.reduce((t, r) => t + r.cap, 0);
-  let best = null;
-  for (let f = 7.5; f >= 4.5; f -= 0.25) {         // px per em of a project folder
-    const iw = 15 * f / 2, ih = (11.3 * f + 40) / 2;   // half footprint: art + label
-    const pitch = Math.max(iw, ih) * 2 + 8;
-    const maxX = W / 2 - iw - 4, maxY = H / 2 - ih - 4;
-    const nearX = (ww + iw + 8) * CORNER, nearY = (wh + ih + 4) * CORNER;
-    const options = [[[maxX, maxY]]];
-    if (maxX - nearX >= iw * 2 + 8 && maxY - nearY >= ih * 2 + 4) options.push([[nearX, nearY], [maxX, maxY]]);
-    for (const o of options) {
-      const rs = o.map(([rx, ry]) => ring(rx, ry));
-      rs.forEach(r => { r.cap = Math.floor(r.len.at(-1) / pitch); });
-      best = { f, rs };
-      if (total(rs) >= n) break;
+  for (const b of list) {
+    let best = null, bestGap = -Infinity;
+    for (let t = 0; t < 400; t++) {
+      const c = { x: b.hw + Math.random() * (W - 2 * b.hw), y: b.hh + Math.random() * (H - 2 * b.hh), hw: b.hw, hh: b.hh };
+      const g = Math.min(Infinity, ...placed.map(o => clearance(c, o)));
+      if (g > bestGap) { best = c; bestGap = g; }
+      if (g >= GAP) break;
     }
-    if (total(best.rs) >= n) break;
+    b.x = best.x; b.y = best.y;
+    placed.push(b);
   }
-  // share folders between rings in proportion to their length, outer ring first
-  const t = total(best.rs) || 1;
-  best.rs.reverse();
-  best.rs.forEach(r => { r.count = Math.min(r.cap, Math.round(n * r.cap / t)); });
-  best.rs.at(-1).count = n - best.rs.slice(0, -1).reduce((x, r) => x + r.count, 0);
-  return best;
 }
 
-/* spot k of m, spaced evenly by length round a ring, clockwise from the top */
-function ringSpot(r, k, m, offset) {
-  const want = (((k + offset) / m) % 1) * r.len.at(-1);
-  let j = 1;
-  while (j < r.len.length - 1 && r.len[j] < want) j++;
-  const [a, b] = [r.pts[j - 1], r.pts[j]];
-  const t = (want - r.len[j - 1]) / (r.len[j] - r.len[j - 1] || 1);
-  return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+function render(b) {
+  b.el.style.left = `${b.x}px`;
+  b.el.style.top = `${b.y}px`;
 }
 
-function defaultSpot(i) {
+function saveLayout() {
   const W = desk.clientWidth, H = desk.clientHeight;
-  let k = i, r = 0;
-  while (r < plan.rs.length - 1 && k >= plan.rs[r].count) k -= plan.rs[r++].count;
-  const [x, y] = ringSpot(plan.rs[r], k, plan.rs[r].count, r ? 0.5 : 0);   // stagger the rings
-  return [(W / 2 + x) / W, (H / 2 + y) / H];
+  bodies.forEach(b => { layout[b.el.dataset.repo] = [b.x / W, b.y / H]; });
+  store.set(localStorage, LAYOUT_KEY, layout);
 }
 
-function clampPx(el, x, y) {
-  const W = desk.clientWidth, H = desk.clientHeight;
-  const hw = el.offsetWidth / 2, hh = el.offsetHeight / 2;
-  return [Math.min(W - hw, Math.max(hw, x)), Math.min(H - hh, Math.max(hh, y))];
-}
-
-function placeAll(animate = false) {
+function placeAll(shuffle = false) {
   if (narrow.matches) {                          // phone: CSS grid does the layout
     holder.style.removeProperty('--f');
     folders.forEach(el => { el.style.left = el.style.top = ''; });
     return;
   }
-  plan = planRings(folders.length);
-  holder.style.setProperty('--f', `${plan.f}px`);
+  holder.style.setProperty('--f', `${folderSize(folders.length)}px`);
   const W = desk.clientWidth, H = desk.clientHeight;
-  folders.forEach((el, i) => {
-    const [fx, fy] = layout[el.dataset.repo] || defaultSpot(i);
-    const [x, y] = clampPx(el, fx * W, fy * H);
-    el.classList.toggle('settle', animate && !still.matches);
-    el.style.left = `${x}px`;
-    el.style.top = `${y}px`;
+  bodies = folders.map(el => ({ el, x: 0, y: 0, vx: 0, vy: 0, hw: el.offsetWidth / 2, hh: el.offsetHeight / 2 }));
+  const fresh = [];
+  bodies.forEach(b => {
+    const spot = !shuffle && layout[b.el.dataset.repo];
+    if (spot) { b.x = spot[0] * W; b.y = spot[1] * H; } else fresh.push(b);
   });
+  scatter(fresh, [welcomeBox(), ...bodies.filter(b => !fresh.includes(b))]);
+  folders.forEach(el => el.classList.toggle('settle', shuffle && !still.matches));
+  bodies.forEach(render);
+  if (shuffle) setTimeout(() => { folders.forEach(el => el.classList.remove('settle')); saveLayout(); }, 600);
+  else wake();                                   // nudge apart anything a resize squashed together
+  if (fresh.length && !shuffle) saveLayout();
 }
 
 $('#tidy').onclick = () => {
-  layout = {};
-  store.drop(localStorage, LAYOUT_KEY);
   placeAll(true);
-  live.textContent = 'Folders tidied';
+  live.textContent = 'Folders shuffled';
 };
 
 addEventListener('resize', () => placeAll());
 narrow.addEventListener('change', () => placeAll());
+
+/* ---------- physics: hitboxes, shoves and bounces ------------------------ */
+/* a dragged folder shoves the ones it hits; they slide off, bounce off the
+   desk edges, the Welcome folder and each other, and slow to a stop */
+const BOUNCE = 0.7;                              // speed kept after hitting something
+const DRAG = 3.2;                                // friction: how fast a slide dies away, per second
+const KICK = 260;                                // px/s a shoved folder gets on top of the drag speed
+let running = false, last = 0;
+
+function wake() {
+  if (running || narrow.matches) return;
+  running = true;
+  last = performance.now();
+  requestAnimationFrame(tick);
+}
+
+/* push b out of the fixed box o along the shallower axis; true if they touched */
+function pushOut(b, o, gap, kick) {
+  const ox = b.hw + o.hw + gap - Math.abs(b.x - o.x);
+  const oy = b.hh + o.hh + gap - Math.abs(b.y - o.y);
+  if (ox <= 0 || oy <= 0) return false;
+  if (ox < oy) {
+    const s = Math.sign(b.x - o.x) || (Math.random() < .5 ? -1 : 1);
+    b.x += s * ox;
+    b.vx = kick ? s * Math.max(Math.abs(b.vx), Math.abs(kick.vx) + KICK) : (s * b.vx < 0 ? -b.vx * BOUNCE : b.vx);
+  } else {
+    const s = Math.sign(b.y - o.y) || (Math.random() < .5 ? -1 : 1);
+    b.y += s * oy;
+    b.vy = kick ? s * Math.max(Math.abs(b.vy), Math.abs(kick.vy) + KICK) : (s * b.vy < 0 ? -b.vy * BOUNCE : b.vy);
+  }
+  return true;
+}
+
+/* two loose folders: split the overlap and trade speed along the hit axis */
+function collide(a, b) {
+  const ox = a.hw + b.hw + GAP - Math.abs(a.x - b.x);
+  const oy = a.hh + b.hh + GAP - Math.abs(a.y - b.y);
+  if (ox <= 0 || oy <= 0) return false;
+  const [p, v, o] = ox < oy ? ['x', 'vx', ox] : ['y', 'vy', oy];
+  const s = Math.sign(b[p] - a[p]) || 1;
+  a[p] -= s * o / 2; b[p] += s * o / 2;
+  if (s * (b[v] - a[v]) < 0) {                   // closing in: equal masses swap speeds
+    const av = a[v];
+    a[v] = b[v] * BOUNCE; b[v] = av * BOUNCE;
+  }
+  return true;
+}
+
+function tick(now) {
+  const dt = Math.min(0.033, (now - last) / 1000);
+  last = now;
+  const W = desk.clientWidth, H = desk.clientHeight;
+  const held = drag?.moved ? drag.body : null;
+  const wb = welcomeBox();
+  const fade = Math.exp(-DRAG * dt);
+  let busy = !!held;
+
+  for (const b of bodies) {
+    if (b === held) continue;
+    b.x += b.vx * dt; b.y += b.vy * dt;
+    b.vx *= fade; b.vy *= fade;
+    if (Math.hypot(b.vx, b.vy) < 8) b.vx = b.vy = 0;
+  }
+  for (let pass = 0; pass < 4; pass++) {         // a few passes settle chains of shoves
+    for (let i = 0; i < bodies.length; i++) {
+      const a = bodies[i];
+      for (let j = i + 1; j < bodies.length; j++) {
+        const b = bodies[j];
+        if (a === held) busy = pushOut(b, a, GAP, still.matches ? null : drag) || busy;
+        else if (b === held) busy = pushOut(a, b, GAP, still.matches ? null : drag) || busy;
+        else busy = collide(a, b) || busy;
+      }
+    }
+    for (const b of bodies) {
+      if (b === held) continue;
+      busy = pushOut(b, wb, GAP, null) || busy;
+      // desk edges
+      if (b.x < b.hw) { b.x = b.hw; b.vx = Math.abs(b.vx) * BOUNCE; }
+      if (b.x > W - b.hw) { b.x = W - b.hw; b.vx = -Math.abs(b.vx) * BOUNCE; }
+      if (b.y < b.hh) { b.y = b.hh; b.vy = Math.abs(b.vy) * BOUNCE; }
+      if (b.y > H - b.hh) { b.y = H - b.hh; b.vy = -Math.abs(b.vy) * BOUNCE; }
+    }
+  }
+  if (still.matches) bodies.forEach(b => { b.vx = b.vy = 0; });
+  bodies.forEach(b => { if (b !== held) render(b); });
+  busy ||= bodies.some(b => b.vx || b.vy);
+
+  if (busy) requestAnimationFrame(tick);
+  else { running = false; saveLayout(); }
+}
 
 /* ---------- dragging ----------------------------------------------------- */
 let drag = null;
@@ -214,7 +287,9 @@ let topZ = 10;
 function onDown(e) {
   if (narrow.matches || e.button !== 0) return;
   const el = e.currentTarget;
-  drag = { el, id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: el.offsetLeft, oy: el.offsetTop, moved: false };
+  const body = bodies.find(b => b.el === el);
+  if (!body) return;
+  drag = { el, body, id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: body.x, oy: body.y, moved: false, vx: 0, vy: 0, t: performance.now() };
   el.setPointerCapture(e.pointerId);
 }
 
@@ -224,24 +299,33 @@ function onMove(e) {
   if (!drag.moved) {
     if (Math.hypot(dx, dy) < 6) return;          // still a click
     drag.moved = true;
-    drag.el.classList.remove('settle');
+    folders.forEach(el => el.classList.remove('settle'));
     drag.el.classList.add('dragging');
     drag.el.style.zIndex = ++topZ;
+    drag.body.vx = drag.body.vy = 0;
   }
-  const [x, y] = clampPx(drag.el, drag.ox + dx, drag.oy + dy);
-  drag.el.style.left = `${x}px`;
-  drag.el.style.top = `${y}px`;
+  const b = drag.body, W = desk.clientWidth, H = desk.clientHeight;
+  const x = Math.min(W - b.hw, Math.max(b.hw, drag.ox + dx));
+  const y = Math.min(H - b.hh, Math.max(b.hh, drag.oy + dy));
+  const now = performance.now(), dt = Math.max(1, now - drag.t) / 1000;
+  drag.vx = drag.vx * 0.6 + ((x - b.x) / dt) * 0.4;   // smoothed hand speed, px/s
+  drag.vy = drag.vy * 0.6 + ((y - b.y) / dt) * 0.4;
+  drag.t = now;
+  b.x = x; b.y = y;
+  render(b);
+  wake();
 }
 
 function onUp(e) {
   if (!drag || e.pointerId !== drag.id) return;
-  const { el, moved } = drag;
+  const { el, body, moved } = drag;
+  const fling = still.matches ? 0 : 0.5;         // let go mid-swing and the folder carries on a bit
+  if (moved) { body.vx = drag.vx * fling; body.vy = drag.vy * fling; }
   drag = null;
   if (!moved) return;
   el.classList.remove('dragging');
   el._dragged = true;                            // swallow the click that follows
-  layout[el.dataset.repo] = [el.offsetLeft / desk.clientWidth, el.offsetTop / desk.clientHeight];
-  store.set(localStorage, LAYOUT_KEY, layout);
+  wake();
 }
 
 /* ---------- building the folders ---------------------------------------- */
