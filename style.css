@@ -227,8 +227,9 @@ body {
   position: absolute;
   display: grid;
   justify-items: center;
-  gap: 10px;
+  gap: .9em;
   width: 15em;
+  font-size: var(--f, 7.5px);
   padding: 0;
   border: 0;
   background: none;
@@ -260,7 +261,7 @@ body {
   border-radius: 1em;
   background: rgba(255, 255, 255, .5);
   box-shadow: inset 1px 2px 4px rgba(74, 42, 79, .15);
-  font: 700 1.25em var(--body);
+  font: 700 max(9px, 1.25em) var(--body);
   color: var(--ink);
   white-space: nowrap;
 }
@@ -271,13 +272,13 @@ body {
   border-radius: 12px;
   background: var(--glass);
   box-shadow: var(--clay-sm);
-  font: 600 14px/1.3 var(--display);
+  font: 600 clamp(11px, 1.45em, 13px)/1.3 var(--display);
   text-align: center;
   overflow-wrap: anywhere;
 }
 
 /* the big Welcome folder: same build, bigger em */
-.folder.big { font-size: clamp(18px, 2.5vw, 26px); }
+.folder.big { font-size: clamp(16px, 2.1vw, 22px); }
 .folder.big .f-art { animation: bob 9s ease-in-out infinite; }
 .folder.big .f-flap {
   height: 7.9em;
@@ -456,8 +457,8 @@ button.chip:active { transform: scale(.96); }
   #desk { height: auto; min-height: 0; padding: 26px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px)); }
   #welcome { position: relative; left: auto; top: auto; transform: none; margin: 0 auto 34px; width: max-content; max-width: 100%; }
   .folder.big { font-size: min(20px, calc((100vw - 32px) / 13.2)); }
-  #folders { position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 12px; pointer-events: auto; }
-  .folder.item { position: static; transform: none; width: auto; touch-action: auto; cursor: pointer; justify-self: center; }
+  #folders { position: static; display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 20px 8px; pointer-events: auto; }
+  .folder.item { font-size: 7px; position: static; transform: none; width: auto; touch-action: auto; cursor: pointer; justify-self: center; }
   #tidy { display: none; }
   #win-body { padding: 18px 18px 22px; }
 }

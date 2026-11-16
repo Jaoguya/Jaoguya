@@ -17,8 +17,10 @@ dependencies.
 
 A clay desktop. One big **Welcome** folder sits in the middle; open it and a
 contact card pops out with the email and phone number (copy buttons, Write in
-Gmail, Call, LinkedIn). Every public GitHub repo is a smaller folder spaced round it in an
-oval. Click a folder and its flap swings open and a window pops out of it with the
+Gmail, Call, LinkedIn). Every public GitHub repo is a smaller folder spaced round it on a
+rounded-rectangle ring. The folders shrink as repos are added, and a second,
+inner ring opens when one ring would crowd, so 30+ repos still fit on a laptop
+screen (`planRings()` in `main.js`). Click a folder and its flap swings open and a window pops out of it with the
 project's details and its README.
 
 Everything is drawn in CSS — no images. A folder is three layers (back panel with

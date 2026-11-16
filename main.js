@@ -110,13 +110,67 @@ setInterval(tickClock, 15000);
 const LAYOUT_KEY = 'desk-layout:v1';
 let layout = store.get(localStorage, LAYOUT_KEY) || {};
 
-function defaultSpot(i, n) {
+/* folders sit on rounded-rectangle rings (superellipses) round the Welcome
+   folder: one ring, or two when one would crowd, with the biggest folders that fit */
+const SQ = 4;                                    // ring squareness: 2 is an oval
+const CORNER = 2 ** (1 / SQ);                    // how far a ring must reach to clear a box's corner
+let plan = null;
+
+function ring(rx, ry) {                          // sampled points and running length
+  const N = 2048, pts = [], len = [0];
+  const pw = v => Math.sign(v) * Math.abs(v) ** (2 / SQ);
+  for (let j = 0; j <= N; j++) {
+    const a = -Math.PI / 2 + (j / N) * Math.PI * 2;
+    pts.push([pw(Math.cos(a)) * rx, pw(Math.sin(a)) * ry]);
+    if (j) len.push(len[j - 1] + Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]));
+  }
+  return { rx, ry, pts, len };
+}
+
+function planRings(n) {
   const W = desk.clientWidth, H = desk.clientHeight;
-  const w = welcome.offsetWidth, h = welcome.offsetHeight;
-  const rx = Math.min(W / 2 - 90, Math.max(w / 2 + 130, W * 0.36));
-  const ry = Math.min(H / 2 - 80, Math.max(h / 2 + 90, H * 0.36));
-  const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
-  return [(W / 2 + Math.cos(a) * rx) / W, (H / 2 + Math.sin(a) * ry) / H];
+  const ww = welcome.offsetWidth / 2, wh = welcome.offsetHeight / 2;
+  const total = rs => rs.reduce((t, r) => t + r.cap, 0);
+  let best = null;
+  for (let f = 7.5; f >= 4.5; f -= 0.25) {         // px per em of a project folder
+    const iw = 15 * f / 2, ih = (11.3 * f + 40) / 2;   // half footprint: art + label
+    const pitch = Math.max(iw, ih) * 2 + 8;
+    const maxX = W / 2 - iw - 4, maxY = H / 2 - ih - 4;
+    const nearX = (ww + iw + 8) * CORNER, nearY = (wh + ih + 4) * CORNER;
+    const options = [[[maxX, maxY]]];
+    if (maxX - nearX >= iw * 2 + 8 && maxY - nearY >= ih * 2 + 4) options.push([[nearX, nearY], [maxX, maxY]]);
+    for (const o of options) {
+      const rs = o.map(([rx, ry]) => ring(rx, ry));
+      rs.forEach(r => { r.cap = Math.floor(r.len.at(-1) / pitch); });
+      best = { f, rs };
+      if (total(rs) >= n) break;
+    }
+    if (total(best.rs) >= n) break;
+  }
+  // share folders between rings in proportion to their length, outer ring first
+  const t = total(best.rs) || 1;
+  best.rs.reverse();
+  best.rs.forEach(r => { r.count = Math.min(r.cap, Math.round(n * r.cap / t)); });
+  best.rs.at(-1).count = n - best.rs.slice(0, -1).reduce((x, r) => x + r.count, 0);
+  return best;
+}
+
+/* spot k of m, spaced evenly by length round a ring, clockwise from the top */
+function ringSpot(r, k, m, offset) {
+  const want = (((k + offset) / m) % 1) * r.len.at(-1);
+  let j = 1;
+  while (j < r.len.length - 1 && r.len[j] < want) j++;
+  const [a, b] = [r.pts[j - 1], r.pts[j]];
+  const t = (want - r.len[j - 1]) / (r.len[j] - r.len[j - 1] || 1);
+  return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+}
+
+function defaultSpot(i) {
+  const W = desk.clientWidth, H = desk.clientHeight;
+  let k = i, r = 0;
+  while (r < plan.rs.length - 1 && k >= plan.rs[r].count) k -= plan.rs[r++].count;
+  const [x, y] = ringSpot(plan.rs[r], k, plan.rs[r].count, r ? 0.5 : 0);   // stagger the rings
+  return [(W / 2 + x) / W, (H / 2 + y) / H];
 }
 
 function clampPx(el, x, y) {
@@ -127,12 +181,15 @@ function clampPx(el, x, y) {
 
 function placeAll(animate = false) {
   if (narrow.matches) {                          // phone: CSS grid does the layout
+    holder.style.removeProperty('--f');
     folders.forEach(el => { el.style.left = el.style.top = ''; });
     return;
   }
+  plan = planRings(folders.length);
+  holder.style.setProperty('--f', `${plan.f}px`);
   const W = desk.clientWidth, H = desk.clientHeight;
   folders.forEach((el, i) => {
-    const [fx, fy] = layout[el.dataset.repo] || defaultSpot(i, folders.length);
+    const [fx, fy] = layout[el.dataset.repo] || defaultSpot(i);
     const [x, y] = clampPx(el, fx * W, fy * H);
     el.classList.toggle('settle', animate && !still.matches);
     el.style.left = `${x}px`;
