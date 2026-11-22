@@ -12,6 +12,7 @@ dependencies.
 | `index.html` | Markup: menu bar, the desk, the Welcome folder, the project window |
 | `style.css` | All styling: the clay recipe, the folders, the window |
 | `main.js` | GitHub fetch, folder layout and dragging, the window, README rendering |
+| `chat.js` | The chat bubble, bottom right. Loads after `main.js` and reads its `CONTACT` |
 
 ## The idea
 
@@ -34,6 +35,28 @@ Soap bubbles drift up behind the folders on a `<canvas>` (`#bubbles`), each tint
 from `COLORS`, and pop with a ring and droplets when the cursor or a finger touches
 one. Up to 36 at once, scaled to the screen; drawing pauses in a hidden tab and
 becomes a still scatter under `prefers-reduced-motion`.
+
+## The chat bubble
+
+A messenger-style assistant in the bottom-right corner (`chat.js`, styles at the
+end of `style.css`). It is scripted, not an AI model: no server, no API key. A
+first-time visitor sees a "Hiring interns?" nudge after 4 s; dismissing it or
+opening the chat is remembered in `localStorage` (`chat-seen`).
+
+The menu has four buttons:
+
+| Button | What happens |
+|---|---|
+| Get to know me | Intro, then Education / Research / Internship / Skills. Research can open the ZK-Redact, BVCRSA and PLOSHA-RMFR folders |
+| Contact me | Asks company, name, position and email, then writes a "we're interested, please send your CV" email to `CONTACT.email` |
+| Ask a question | Keyword answers from `FAQ` (dates, CV, AI, skills, research, location, awards…). Anything unknown can be emailed as a question |
+| Report a bug | Asks what went wrong and an optional reply address, then writes a bug email with the page, screen size and browser added |
+
+Emails are never sent by the site: the draft opens in the visitor's mail app
+(`mailto:`) or Gmail, or can be copied. Typed text works too: "bug" starts a
+bug report, "hiring"/"job" starts Contact, anything else is a question.
+
+To change what it says, edit `ABOUT`, `FAQ` and `SUGGESTED` at the top of `chat.js`.
 
 ## Where the content comes from
 
