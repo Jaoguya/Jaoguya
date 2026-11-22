@@ -99,7 +99,7 @@ root.innerHTML = `
       <span class="chat-ava" aria-hidden="true">T</span>
       <span class="chat-who">
         <b>Tagrid's assistant</b>
-        <small>AI assistant · answers can be wrong</small>
+        <small>Auto-replies instantly · I'm a bot</small>
       </span>
       <button type="button" class="chat-min" aria-label="Minimise chat">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12" /></svg>
@@ -333,7 +333,7 @@ ${d.email}`;
 function startAsk() {
   flow = { kind: 'ask' };
   input.placeholder = 'Ask about skills, dates, research…';
-  botSays(`Sure! Type any question about Tagrid below and I'll answer with AI, or pick one of these.`);
+  botSays(`Sure, type your question below, or pick one of these.`);
   offerAsk();
 }
 function offerAsk() {
@@ -361,46 +361,6 @@ function answer(text) {
   else if (hit.next === 'projects') offerProjects();
   else if (hit.next === 'cv') showCv();
   else offerAsk();
-}
-
-/* typed questions go to Claude through api/chat.js; with no server (local
-   preview) or on any error, the keyword answers above take over */
-const AI_URL = 'api/chat';
-const aiHistory = [];
-
-function askAI(text) {
-  if (/\b(cv|resume)\b|résumé/i.test(text)) return answer(text);    // the CV card, not a sentence about it
-  const reply = busy.then(async () => {
-    const typing = el('p', 'msg bot typing', '<span></span><span></span><span></span>');
-    typing.setAttribute('aria-hidden', 'true');
-    log.append(typing);
-    scroll();
-    let said = null;
-    try {
-      const res = await fetch(AI_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...aiHistory, { role: 'user', content: text }] }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && typeof data.reply === 'string') said = data.reply;
-    } catch {}
-    typing.remove();
-    if (said) {
-      const b = el('p', 'msg bot');
-      b.textContent = said;                                         // model text is never HTML
-      log.append(b);
-      scroll();
-    }
-    return said;
-  });
-  busy = reply.then(() => {});
-  reply.then(said => {
-    if (!said) return answer(text);
-    aiHistory.push({ role: 'user', content: text }, { role: 'assistant', content: said });
-    aiHistory.splice(0, Math.max(0, aiHistory.length - 12));
-    offer([['✉️ Contact me', startContact], ['📄 My CV', myCv], ['↩ Menu', menu]]);
-  });
 }
 
 function emailQuestion(text) {
@@ -512,11 +472,11 @@ form.addEventListener('submit', e => {
   quick.replaceChildren();
   userSays(text);
   if (flow?.steps) return takeStep(text);
-  if (flow?.kind === 'ask') return askAI(text);
+  if (flow?.kind === 'ask') return answer(text);
   // typed from the menu: route the obvious intents, else treat it as a question
   const t = text.toLowerCase();
   if (/\bbug\b|broken|error|doesn.?t work|not working/.test(t)) return startBug();
   if (/\b(hire|hiring|recruit|job|offer|interview)\b/.test(t)) return startContact();
-  askAI(text);
+  answer(text);
 });
 })();

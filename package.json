@@ -1,9 +1,0 @@
-{
-  "name": "jaoguya-portfolio",
-  "private": true,
-  "description": "Static portfolio site plus one Vercel function (api/chat.js) for the chat bubble",
-  "engines": { "node": ">=20" },
-  "dependencies": {
-    "@anthropic-ai/sdk": "1.12.0"
-  }
-}
