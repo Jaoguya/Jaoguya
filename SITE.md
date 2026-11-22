@@ -13,6 +13,8 @@ dependencies.
 | `style.css` | All styling: the clay recipe, the folders, the window |
 | `main.js` | GitHub fetch, folder layout and dragging, the window, README rendering |
 | `chat.js` | The chat bubble, bottom right. Loads after `main.js` and reads its `CONTACT` |
+| `api/chat.js` | Vercel function: answers the chat's typed questions with Claude Haiku 5.5 (needs `ANTHROPIC_API_KEY`) |
+| `package.json` | The one dependency, `@anthropic-ai/sdk`, for `api/chat.js` |
 
 ## The idea
 
@@ -39,9 +41,18 @@ becomes a still scatter under `prefers-reduced-motion`.
 ## The chat bubble
 
 A messenger-style assistant in the bottom-right corner (`chat.js`, styles at the
-end of `style.css`). It is scripted, not an AI model: no server, no API key. A
+end of `style.css`). The buttons and forms are scripted; **typed questions are
+answered by Claude Haiku 5.5 at the lowest effort** through the Vercel function
+`api/chat.js`, which answers only from the `PROFILE` written in that file. A
 first-time visitor sees a "Hiring interns?" nudge after 4 s; dismissing it or
 opening the chat is remembered in `localStorage` (`chat-seen`).
+
+**AI setup:** the function needs `ANTHROPIC_API_KEY` in the Vercel project's
+Environment Variables (Production). Without it, or on a local
+`python3 -m http.server` preview where `/api` doesn't exist, typed questions fall
+back to the keyword answers in `FAQ`. The function caps each visitor at 12
+questions per 10 minutes per warm instance and trims long messages. The
+assistant only knows what `PROFILE` says, so update it when the CV changes.
 
 The menu has four buttons:
 
@@ -118,4 +129,4 @@ Hard-reload (`Cmd+Shift+R`) after editing CSS.
 
 ## Deploy
 
-Static, no config, no build command. Vercel redeploys on every push to `main`.
+Static, no config, no build command; Vercel installs `package.json` for `api/chat.js` and redeploys on every push to `main`.
