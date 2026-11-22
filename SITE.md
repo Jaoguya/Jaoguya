@@ -56,6 +56,17 @@ Emails are never sent by the site: the draft opens in the visitor's mail app
 (`mailto:`) or Gmail, or can be copied. Typed text works too: "bug" starts a
 bug report, "hiring"/"job" starts Contact, anything else is a question.
 
+Asking for the CV ("CV", "resume", or **📄 My CV** under Get to know me) shows a
+card with a picture of its first page, plus **Preview** (opens the PDF in a new
+tab) and **Download PDF**. The files are `assets/cv/Tagrid_Chongkolrattanapond_CV.pdf`
+and `assets/cv/cv-preview.png` (`CV` in `chat.js`). To update them after editing
+the CV:
+
+```sh
+cp ~/cv/Tagrid_CV_General.pdf assets/cv/Tagrid_Chongkolrattanapond_CV.pdf
+pdftoppm -png -r 60 -f 1 -l 1 -singlefile assets/cv/Tagrid_Chongkolrattanapond_CV.pdf assets/cv/cv-preview
+```
+
 To change what it says, edit `ABOUT`, `FAQ` and `SUGGESTED` at the top of `chat.js`.
 
 ## Where the content comes from

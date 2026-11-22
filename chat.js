@@ -35,6 +35,9 @@ const ABOUT = {
   ],
 };
 
+// the CV the chat hands out, and a picture of its first page
+const CV = { pdf: 'assets/cv/Tagrid_Chongkolrattanapond_CV.pdf', preview: 'assets/cv/cv-preview.png' };
+
 // folders the research answer can open (the #hash main.js listens for)
 const PROJECTS = [['ZK-Redact', 'zkredact'], ['BVCRSA', 'bvcrsa'], ['PLOSHA-RMFR', 'plosha-rmfr']];
 
@@ -43,8 +46,8 @@ const FAQ = [
   { keys: ['start', 'available', 'availability', 'when', 'period', 'date', 'month'],
     say: [`I'm free for an internship from <b>4 January to 14 May 2027</b>, and I can extend it up to 6 months.`] },
   { keys: ['cv', 'resume', 'résumé'],
-    say: [`My CV isn't public, but I'm happy to send it. Choose "Contact me" and I'll email it to you.`],
-    next: 'contact' },
+    say: [`Of course! Here's my CV. Tap it to preview, or download the PDF.`],
+    next: 'cv' },
   { keys: ['ai', 'machine learning', 'ml', 'model', 'llm', 'speech', 'robot'],
     say: [`On our team's security robot I built the spoken-password check with offline <b>Vosk speech recognition</b> on ROS 2, and a test tool that compares two listening methods on the same recordings.`,
           `I'm looking for an AI engineering internship to go further: training, evaluating and deploying models.`] },
@@ -234,9 +237,43 @@ function tell(key) {
 function offerAbout(skip) {
   offer([
     ...Object.keys(TOPICS).filter(k => k !== skip).map(k => [TOPICS[k][0], () => tell(k)]),
+    ['📄 My CV', () => { botSays(`Here's my CV. Tap it to preview, or download the PDF.`); showCv(); }],
     ['✉️ Contact me', startContact],
     backToMenu(),
   ]);
+}
+
+// the CV as a card: first-page picture that opens the PDF, then Preview / Download
+function showCv() {
+  const card = el('a', 'cv-card');
+  card.href = CV.pdf;
+  card.target = '_blank';
+  card.rel = 'noopener';
+  card.innerHTML = `<img src="${CV.preview}" alt="First page of Tagrid's CV" loading="lazy" width="497" height="702">
+    <span class="cv-name">📄 Tagrid_Chongkolrattanapond_CV.pdf</span>`;
+  botSays(card);
+  busy.then(() => {
+    const link = (label, extra) => {
+      const a = el('a', 'chat-chip');
+      a.href = CV.pdf;
+      a.textContent = label;
+      Object.assign(a, extra);
+      return a;
+    };
+    const contact = el('button', 'chat-chip');
+    contact.type = 'button';
+    contact.textContent = '✉️ Contact me';
+    contact.onclick = () => { quick.replaceChildren(); userSays(contact.textContent); startContact(); };
+    const back = el('button', 'chat-chip');
+    back.type = 'button';
+    back.textContent = '↩ Menu';
+    back.onclick = () => { quick.replaceChildren(); userSays(back.textContent); menu(); };
+    quick.replaceChildren(
+      link('👀 Preview', { target: '_blank', rel: 'noopener', className: 'chat-chip send' }),
+      link('⬇️ Download PDF', { download: 'Tagrid_Chongkolrattanapond_CV.pdf' }),
+      contact, back);
+    scroll();
+  });
 }
 function offerProjects() {
   offer([
@@ -317,6 +354,7 @@ function answer(text) {
   botSays(typeof hit.say === 'function' ? hit.say() : hit.say);
   if (hit.next === 'contact') offer([['✉️ Contact me', startContact], ['💬 Ask something else', askAgain], backToMenu()]);
   else if (hit.next === 'projects') offerProjects();
+  else if (hit.next === 'cv') showCv();
   else offerAsk();
 }
 
